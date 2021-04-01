@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="UserInterface.Views.PathFinderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views"
+             mc:Ignorable="d" Height="550" Width="800">
+
+    <Border Background="#FFFFFF">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1">
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="CHARACTER" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+
+                        <TextBlock Text="Name" Margin="0,0,0,5" />
+                        <TextBox Text="{Binding Character.Name}" Padding="4" />
+
+                        <TextBlock Text="Campaign" Margin="0,5,0,5" />
+                        <TextBox Text="{Binding Character.Campaign}" Padding="4" />
+
+                        <TextBlock Text="XP" Margin="0,5,0,5" />
+                        <TextBox Text="{Binding Character.Experience}" Padding="4" />
+
+                        <TextBlock Text="Race" Margin="0,5,0,5" Grid.Column="1" />
+                        <ComboBox ItemsSource="{Binding}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="ABILITIES" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+                        <ItemsControl ItemsSource="{Binding Character.Abilities}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:AbilityListItemView />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="1">
+                <Border Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="SKILLS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+                      
+                        <ScrollViewer Height="375">
+                            <Border BorderBrush="#888"  BorderThickness="1" CornerRadius="8,8,3,3">
+                                <ItemsControl ItemsSource="{Binding Character.Skills}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <local:SkillListItemView />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                            
+                        </ScrollViewer>
+                        
+
+
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</UserControl>

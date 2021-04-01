@@ -1,0 +1,46 @@
+﻿<Window x:Class="View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:View"
+        mc:Ignorable="d"
+        
+        Title="MainWindow" Height="450" Width="800" >
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Margin ="5" Grid.Row="0" Grid.Column="0" Content ="Name" Width="50"/>
+        <TextBox Margin ="5" Grid.Row ="1" Grid.Column="0" Text ="{Binding CurrentPlayer.Name}" Width="50"/>
+        <Label Margin ="5" Grid.Row="0" Grid.Column="1" Content ="Level" Width="50"/>
+        <TextBox Margin ="5" Grid.Row ="1" Grid.Column="1" Text ="{Binding CurrentPlayer.Level}" Width="50"/>
+        <DataGrid 
+            CanUserSortColumns="False"
+            Grid.Row="2" Grid.Column="0"
+            Height="auto" Width="200"
+            Name="AbilitiesListBox" 
+            ItemsSource="{Binding CurrentPlayer.Abilities, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" >
+           
+        </DataGrid>
+        <DataGrid 
+            CanUserSortColumns="False"
+            Grid.Row="3" Grid.Column="1"
+            Height="200" Width="300"
+            Name="SkillListBox" 
+            ItemsSource="{Binding CurrentPlayer.Skills, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" >
+
+        </DataGrid>
+
+
+    </Grid>
+</Window>

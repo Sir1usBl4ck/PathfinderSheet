@@ -1,0 +1,15 @@
+﻿<Application x:Class="UserInterface.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:UserInterface"
+             xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
+             xmlns:views="clr-namespace:UserInterface.Views"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>     
+            <DataTemplate DataType="{x:Type viewModels:PathFinderViewModel}">
+                <views:PathFinderView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
