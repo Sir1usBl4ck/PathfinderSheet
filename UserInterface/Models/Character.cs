@@ -6,19 +6,19 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
+using UserInterface.Views;
 
 
 namespace UserInterface.Models
 {
     [Serializable]
     public class Character : ObservableObject
-    {
+    {   
         private string _name;
         private string _campaign;
         private int _experience;
         private int _level;
-  
+
         public string Name
         {
             get => _name;
@@ -58,6 +58,10 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
+
+
+        public Race Race { get; set; }
+
 
         public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
         public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
@@ -106,13 +110,6 @@ namespace UserInterface.Models
             Skills.Add(new Skill("Survival", false, Abilities[04]));
             Skills.Add(new Skill("Swim", false, Abilities[00],true));
             Skills.Add(new Skill("Use Magic Device", false, Abilities[05]));
-
-
-
-
-
-
-
             
         }
         

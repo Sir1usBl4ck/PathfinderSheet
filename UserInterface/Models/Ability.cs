@@ -8,19 +8,11 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Models
 {
-    public enum AbilityType
-    {
-        Strength,
-        Dexterity,
-        Constitution,
-        Intelligence,
-        Wisdom,
-        Charisma
-    }
-
-    [Serializable]
+   [Serializable]
     public class Ability : ObservableObject
     {
+        //TODO Add Race Ability Modifier
+
         private string _name;
         private int _score;
         private int _modifier;
@@ -43,7 +35,7 @@ namespace UserInterface.Models
             {
                 _score = value;
                 OnPropertyChanged();
-                Modifier = ((_score - 10) % 2) + ((_score - 10) / 2);
+                Modifier = (_score-_score%2)/2-5;
                 OnPropertyChanged("Modifier");                
             }
         }

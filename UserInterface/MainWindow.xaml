@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserInterface"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:uc="clr-namespace:UserInterface.UserControls"
         xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">

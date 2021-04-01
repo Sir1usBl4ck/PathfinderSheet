@@ -60,7 +60,7 @@
                     <StackPanel>
                         <TextBlock Text="SKILLS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
                       
-                        <ScrollViewer Height="375">
+                        <ScrollViewer Height="230">
                             <Border BorderBrush="#888"  BorderThickness="1" CornerRadius="8,8,3,3">
                                 <ItemsControl ItemsSource="{Binding Character.Skills}">
                                     <ItemsControl.ItemsPanel>
