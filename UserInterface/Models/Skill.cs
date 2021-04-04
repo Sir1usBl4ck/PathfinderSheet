@@ -27,7 +27,7 @@ namespace UserInterface.Models
                 _rank = value;
                 OnPropertyChanged(nameof(Rank));
                 OnPropertyChanged(nameof(Bonus));
-                //OnPropertyChanged(nameof(Ability.Score));
+                
 
 
             }

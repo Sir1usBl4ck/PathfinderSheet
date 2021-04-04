@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Models
 {
+    
     [Serializable]
     public class CharacterClass
     {

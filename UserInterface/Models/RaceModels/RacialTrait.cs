@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Models
 {
-    public class RacialTrait : Bonus
+    public class RacialTrait
     {
     }
 }

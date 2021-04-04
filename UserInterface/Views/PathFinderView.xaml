@@ -4,65 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             mc:Ignorable="d" Height="550" Width="800">
+             mc:Ignorable="d" Height="650" Width="800">
 
     <Border Background="#FFFFFF">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <TabControl TabStripPlacement="Left" Margin="10">
+            <TabItem Header="General" FontSize="20" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition  Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="1">
-                <Border Padding="5">
-                    <StackPanel>
-                        <TextBlock Text="CHARACTER" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+                    <StackPanel Grid.Row="1">
+                        <Border Padding="5">
+                            <StackPanel>
+                                <TextBlock Text="CHARACTER" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
 
-                        <TextBlock Text="Name" Margin="0,0,0,5" />
-                        <TextBox Text="{Binding Character.Name}" Padding="4" />
+                                <TextBlock Text="Name" Margin="0,0,0,5" />
+                                <TextBox Text="{Binding Character.Name}" Padding="4" />
 
-                        <TextBlock Text="Campaign" Margin="0,5,0,5" />
-                        <TextBox Text="{Binding Character.Campaign}" Padding="4" />
+                                <TextBlock Text="Campaign" Margin="0,5,0,5" />
+                                <TextBox Text="{Binding Character.Campaign}" Padding="4" />
 
-                        <TextBlock Text="XP" Margin="0,5,0,5" />
-                        <TextBox Text="{Binding Character.Experience}" Padding="4" />
+                                <TextBlock Text="XP" Margin="0,5,0,5" />
+                                <TextBox Text="{Binding Character.Experience}" Padding="4" />
 
-                        <TextBlock Text="Race" Margin="0,5,0,5" Grid.Column="1" />
-                        <ComboBox ItemsSource="{Binding}" />
-                    </StackPanel>
-                </Border>
+                                <TextBlock Text="Race" Margin="0,5,0,5" Grid.Column="1" />
+                                <ComboBox ItemsSource="{Binding Races }" SelectedItem="{Binding SelectedRace}" DisplayMemberPath="Name" >
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
 
-                <Border Padding="5">
-                    <StackPanel>
-                        <TextBlock Text="ABILITIES" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
-                        <ItemsControl ItemsSource="{Binding Character.Abilities}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:AbilityListItemView />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Grid.Row="1">
-                <Border Padding="5">
-                    <StackPanel>
-                        <TextBlock Text="SKILLS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
-                      
-                        <ScrollViewer Height="230">
-                            <Border BorderBrush="#888"  BorderThickness="1" CornerRadius="8,8,3,3">
-                                <ItemsControl ItemsSource="{Binding Character.Skills}">
+                        <Border Padding="5">
+                            <StackPanel>
+                                <TextBlock Text="ABILITIES" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+                                <ItemsControl ItemsSource="{Binding Character.Abilities}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel />
@@ -70,20 +50,121 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <local:SkillListItemView />
+                                            <local:AbilityListItemView />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                            </Border>
-                            
-                        </ScrollViewer>
-                        
-
-
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
-                </Border>
-            </StackPanel>
 
-        </Grid>
+                    <StackPanel Grid.Column="1" Grid.Row="1">
+                        <Border Padding="5" BorderThickness="3" BorderBrush="DarkGray">
+                            <StackPanel>
+                                <TextBlock Text="SKILLS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+
+
+                                <ScrollViewer Height="550" Width="400">
+                                    <Border BorderBrush="#888"  BorderThickness="1" CornerRadius="8,8,3,3">
+                                        <ItemsControl ItemsSource="{Binding Character.Skills}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <local:SkillListItemView />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Border>
+
+                                </ScrollViewer>
+
+
+
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                </Grid>
+
+
+            </TabItem>
+
+            <TabItem Header="Combat" FontSize="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="HEALTH" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+
+                        <DockPanel>
+                            <TextBlock Text="Hit Points" TextAlignment="Center" Width="100"/>
+                            <TextBlock Text="Wounds" TextAlignment="Center" Width="100"/>
+                            <TextBlock Text="Non Lethal" TextAlignment="Center" Width="100"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBlock Text="80" TextAlignment="Center" Width="100"/>
+                            <TextBlock Text="3" TextAlignment="Center" Width="100"/>
+                            <TextBlock Text="0" TextAlignment="Center" Width="100"/>
+                        </DockPanel>
+                        <TextBlock Text="COMBAT" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+
+                        <DockPanel Margin="5">
+                            <TextBlock Text="Initiative" Width="100"/>
+                            <TextBlock Text="10"></TextBlock>
+                        </DockPanel >
+                        <DockPanel Margin="5">
+                            <TextBlock Text="Speed" Width="100"/>
+                            <TextBlock Text="30"/>
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="BAB" Width="100"/>
+                            <TextBlock Text="3"></TextBlock>
+                        </DockPanel>
+                        <TextBlock Text="MANOUVERS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+
+                        <DockPanel Margin="5">
+                            <DockPanel Margin="0,0,40,0">
+                                <TextBlock Text="CMB" Width="100"/>
+                                <TextBlock Text="12" />
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="CMD" Width="100"/>
+                                <TextBlock Text="28" />
+                            </DockPanel>
+                        </DockPanel>
+                        <TextBlock Text="SAVES" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+                        <DockPanel Margin="5">
+                            <TextBlock Text="Fortitude" Width="100" TextAlignment="Center"/>
+                            <TextBlock Text="Reflex" Width="100" TextAlignment="Center"/>
+                            <TextBlock Text="Will" Width="100" TextAlignment="Center"/>
+                        </DockPanel>
+                        <DockPanel Margin="5">
+                            <TextBlock Text="10" Width="100" TextAlignment="Center"/>
+                            <TextBlock Text="12" Width="100" TextAlignment="Center"/>
+                            <TextBlock Text="10" Width="100" TextAlignment="Center"/>
+                        </DockPanel>
+                    </StackPanel>
+
+
+
+
+                </Grid>
+
+
+
+
+
+
+            </TabItem>
+        </TabControl>
+
+
     </Border>
 </UserControl>

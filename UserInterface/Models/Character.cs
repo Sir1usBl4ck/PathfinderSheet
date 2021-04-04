@@ -14,10 +14,13 @@ namespace UserInterface.Models
     [Serializable]
     public class Character : ObservableObject
     {   
+        
         private string _name;
         private string _campaign;
         private int _experience;
         private int _level;
+        private int _baseAttackBonus;
+
 
         public string Name
         {
@@ -61,18 +64,26 @@ namespace UserInterface.Models
 
 
         public Race Race { get; set; }
+        public CharacterClass CharacterClass { get; set; }
+
+        public float BabProgress { get; set; }
+        public int CombatManeuversBonus { get; set; }
+        public int CombatManeuversDefense { get; set; }
 
 
         public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
         public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
+        public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
+
         public Character()
         {
-            Abilities.Add(new Ability("Strength"));
-            Abilities.Add(new Ability("Dexterity"));
-            Abilities.Add(new Ability("Constitution"));
-            Abilities.Add(new Ability("Intelligence"));
-            Abilities.Add(new Ability("Wisdom"));
-            Abilities.Add(new Ability("Charisma"));
+            
+            Abilities.Add(new Ability("Strength",AbilityType.Strenght));
+            Abilities.Add(new Ability("Dexterity",AbilityType.Dexterity));
+            Abilities.Add(new Ability("Constitution", AbilityType.Constitution));
+            Abilities.Add(new Ability("Intelligence", AbilityType.Intelligence));
+            Abilities.Add(new Ability("Wisdom", AbilityType.Wisdom));
+            Abilities.Add(new Ability("Charisma", AbilityType.Charisma));
 
             
             Skills.Add(new Skill("Acrobatics",false,Abilities[01],true));
@@ -111,6 +122,19 @@ namespace UserInterface.Models
             Skills.Add(new Skill("Swim", false, Abilities[00],true));
             Skills.Add(new Skill("Use Magic Device", false, Abilities[05]));
             
+            Saves.Add(new Save(Abilities[02], SaveType.Fortitude));
+            Saves.Add(new Save(Abilities[01], SaveType.Reflexes));
+            Saves.Add(new Save(Abilities[04], SaveType.Willpower));
+
+            
+
+        }
+
+        public void GetBab()
+        {
+            var floatLevel = (float) Level;
+            var floatBab = (float) _baseAttackBonus*BabProgress;
+            _baseAttackBonus = (int) floatBab;
         }
         
     }

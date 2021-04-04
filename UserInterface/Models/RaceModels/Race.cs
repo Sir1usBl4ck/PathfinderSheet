@@ -8,18 +8,45 @@ using UserInterface.Models;
 
 namespace UserInterface.Models
 {
+    public enum Type
+    {
+        Humanoid,
+        Outsider
+    }
+
+    public enum SubType
+    {
+        Elf,
+        Human,
+        Dwarf,
+        Native
+    }
     public class Race
     {
+        
+        public Race(string name, Type type, SubType subType)
+
+        {
+            ModifiedAbilities = new List<AbilityModifier>();
+            Name = name;
+            Type = type;
+            SubType = subType;
+            
+           
+        }
+
+        public List<AbilityModifier> ModifiedAbilities { get; set; }
         public string Name { get; set; }
         public Size Size { get; set; }
-        public string Type { get; set; }
-        public string SubType { get; set; }
+        public Type Type { get; set; }
+        public SubType SubType { get; set; }
+        
 
-        public int AbilityPlus1 { get; set; }
-        public int AbilityPlus2 { get; set; }
-        public int AbilityMinus { get; set; }
-
+       
         public List<RacialTrait> RacialTraitList { get; set; } 
+
+
+        
 
 
 

@@ -1,21 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace UserInterface.Models
 {
+    public enum AbilityType
+    {
+        Strenght,
+        Dexterity,
+        Constitution,
+        Intelligence,
+        Wisdom,
+        Charisma
+    }
    [Serializable]
     public class Ability : ObservableObject
     {
-        //TODO Add Race Ability Modifier
-
+        
         private string _name;
         private int _score;
         private int _modifier;
+        private int _raceBonus;
+        private int _baseScore;
+        private ObservableCollection<int> _baseValues;
+        public AbilityType Type { get; set; }
+
+        public ObservableCollection<int> BaseValues { get; } = new ObservableCollection<int>();
+        
+
 
         public string Name
         {
@@ -27,16 +45,40 @@ namespace UserInterface.Models
             }
         }
 
+        public int RaceBonus
+        {
+            get => _raceBonus;
+            set
+            {
+                _raceBonus = value;
+                
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+               
+            }
+        }
+
+        public int BaseScore
+        {
+            get => _baseScore;
+            set
+            {
+                _baseScore = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int Score
         {
             get => _score;
 
             set
             {
-                _score = value;
+                _score =  _baseScore + _raceBonus ;
                 OnPropertyChanged();
                 Modifier = (_score-_score%2)/2-5;
-                OnPropertyChanged("Modifier");                
+                OnPropertyChanged("Modifier"); 
+                
             }
         }
 
@@ -50,12 +92,33 @@ namespace UserInterface.Models
             }
         }
 
-        public Ability(string name)
+        public Ability(string name, AbilityType type)
         {
             Name = name;
-            Score = 10;
+            Type = type;
+            BaseScore = 10;
+            BaseValues.Add(7);
+            BaseValues.Add(8);
+            BaseValues.Add(9);
+            BaseValues.Add(10);
+            BaseValues.Add(11);
+            BaseValues.Add(12);
+            BaseValues.Add(13);
+            BaseValues.Add(14);
+            BaseValues.Add(15);
+            BaseValues.Add(16);
+            BaseValues.Add(17);
+            BaseValues.Add(18);
+
+
+
         }
 
+
+        private void GetScore()
+        {
+
+        }
 
     }
 }

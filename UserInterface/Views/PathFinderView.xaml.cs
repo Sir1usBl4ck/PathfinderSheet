@@ -24,5 +24,7 @@ namespace UserInterface.Views
         {
             InitializeComponent();
         }
+
+       
     }
 }
