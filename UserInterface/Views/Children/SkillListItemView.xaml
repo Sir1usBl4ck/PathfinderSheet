@@ -6,14 +6,15 @@
              xmlns:local="clr-namespace:UserInterface.Views"
              mc:Ignorable="d" MinHeight="30" d:DesignWidth="800">
 
-    <Border Margin="0,0,0,5">
+    <Border Margin="0,5,0,5">
         <DockPanel LastChildFill="False">
-            <TextBlock Text="{Binding Name}" TextAlignment="Left" Margin="5,5,5,0"  VerticalAlignment="Center" ToolTip="**Placeholder**"
-                       FontWeight="Bold" FontSize="13" MinWidth="250" />
+            <TextBlock Text="{Binding Name}" TextAlignment="Left" Margin="5,0"  VerticalAlignment="Center" ToolTip="{Binding Ability.Name}"
+                       FontWeight="Bold" FontSize="13" MinWidth="200" />
+            <CheckBox IsChecked="{Binding TrainedOnly}" Margin="5" IsHitTestVisible="False" Focusable="False" VerticalAlignment="Center"/>
 
-            <TextBlock Text="{Binding Bonus}" Margin="5,5,5,0" VerticalAlignment="Center" MinWidth="50"/>
+            <TextBlock Text="{Binding Bonus}" Margin="5,0" VerticalAlignment="Center" MinWidth="50" TextAlignment="Center"/>
 
-            <TextBox Text="{Binding Rank, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,0,0"  VerticalAlignment="Center"  Width="20"/>
+            <TextBox Text="{Binding Rank, UpdateSourceTrigger=PropertyChanged}" Margin="5,0"  VerticalAlignment="Center"  Width="20" />
         </DockPanel>
     </Border>
 </UserControl>

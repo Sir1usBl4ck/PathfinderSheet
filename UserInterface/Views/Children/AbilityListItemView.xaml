@@ -10,11 +10,12 @@
         <DockPanel LastChildFill="False">
             <TextBlock Text="{Binding Name}" TextAlignment="Left" VerticalAlignment="Center" ToolTip="This is the abilities name"
                        FontWeight="Bold" FontSize="13" MinWidth="100" />
-            <ComboBox ItemsSource="{Binding BaseValues}" SelectedItem="{Binding BaseScore, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-            <TextBlock Text="{Binding Score}" Margin="5,0,0,0" />
+            <TextBlock Text="{Binding Score}" Margin="5,0" />
 
-            <TextBlock Text="{Binding Modifier}" Margin="5,0,0,0" />
+            <TextBlock Text="{Binding Modifier}" Margin="5,0" />
+            <ComboBox ItemsSource="{Binding BaseValues}" SelectedItem="{Binding BaseScore, UpdateSourceTrigger=PropertyChanged}" Margin="5,0" />
+
         </DockPanel>
     </Border>
 </UserControl>

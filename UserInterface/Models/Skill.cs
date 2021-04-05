@@ -18,7 +18,8 @@ namespace UserInterface.Models
         public string Name { get; set; }
 
         private int _rank;
-        
+        private bool _trainedOnly;
+
         public int Rank
         {
             get => _rank;
@@ -47,7 +48,11 @@ namespace UserInterface.Models
 
         public bool IsClass { get; set; }
 
-        public bool TrainedOnly { get; set; }
+        public bool TrainedOnly
+        {
+            get => _trainedOnly;
+            set { _trainedOnly = value; OnPropertyChanged(); }
+        }
 
         public bool ArmorCheckPenalty { get; set; }
 
@@ -62,13 +67,18 @@ namespace UserInterface.Models
 
         }
 
+        public Skill(string name, bool isClass)
+        {
+            Name = name;
+            IsClass = isClass;
+        }
         public Skill(string name, bool trainedOnly, Ability ability)
         {
             Ability = ability;
             Rank = 0;
             Name = name;
             IsClass = false;
-            TrainedOnly = false;
+            TrainedOnly = trainedOnly;
             ArmorCheckPenalty = false;
             Ability.PropertyChanged += Ability_PropertyChanged;
         }
@@ -79,8 +89,8 @@ namespace UserInterface.Models
             Rank = 0;
             Name = name;
             IsClass = false;
-            TrainedOnly = false;
             ArmorCheckPenalty = armorCheckPenalty;
+            TrainedOnly = trainedOnly;
             Ability.PropertyChanged += Ability_PropertyChanged;
         }
 

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using UserInterface.ViewModels;
 
 namespace UserInterface.Models
 {
@@ -29,10 +30,32 @@ namespace UserInterface.Models
         private int _raceBonus;
         private int _baseScore;
         private ObservableCollection<int> _baseValues;
+
+        public Ability(string name, AbilityType type)
+        {
+            Name = name;
+            Type = type;
+            BaseScore = 10;
+            BaseValues.Add(7);
+            BaseValues.Add(8);
+            BaseValues.Add(9);
+            BaseValues.Add(10);
+            BaseValues.Add(11);
+            BaseValues.Add(12);
+            BaseValues.Add(13);
+            BaseValues.Add(14);
+            BaseValues.Add(15);
+            BaseValues.Add(16);
+            BaseValues.Add(17);
+            BaseValues.Add(18);
+
+        }
+
+
         public AbilityType Type { get; set; }
 
         public ObservableCollection<int> BaseValues { get; } = new ObservableCollection<int>();
-        
+
 
 
         public string Name
@@ -53,7 +76,9 @@ namespace UserInterface.Models
                 _raceBonus = value;
                 
                 OnPropertyChanged();
-                OnPropertyChanged("Score");
+                GetScore();
+                
+                
                
             }
         }
@@ -65,6 +90,10 @@ namespace UserInterface.Models
             {
                 _baseScore = value;
                 OnPropertyChanged();
+                GetScore();
+
+
+
             }
         }
 
@@ -74,10 +103,11 @@ namespace UserInterface.Models
 
             set
             {
-                _score =  _baseScore + _raceBonus ;
+                _score = value;
                 OnPropertyChanged();
                 Modifier = (_score-_score%2)/2-5;
-                OnPropertyChanged("Modifier"); 
+                OnPropertyChanged("Modifier");
+                
                 
             }
         }
@@ -92,32 +122,13 @@ namespace UserInterface.Models
             }
         }
 
-        public Ability(string name, AbilityType type)
-        {
-            Name = name;
-            Type = type;
-            BaseScore = 10;
-            BaseValues.Add(7);
-            BaseValues.Add(8);
-            BaseValues.Add(9);
-            BaseValues.Add(10);
-            BaseValues.Add(11);
-            BaseValues.Add(12);
-            BaseValues.Add(13);
-            BaseValues.Add(14);
-            BaseValues.Add(15);
-            BaseValues.Add(16);
-            BaseValues.Add(17);
-            BaseValues.Add(18);
-
-
-
-        }
+        public int PointCost { get; set; }
 
 
         private void GetScore()
         {
-
+            Score = _baseScore + _raceBonus;
+            
         }
 
     }

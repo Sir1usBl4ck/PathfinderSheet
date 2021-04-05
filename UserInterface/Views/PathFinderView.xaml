@@ -4,22 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             mc:Ignorable="d" Height="650" Width="800">
+             mc:Ignorable="d" Height="750" Width="900">
 
     <Border Background="#FFFFFF">
-        <TabControl TabStripPlacement="Left" Margin="10">
-            <TabItem Header="General" FontSize="20" >
-                <Grid>
+        <TabControl TabStripPlacement="Left" Margin="2">
+            <TabItem Header="General" FontSize="20">
+                <Grid Margin="10,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition  Width="*"/>
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="1">
+                    <StackPanel >
                         <Border Padding="5">
                             <StackPanel>
                                 <TextBlock Text="CHARACTER" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
@@ -31,17 +30,32 @@
                                 <TextBox Text="{Binding Character.Campaign}" Padding="4" />
 
                                 <TextBlock Text="XP" Margin="0,5,0,5" />
+
                                 <TextBox Text="{Binding Character.Experience}" Padding="4" />
 
                                 <TextBlock Text="Race" Margin="0,5,0,5" Grid.Column="1" />
-                                <ComboBox ItemsSource="{Binding Races }" SelectedItem="{Binding SelectedRace}" DisplayMemberPath="Name" >
-                                </ComboBox>
+                                <ComboBox ItemsSource="{Binding Races }" SelectedItem="{Binding SelectedRace}" DisplayMemberPath="Name" Margin="5"/>
+                                <ComboBox ItemsSource="{Binding Classes }" SelectedItem="{Binding SelectedClass}" DisplayMemberPath="Name" SelectionChanged="ComboBox_SelectionChanged" Margin="5"/>
+                                <DockPanel>
+                                    <TextBlock Text="Level" Margin="5"/>
+                                    <TextBox Text="{Binding Character.Level, UpdateSourceTrigger=PropertyChanged}" Margin="5"  VerticalAlignment="Center"  Width="20" />
+
+                                </DockPanel>
+
+
+
                             </StackPanel>
                         </Border>
 
                         <Border Padding="5">
                             <StackPanel>
                                 <TextBlock Text="ABILITIES" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
+                                <DockPanel>
+                                    <TextBlock Text="{Binding SelectedPointBuy}" Margin="30,0,5,0"/>
+                                    <ComboBox ItemsSource="{Binding Points}" SelectedItem="{Binding SelectedPointBuy}" Width="50" HorizontalAlignment="Right" />
+
+
+                                </DockPanel>
                                 <ItemsControl ItemsSource="{Binding Character.Abilities}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -58,7 +72,7 @@
                         </Border>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1" Grid.Row="1">
+                    <StackPanel Grid.Column="1" >
                         <Border Padding="5" BorderThickness="3" BorderBrush="DarkGray">
                             <StackPanel>
                                 <TextBlock Text="SKILLS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
@@ -125,7 +139,7 @@
                         </DockPanel>
                         <DockPanel Margin="5">
                             <TextBlock Text="BAB" Width="100"/>
-                            <TextBlock Text="3"></TextBlock>
+                            <TextBlock Text="{Binding Character.BaseAttackBonus}"/>
                         </DockPanel>
                         <TextBlock Text="MANOUVERS" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
 

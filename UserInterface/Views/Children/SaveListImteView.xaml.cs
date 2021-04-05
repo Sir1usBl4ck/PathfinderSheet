@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Views.Children
 {
     /// <summary>
-    /// Interaction logic for PathFinderView.xaml
+    /// Interaction logic for SaveListImteView.xaml
     /// </summary>
-    public partial class PathFinderView : UserControl
+    public partial class SaveListImteView : UserControl
     {
-        public PathFinderView()
+        public SaveListImteView()
         {
             InitializeComponent();
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }
