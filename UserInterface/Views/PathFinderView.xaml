@@ -51,17 +51,15 @@
                             <StackPanel>
                                 <TextBlock Text="ABILITIES" Background="#888" FontSize="15" TextAlignment="Center" Foreground="#FFF" Margin="0,0,0,5" />
                                 <DockPanel>
-                                    <TextBlock Text="{Binding SelectedPointBuy}" Margin="30,0,5,0"/>
-                                    <ComboBox ItemsSource="{Binding Points}" SelectedItem="{Binding SelectedPointBuy}" Width="50" HorizontalAlignment="Right" />
+                                    <TextBlock Text="{Binding Character.PointsLeft}" Margin="30,0,5,0"/>
+                                    <ComboBox ItemsSource="{Binding PossibleTotalPoints}" SelectedItem="{Binding Character.PointsLeft}" Width="50" HorizontalAlignment="Right" >
+
+                                    </ComboBox>
 
 
                                 </DockPanel>
                                 <ItemsControl ItemsSource="{Binding Character.Abilities}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
+                                    
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <local:AbilityListItemView />

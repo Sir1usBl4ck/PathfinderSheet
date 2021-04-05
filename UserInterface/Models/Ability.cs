@@ -20,17 +20,17 @@ namespace UserInterface.Models
         Wisdom,
         Charisma
     }
-   [Serializable]
+    [Serializable]
     public class Ability : ObservableObject
     {
-        
+
         private string _name;
         private int _score;
         private int _modifier;
         private int _raceBonus;
         private int _baseScore;
         private ObservableCollection<int> _baseValues;
-
+        
         public Ability(string name, AbilityType type)
         {
             Name = name;
@@ -51,6 +51,7 @@ namespace UserInterface.Models
 
         }
 
+        
 
         public AbilityType Type { get; set; }
 
@@ -74,12 +75,12 @@ namespace UserInterface.Models
             set
             {
                 _raceBonus = value;
-                
+
                 OnPropertyChanged();
                 GetScore();
-                
-                
-               
+
+
+
             }
         }
 
@@ -91,6 +92,7 @@ namespace UserInterface.Models
                 _baseScore = value;
                 OnPropertyChanged();
                 GetScore();
+                
 
 
 
@@ -105,10 +107,10 @@ namespace UserInterface.Models
             {
                 _score = value;
                 OnPropertyChanged();
-                Modifier = (_score-_score%2)/2-5;
+                Modifier = (_score - _score % 2) / 2 - 5;
                 OnPropertyChanged("Modifier");
-                
-                
+
+
             }
         }
 
@@ -123,13 +125,14 @@ namespace UserInterface.Models
         }
 
         public int PointCost { get; set; }
-
-
+        
         private void GetScore()
         {
             Score = _baseScore + _raceBonus;
-            
+
         }
 
+
+        
     }
 }

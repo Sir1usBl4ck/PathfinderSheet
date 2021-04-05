@@ -20,12 +20,14 @@ namespace UserInterface.Models
         private int _experience;
         private int _level;
         private int _baseAttackBonus;
+        private int _pointsLeft;
 
 
         public Character()
         {
             BabProgress = 1;
             Level = 1;
+            PointsLeft = 20;
 
             Abilities.Add(new Ability("Strength", AbilityType.Strenght));
             Abilities.Add(new Ability("Dexterity", AbilityType.Dexterity));
@@ -119,6 +121,15 @@ namespace UserInterface.Models
             }
         }
 
+        public int PointsLeft
+        {
+            get => _pointsLeft;
+            set
+            {
+                _pointsLeft = value;
+                OnPropertyChanged();
+            }
+        }
         public double BabProgress { get; set; }
 
         public int BaseAttackBonus

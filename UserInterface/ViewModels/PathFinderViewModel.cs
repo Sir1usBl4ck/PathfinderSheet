@@ -16,17 +16,23 @@ namespace UserInterface.ViewModels
     [Serializable]
     public class PathFinderViewModel : BaseViewModel
     {
+        private Race _selectedRace;
+        private CClass _selectedClass;
+        private int _selectedPointBuy;
+        //EG:  1- Create private field for EventAggregator 
+
+        private EventAggregator _eventAggregator;
+
         private Dictionary<int, int> pointBuyCost;
+        public ICommand CalculatePointCommand { get; set; }
 
         public Character Character { get; set; }
-        public ObservableCollection<int> Points { get; } = new ObservableCollection<int>();
+        public ObservableCollection<int> PossibleTotalPoints { get; } = new ObservableCollection<int>();
 
         public ObservableCollection<Race> Races { get; } = new ObservableCollection<Race>();
         public ObservableCollection<CClass> Classes { get; } = new ObservableCollection<CClass>();
 
-        private Race _selectedRace;
-        private CClass _selectedClass;
-        private int _selectedPointBuy;
+       
 
 
         public int SelectedPointBuy
@@ -63,21 +69,22 @@ namespace UserInterface.ViewModels
             }
         }
 
+       public PathFinderViewModel()
+       {
+           //EG:  2- Instantiate the EventAggregator
+           _eventAggregator = new EventAggregator();
 
-
-        public PathFinderViewModel()
-        {
-            
-            pointBuyCost = new Dictionary<int, int>()
+           pointBuyCost = new Dictionary<int, int>()
             {
                 {7,-4},{8,-2},{9,-1},{10,0},{11,1},{12,2},{13,3},{14,5},{15,7},{16,10},{17,13},{18,17}
             };
 
-            Points.Add(15);
-            Points.Add(20);
-            Points.Add(25);
-            SelectedPointBuy = 20;
+            PossibleTotalPoints.Add(15);
+            PossibleTotalPoints.Add(20);
+            PossibleTotalPoints.Add(25);
+            
 
+            
             //Races
             var elf = new Race("Elf", Type.Humanoid, SubType.Elf);
             elf.ModifiedAbilities.Add(new AbilityModifier(AbilityType.Dexterity, 2));
@@ -112,6 +119,7 @@ namespace UserInterface.ViewModels
 
         }
 
+        
 
         private void UpdateAbilities()
         {
@@ -150,20 +158,14 @@ namespace UserInterface.ViewModels
             Character.GetBab();
         }
 
-        private void CalculatePointBuy()
+        private void CalculatePointBuy(Ability ability) //Do it better someday :D
         {
-            
-            foreach (var ability in Character.Abilities)
-            {
                 ability.PointCost = pointBuyCost[ability.BaseScore];
                 SelectedPointBuy -= ability.PointCost;
-
-            }
-
-
         }
 
-        
+
+       
     }
 }
 
