@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using UserInterface.EventModels;
 using UserInterface.ViewModels;
 
 namespace UserInterface.Models
@@ -21,7 +22,7 @@ namespace UserInterface.Models
         Charisma
     }
     [Serializable]
-    public class Ability : ObservableObject
+    public class Ability : ObservableObject 
     {
 
         private string _name;
@@ -30,9 +31,11 @@ namespace UserInterface.Models
         private int _raceBonus;
         private int _baseScore;
         private ObservableCollection<int> _baseValues;
+        private EventAggregator _eventAggregator;
         
-        public Ability(string name, AbilityType type)
+        public Ability(string name, AbilityType type, EventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             Name = name;
             Type = type;
             BaseScore = 10;
@@ -51,14 +54,8 @@ namespace UserInterface.Models
 
         }
 
-        
-
         public AbilityType Type { get; set; }
-
         public ObservableCollection<int> BaseValues { get; } = new ObservableCollection<int>();
-
-
-
         public string Name
         {
             get => _name;
@@ -68,22 +65,6 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
-        public int RaceBonus
-        {
-            get => _raceBonus;
-            set
-            {
-                _raceBonus = value;
-
-                OnPropertyChanged();
-                GetScore();
-
-
-
-            }
-        }
-
         public int BaseScore
         {
             get => _baseScore;
@@ -91,14 +72,10 @@ namespace UserInterface.Models
             {
                 _baseScore = value;
                 OnPropertyChanged();
-                GetScore();
+                PublishAbilityChange();
                 
-
-
-
             }
         }
-
         public int Score
         {
             get => _score;
@@ -113,7 +90,6 @@ namespace UserInterface.Models
 
             }
         }
-
         public int Modifier
         {
             get => _modifier;
@@ -123,12 +99,11 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
         public int PointCost { get; set; }
         
-        private void GetScore()
+        private void PublishAbilityChange()
         {
-            Score = _baseScore + _raceBonus;
+            _eventAggregator.Publish(new AbilityChangedEvent(this));
 
         }
 

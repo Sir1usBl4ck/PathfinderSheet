@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -20,9 +19,6 @@ namespace UserInterface.Models
         public string Name { get; set; }
 
         public double BaBProgression { get; set;  }
-        public int Level { get; set; }
-        public ObservableCollection<Save> ClassSaves { get; } = new ObservableCollection<Save>();
-        public ObservableCollection<Ability> ClassAbilities { get; } = new ObservableCollection<Ability>();
-
+        public Save GoodSave { get; set; }
     }
 }

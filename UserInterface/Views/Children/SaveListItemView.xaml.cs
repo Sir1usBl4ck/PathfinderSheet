@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views.Children
+namespace UserInterface.Views
 {
     /// <summary>
-    /// Interaction logic for SaveListImteView.xaml
+    /// Interaction logic for SaveListItemView.xaml
     /// </summary>
-    public partial class SaveListImteView : UserControl
+    public partial class SaveListItemView : UserControl
     {
-        public SaveListImteView()
+        public SaveListItemView()
         {
             InitializeComponent();
         }

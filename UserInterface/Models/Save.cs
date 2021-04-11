@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Xps;
+using UserInterface.EventModels;
 
 namespace UserInterface.Models
 {
@@ -17,59 +18,104 @@ namespace UserInterface.Models
         Willpower
     }
     [Serializable]
-    public class Save : ObservableObject
+    public class Save : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>
     {
+        public Save(SaveType saveType)
+        {
+            SaveType = saveType;
+            BaseValue = 0;
+            IsGood = false;
 
-        public Save(SaveType saveType, Ability ability)
+
+
+        }
+        public Save(SaveType saveType, Ability ability, string name, EventAggregator eventAggregator)
         {
             SaveType = saveType;
             BaseValue = 0;
             Ability = ability;
+            Name = name;
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
             IsGood = false;
         }
 
 
+        private EventAggregator _eventAggregator;
         private int _bonus;
-
+        private int _level;
+        public string Name { get; set; }
         public SaveType SaveType { get; set; }
 
         public int Bonus
         {
-            get => _bonus;
+            get
+            {
+                SetBonus();
+                return _bonus;
+            }
             set
             {
                 _bonus = value;
-                SetBonus();
+                
                 OnPropertyChanged();
             }
         }
 
-        public int  BaseValue { get; set; }
+        public int BaseValue { get; set; }
         public Ability Ability { get; set; }
 
         public bool IsGood { get; set; }
-        public int Level { get; set; }
 
-
-        private void SetBonus()
+        public int Level
         {
-            if (IsGood == true)
+            get => _level;
+            set
             {
-                var dLevel = (double) Level;
+                _level = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Bonus");
+            }
+        }
+
+        public void SetBonus()
+        {
+            if (IsGood)
+            {
+                var dLevel = (double)Level;
                 var dBaseValue = 2 + (dLevel * 0.5);
-                BaseValue = (int) Math.Floor(dBaseValue);
-                Bonus = BaseValue + Ability.Modifier;
+                BaseValue = (int)Math.Floor(dBaseValue);
+                _bonus = BaseValue + Ability.Modifier;
+
 
             }
             else
             {
                 var dLevel = (double)Level;
-                var dBaseValue = 2 + (dLevel * 0.33);
+                var dBaseValue = (dLevel * 0.33);
                 BaseValue = (int)Math.Floor(dBaseValue);
-                Console.WriteLine("double" + dBaseValue + " " + "int" + BaseValue);
+                _bonus = BaseValue + Ability.Modifier;
+
             }
         }
 
-        
+        public void Handle(AbilityChangedEvent message)
+        {
+            if (message.Ability.Type == Ability.Type)
+            {
+                Ability.Modifier = message.Ability.Modifier;
+            }
+            
+            OnPropertyChanged(nameof(Bonus));
+        }
+
+        public void Handle(LevelChangedEvent message)
+        {
+            Level = message.Level;
+            OnPropertyChanged(nameof(Level));
+        }
     }
+
+
 }
+

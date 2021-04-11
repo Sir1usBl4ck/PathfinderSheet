@@ -8,13 +8,13 @@ namespace UserInterface.Models
 {
     public class AbilityModifier
     {
-        public AbilityModifier(AbilityType abilityType, int bonus)
+        public AbilityModifier(AbilityType type, int bonus)
         {
-            AbilityType = abilityType;
+            Type = type;
             Bonus = bonus;
         }
 
-        public AbilityType AbilityType { get; set; }
+        public AbilityType Type { get; set; }
         public int Bonus { get; set; }
 
 
