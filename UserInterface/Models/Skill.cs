@@ -18,7 +18,6 @@ namespace UserInterface.Models
         private int _rank;
         private bool _trainedOnly;
         private EventAggregator _eventAggregator;
-        
         private AbilityType _abilityType;
         private int _bonusModifier;
         
@@ -27,8 +26,6 @@ namespace UserInterface.Models
         //public Ability Ability { get; set; }
 
         public string Name { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
         public AbilityType AbilityType
         {
             get => _abilityType;

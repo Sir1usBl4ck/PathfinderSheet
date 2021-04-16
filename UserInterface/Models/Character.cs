@@ -55,7 +55,7 @@ namespace UserInterface.Models
             Serializer serializer = new Serializer();
 
 
-            
+
             //Skills.Add(new Skill("Acrobatics", false, AbilityType.Dexterity, true, _eventAggregator));
             //Skills.Add(new Skill("Appraise", false, AbilityType.Constitution, _eventAggregator));
             //Skills.Add(new Skill("Bluff", false, AbilityType.Wisdom, _eventAggregator));
