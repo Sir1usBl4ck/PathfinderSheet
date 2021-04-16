@@ -23,7 +23,7 @@ namespace UserInterface.Models
     }
     public class Race
     {
-        
+
         public Race(string name, Type type, SubType subType)
 
         {
@@ -31,8 +31,6 @@ namespace UserInterface.Models
             Name = name;
             Type = type;
             SubType = subType;
-            
-           
         }
 
         public List<AbilityModifier> ModifiedAbilities { get; set; }
@@ -40,13 +38,13 @@ namespace UserInterface.Models
         public Size Size { get; set; }
         public Type Type { get; set; }
         public SubType SubType { get; set; }
-        
-
-       
-        public List<RacialTrait> RacialTraitList { get; set; } 
 
 
-        
+
+        public List<RacialTrait> RacialTraitList { get; set; }
+
+
+
 
 
 

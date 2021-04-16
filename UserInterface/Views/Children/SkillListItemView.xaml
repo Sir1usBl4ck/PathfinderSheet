@@ -1,20 +1,45 @@
 ﻿<UserControl x:Class="UserInterface.Views.SkillListItemView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UserInterface.Views"
-             mc:Ignorable="d" MinHeight="30" d:DesignWidth="800">
-
+             mc:Ignorable="d"
+             MinHeight="30"
+             d:DesignWidth="800">
     <Border Margin="0,5,0,5">
         <DockPanel LastChildFill="False">
-            <TextBlock Text="{Binding Name}" TextAlignment="Left" Margin="5,0"  VerticalAlignment="Center" ToolTip="{Binding Ability.Name}"
-                       FontWeight="Bold" FontSize="13" MinWidth="200" />
-            <CheckBox IsChecked="{Binding TrainedOnly}" Margin="5" IsHitTestVisible="False" Focusable="False" VerticalAlignment="Center"/>
-
-            <TextBlock Text="{Binding Bonus}" Margin="5,0" VerticalAlignment="Center" MinWidth="50" TextAlignment="Center"/>
-
-            <TextBox Text="{Binding Rank, UpdateSourceTrigger=PropertyChanged}" Margin="5,0"  VerticalAlignment="Center"  Width="20" />
+            <TextBlock Text="{Binding Name}"
+                       TextAlignment="Left"
+                       Margin="5,0"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       FontSize="13"
+                       MinWidth="200" />
+            <CheckBox IsChecked="{Binding TrainedOnly}"
+                      Margin="5"
+                      IsHitTestVisible="False"
+                      Focusable="False"
+                      VerticalAlignment="Center" />
+            <CheckBox IsChecked="{Binding IsClass}"
+                      Margin="5"
+                      IsHitTestVisible="False"
+                      Focusable="False"
+                      VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Bonus}"
+                       Margin="5,0"
+                       VerticalAlignment="Center"
+                       MinWidth="50"
+                       TextAlignment="Center" />
+            <TextBox Text="{Binding Rank, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="5,0"
+                     VerticalAlignment="Center"
+                     Width="20" />
+            <CheckBox Content="{Binding ArmorCheckPenalty}"
+                      Margin="5"
+                      IsHitTestVisible="False"
+                      Focusable="False"
+                      VerticalAlignment="Center" />
         </DockPanel>
     </Border>
 </UserControl>

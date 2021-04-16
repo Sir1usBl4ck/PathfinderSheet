@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.XPath;
+using D20Tek.DiceNotation;
+using D20Tek.DiceNotation.DieRoller;
+using UserInterface.Data;
 using UserInterface.EventModels;
-using UserInterface.Views;
 
 
 namespace UserInterface.Models
@@ -24,14 +21,19 @@ namespace UserInterface.Models
         private int _level;
         private int _baseAttackBonus;
         private int _pointsLeft;
+        private int _currentHitPoints;
         private Race _race;
         private ExperienceProgression _experienceProgression;
         private EventAggregator _eventAggregator;
-        private Dictionary<int, int> _pointBuyCost = new Dictionary<int, int>()
+        private Dictionary<int, int> _pointBuyCost = new()
         {
             {7,-4},{8,-2},{9,-1},{10,0},{11,1},{12,2},{13,3},{14,5},{15,7},{16,10},{17,13},{18,17}
         };
-        private CClass _cClass;
+        private CharacterClass _CharacterClass;
+        private int _MaxHitPoints;
+        private int _wounds;
+        private int _nonLethalDamage;
+
 
         //--Constructor
         public Character(EventAggregator eventAggregator)
@@ -42,62 +44,76 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
-            
-            
-            Abilities.Add(new Ability("Strength", AbilityType.Strenght, _eventAggregator));
+
+
+            Abilities.Add(new Ability("Strength", AbilityType.Strength, _eventAggregator));
             Abilities.Add(new Ability("Dexterity", AbilityType.Dexterity, _eventAggregator));
             Abilities.Add(new Ability("Constitution", AbilityType.Constitution, _eventAggregator));
             Abilities.Add(new Ability("Intelligence", AbilityType.Intelligence, _eventAggregator));
             Abilities.Add(new Ability("Wisdom", AbilityType.Wisdom, _eventAggregator));
             Abilities.Add(new Ability("Charisma", AbilityType.Charisma, _eventAggregator));
+            Serializer serializer = new Serializer();
 
-            //Skills
-            Skills.Add(new Skill("Acrobatics", false, Abilities[01], true, _eventAggregator));
-            Skills.Add(new Skill("Appraise", false, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Bluff", false, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Climb", false, Abilities[00], true, _eventAggregator));
-            Skills.Add(new Skill("Craft", false, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Diplomacy", false, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Disable Device", true, Abilities[01], true, _eventAggregator));
-            Skills.Add(new Skill("Disguise", false, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Escape Artist", false, Abilities[01], true, _eventAggregator));
-            Skills.Add(new Skill("Fly", false, Abilities[01], true ,_eventAggregator));
-            Skills.Add(new Skill("Handle Animal", true, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Heal", false, Abilities[04], _eventAggregator));
-            Skills.Add(new Skill("Intimidate", false, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (arcana)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (dungeoneering)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (engineering)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (geography)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (history)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (local)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (nature)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (nobility)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (planes)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Kwnoledge (religion)", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Linguistics", true, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Perception", false, Abilities[04], _eventAggregator));
-            Skills.Add(new Skill("Perform", false, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Profession", true, Abilities[05], _eventAggregator));
-            Skills.Add(new Skill("Ride", false, Abilities[01], true, _eventAggregator));
-            Skills.Add(new Skill("Sense Motive", false, Abilities[04], _eventAggregator));
-            Skills.Add(new Skill("Sleight of Hand", true, Abilities[01], true, _eventAggregator));
-            Skills.Add(new Skill("Spellcraft", false, Abilities[03], _eventAggregator));
-            Skills.Add(new Skill("Stealth", false, Abilities[01], true, _eventAggregator));
-            Skills.Add(new Skill("Survival", false, Abilities[04], _eventAggregator));
-            Skills.Add(new Skill("Swim", false, Abilities[00], true, _eventAggregator));
-            Skills.Add(new Skill("Use Magic Device", true, Abilities[05], _eventAggregator));
 
-            Saves.Add(new Save(SaveType.Fortitude, Abilities[02], "FOR", _eventAggregator));
-            Saves.Add(new Save(SaveType.Reflexes, Abilities[01], "REF", _eventAggregator));
-            Saves.Add(new Save(SaveType.Willpower, Abilities[04], "WILL", _eventAggregator));
-            BabProgress = 1;
+            
+            //Skills.Add(new Skill("Acrobatics", false, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Appraise", false, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Bluff", false, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Climb", false, AbilityType.Strength, true, _eventAggregator));
+            //Skills.Add(new Skill("Craft", false, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Diplomacy", false, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Disable Device", true, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Disguise", false, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Escape Artist", false, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Fly", false, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Handle Animal", true, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Heal", false, AbilityType.Intelligence, _eventAggregator));
+            //Skills.Add(new Skill("Intimidate", false, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (arcana)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (dungeoneering)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (engineering)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (geography)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (history)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (local)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (nature)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (nobility)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (planes)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Knowledge (religion)", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Linguistics", true, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Perception", false, AbilityType.Intelligence, _eventAggregator));
+            //Skills.Add(new Skill("Perform", false, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Profession", true, AbilityType.Wisdom, _eventAggregator));
+            //Skills.Add(new Skill("Ride", false, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Sense Motive", false, AbilityType.Intelligence, _eventAggregator));
+            //Skills.Add(new Skill("Sleight of Hand", true, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Spellcraft", false, AbilityType.Constitution, _eventAggregator));
+            //Skills.Add(new Skill("Stealth", false, AbilityType.Dexterity, true, _eventAggregator));
+            //Skills.Add(new Skill("Survival", false, AbilityType.Intelligence, _eventAggregator));
+            //Skills.Add(new Skill("Swim", false, AbilityType.Strength, true, _eventAggregator));
+            //Skills.Add(new Skill("Use Magic Device", true, AbilityType.Wisdom, _eventAggregator));
+            //serializer.SerializeSkills(Skills);
+
+            Skills = serializer.LoadSkills();
+            foreach (var skill in Skills)
+            {
+                skill.EventAggregator = _eventAggregator;
+                skill.EventAggregator.Subscribe(skill);
+            }
+
+
+            //Saves.Add(new Save(SaveType.Fortitude, AbilityType.Constitution, "FOR", _eventAggregator));
+            //Saves.Add(new Save(SaveType.Reflexes, AbilityType.Dexterity, "REF", _eventAggregator));
+            //Saves.Add(new Save(SaveType.Willpower, AbilityType.Intelligence, "WILL", _eventAggregator));
             PointsLeft = 20;
             Level = 1;
-
-
+            Name = "NewCharacter";
+            Campaign = "NewCampaign";
+            Wounds = 0;
+            NonLethalDamage = 0;
 
         }
+
+        #region General
 
         public string Name
         {
@@ -118,8 +134,9 @@ namespace UserInterface.Models
             }
         }
 
-        #region Race and Class
+        #endregion
 
+        #region Race and Class
         public Race Race
         {
             get => _race;
@@ -130,23 +147,18 @@ namespace UserInterface.Models
                 _eventAggregator.Publish(new RaceChangedEvent());
             }
         }
-
-        public CClass CClass
+        public CharacterClass CharacterClass
         {
-            get => _cClass;
+            get => _CharacterClass;
             set
             {
-                _cClass = value;
-                _eventAggregator.Publish(new CClassChangedEvent());
+                _CharacterClass = value;
+                _eventAggregator.Publish(new CharacterClassChangedEvent());
             }
         }
-
         #endregion
 
-
-
         #region Levelling Stuff
-
         public long Experience
         {
             get
@@ -162,7 +174,6 @@ namespace UserInterface.Models
                 OnPropertyChanged("Level");
             }
         }
-
         public ExperienceProgression ExperienceProgression
         {
             get => _experienceProgression;
@@ -174,7 +185,6 @@ namespace UserInterface.Models
                 OnPropertyChanged("Experience");
             }
         }
-
         public int Level
         {
             get => _level;
@@ -183,12 +193,12 @@ namespace UserInterface.Models
                 _level = value;
                 PublishLevelChanged();
                 SetExperience();
-                OnPropertyChanged();
                 SetBab();
+                OnPropertyChanged();
                 OnPropertyChanged("BaseAttackBonus");
+                OnPropertyChanged("MaxHitPoints");
             }
         }
-
         public int PointsLeft
         {
             get => _pointsLeft;
@@ -198,14 +208,52 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
         #endregion
 
-
-        
         #region Combat Stuff
 
-        public double BabProgress { get; set; }
+        public int MaxHitPoints
+        {
+            get => RollHitPoints(Level);
+            set
+            {
+               _MaxHitPoints = RollHitPoints(Level);
+                OnPropertyChanged();
+            }
+        }
+
+        public int CurrentHitPoints
+        {
+            get { return MaxHitPoints - Wounds; }
+            set
+            {
+                _currentHitPoints = value;
+                OnPropertyChanged();
+                
+            }
+        }
+
+        public int Wounds
+        {
+            get => _wounds;
+            set
+            {
+                _wounds = value;
+                OnPropertyChanged();
+                OnPropertyChanged("CurrentHitPoints");
+            }
+        }
+
+        public int NonLethalDamage
+        {
+            get => _nonLethalDamage;
+            set
+            {
+                _nonLethalDamage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int BaseAttackBonus
         {
             get => _baseAttackBonus;
@@ -215,9 +263,17 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
+        public int Initiative
+        {
+            get => Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier;
+        }
+        public int CombatManeuverBonus => (Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier + BaseAttackBonus);
+        public int CombatManeuverDefense =>
+            Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier +
+            Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier +
+            BaseAttackBonus;
 
         #endregion
-
 
         #region Collections
 
@@ -228,19 +284,80 @@ namespace UserInterface.Models
 
         #endregion
 
-        //----Methods
+        #region Methods
+
+
+        //foreach level above 1 roll a dice and add bonuses, add the result to the array of RolledLevels
+        // Level = HitDice + sum RolledLevels
+        public int RollHitPoints(int level)
+        {
+            IDice dice = new Dice();
+            dice.Dice(CharacterClass.HitDice);
+            DiceResult result = dice.Roll(new RandomDieRoller());
+            int constitutionModifier = Abilities.FirstOrDefault(a => a.Type == AbilityType.Constitution).Modifier;
+            List<int> rolledLevels = new List<int>();
+
+            if (level > 1)
+            {
+                _MaxHitPoints= 0;
+                for (int i = 1; i <= level; i++)
+                {
+                    if (result.Value > (CharacterClass.HitDice/2))
+                    {
+                        rolledLevels.Add(result.Value + constitutionModifier);
+                    }
+                    rolledLevels.Add((CharacterClass.HitDice/2) + constitutionModifier);
+                }
+
+                var rolledLevelSum = rolledLevels.Sum();
+                return rolledLevelSum + CharacterClass.HitDice ;
+            }
+            return CharacterClass.HitDice + constitutionModifier;
+        }
 
         public void SetBab()
         {
-            double dBaseAttackBonus = Level * BabProgress;
-            BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
-        }
-
+            if (CharacterClass!=null) //this is ugly, refactor somehow
+            {
+                double dBaseAttackBonus = Level * CharacterClass.BaBProgression;
+                BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
+            }
+        } 
         public void SetExperience()
         {
             Experience = ExperienceProgression.ExperienceTable[Level];
+        } //Move to Experience Class?
+        public void UpdateCharacterClassSaves()
+        {
+                foreach (var save in Saves)
+                {
+                    if (CharacterClass.GoodSave.SaveType == save.SaveType)
+                    {
+                        save.IsGood = true;
+                    }
+                }
+        } 
+        public void UpdateClassSkills(CharacterClass characterClass)
+        {
+            foreach (var skill in Skills)
+                if (characterClass.ClassSkillNames.Contains(skill.Name))
+                    skill.IsClass = true;
         }
+        public void UpdateRaceAbilities()
+        {
+            foreach (var ability in Abilities)
+            {
+                if (Race!=null) //this sucks, change it somehow
+                {
+                    var raceBonus = Race.ModifiedAbilities.FirstOrDefault(a => a.Type == ability.Type);
 
+                    if (raceBonus != null) //this sucks too.
+                        ability.Score = ability.BaseScore + raceBonus.Bonus;
+                    else
+                        ability.Score = ability.BaseScore;
+                }
+            }
+        }
         public void LevelUp()
         {
             var xpToLevel = ExperienceProgression.ExperienceTable[Level];
@@ -262,20 +379,24 @@ namespace UserInterface.Models
                     xpToLevel = ExperienceProgression.ExperienceTable[Level];
                 }
             }
-            
-        }
+
+        } // Move to ViewModel
+
+        #endregion
 
         //--- Handlers
 
         public void Handle(AbilityChangedEvent message)
         {
-            var ability = message.Ability;
-            var oldPointCost = ability.PointCost;
-            ability.PointCost = _pointBuyCost[ability.BaseScore];
-            PointsLeft -= ability.PointCost - oldPointCost;
+            var ability = message.Ability;                          //Move 
+            var oldPointCost = ability.PointCost;               //All
+            ability.PointCost = _pointBuyCost[ability.BaseScore];   //This
+            PointsLeft -= ability.PointCost - oldPointCost;         //to Ability?
+            UpdateRaceAbilities();
+            OnPropertyChanged("Initiative");
+            
 
-
-        }
+        }  
 
         //--- Publisher
         public void PublishLevelChanged()

@@ -99,13 +99,13 @@ namespace UserInterface.Models
             }
         }
 
-        public void Handle(AbilityChangedEvent message)
+        public void Handle(AbilityChangedEvent message) //TODO the same as Skills
         {
             if (message.Ability.Type == Ability.Type)
             {
                 Ability.Modifier = message.Ability.Modifier;
             }
-            
+
             OnPropertyChanged(nameof(Bonus));
         }
 

@@ -1,39 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using UserInterface.EventModels;
-using UserInterface.ViewModels;
 
 namespace UserInterface.Models
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum AbilityType
     {
-        Strenght,
+        [EnumMember(Value = "Strength")]
+        Strength,
+        [EnumMember(Value = "Dexterity")]
         Dexterity,
+        [EnumMember(Value = "Constitution")]
         Constitution,
+        [EnumMember(Value = "Intelligence")]
         Intelligence,
+        [EnumMember(Value = "Wisdom")]
         Wisdom,
+        [EnumMember(Value = "Charisma")]
         Charisma
     }
     [Serializable]
-    public class Ability : ObservableObject 
+    public class Ability : ObservableObject
     {
 
         private string _name;
         private int _score;
         private int _modifier;
-        private int _raceBonus;
         private int _baseScore;
         private ObservableCollection<int> _baseValues;
         private EventAggregator _eventAggregator;
-        
+
+        public Ability()
+        {
+            
+        }
         public Ability(string name, AbilityType type, EventAggregator eventAggregator)
+        :this()
         {
             _eventAggregator = eventAggregator;
             Name = name;
@@ -73,7 +79,7 @@ namespace UserInterface.Models
                 _baseScore = value;
                 OnPropertyChanged();
                 PublishAbilityChange();
-                
+
             }
         }
         public int Score
@@ -85,9 +91,7 @@ namespace UserInterface.Models
                 _score = value;
                 OnPropertyChanged();
                 Modifier = (_score - _score % 2) / 2 - 5;
-                OnPropertyChanged("Modifier");
-
-
+               
             }
         }
         public int Modifier
@@ -100,7 +104,7 @@ namespace UserInterface.Models
             }
         }
         public int PointCost { get; set; }
-        
+
         private void PublishAbilityChange()
         {
             _eventAggregator.Publish(new AbilityChangedEvent(this));
@@ -108,6 +112,6 @@ namespace UserInterface.Models
         }
 
 
-        
+
     }
 }

@@ -13,45 +13,32 @@ using Type = UserInterface.Models.Type;
 namespace UserInterface.ViewModels
 {
     [Serializable]
-    public class PathFinderViewModel : BaseViewModel, IHandle<RaceChangedEvent>, IHandle<AbilityChangedEvent>, IHandle<CClassChangedEvent>
+    public class PathFinderViewModel : BaseViewModel, IHandle<RaceChangedEvent>, IHandle<CharacterClassChangedEvent>
     {
-        private CClass _selectedClass;
-        private int _selectedPointBuy;
         //EG:  1- Create private field for EventAggregator 
 
         private EventAggregator _eventAggregator;
 
         public Character Character { get; set; }
         public ObservableCollection<int> PossibleTotalPoints { get; } = new ObservableCollection<int>();
-
         public ObservableCollection<Race> Races { get; } = new ObservableCollection<Race>();
-        public ObservableCollection<CClass> CClasses { get; } = new ObservableCollection<CClass>();
-
-
-        public CClass SelectedClass
-        {
-            get => _selectedClass;
-            set
-            {
-                _selectedClass = value;
-                Character.CClass = _selectedClass;
-                ApplyClass();
-            }
-        }
+        public ObservableCollection<CharacterClass> CharacterClasses { get; } = new ObservableCollection<CharacterClass>();
 
         //----Constructor
         public PathFinderViewModel()
         {
+
             //EG:  2- Instantiate the EventAggregator
             _eventAggregator = new EventAggregator();
             _eventAggregator.Subscribe(this);
 
 
 
+
             PossibleTotalPoints.Add(15);
             PossibleTotalPoints.Add(20);
             PossibleTotalPoints.Add(25);
-            
+
 
             //Races
             var elf = new Race("Elf", Type.Humanoid, SubType.Elf);
@@ -65,91 +52,62 @@ namespace UserInterface.ViewModels
             dwarf.ModifiedAbilities.Add(new AbilityModifier(AbilityType.Charisma, -2));
 
 
-
             Races.Add(elf);
             Races.Add(dwarf);
 
-
-
             //Classes
-
-            var barbarian = new CClass("Barbarian", 1);
-
+            var barbarian = new CharacterClass("Barbarian", 1, 12);
             barbarian.GoodSave = new Save(SaveType.Fortitude);
-            CClasses.Add(barbarian);
-            UpdateCClassSaves();
-            
+            barbarian.ClassSkillNames.Add("Acrobatics");
+            barbarian.ClassSkillNames.Add("Climb");
+            barbarian.ClassSkillNames.Add("Craft");
+            barbarian.ClassSkillNames.Add("Handle Animal");
+            barbarian.ClassSkillNames.Add("Intimidate");
+            barbarian.ClassSkillNames.Add("Knowledge (nature)");
+            barbarian.ClassSkillNames.Add("Perception");
+            barbarian.ClassSkillNames.Add("Ride");
+            barbarian.ClassSkillNames.Add("Survival");
+            barbarian.ClassSkillNames.Add("Swim");
 
+            var wizard = new CharacterClass("Wizard", 0.5, 6);
+            wizard.GoodSave = new Save(SaveType.Willpower);
 
+            CharacterClasses.Add(barbarian);
+            CharacterClasses.Add(wizard);
 
-
-            //Character
             Character = new Character(_eventAggregator);
-            Character.CClass = CClasses[0];
+            Character.CharacterClass = CharacterClasses[0];
             Character.Race = Races[0];
             Character.ExperienceProgression = Character.ExperienceProgressionList[1];
-            UpdateRaceAbilities();
+
+
+            ApplyRace();
             ApplyClass();
 
         }
         //----Methods
-        private void UpdateRaceAbilities()
+
+        private void ApplyRace()
         {
-
-            if (Character != null)
-            {
-                foreach (var ability in Character.Abilities)
-                {
-                    var raceBonus = Character.Race.ModifiedAbilities.FirstOrDefault(a => a.Type == ability.Type);
-
-                    if (raceBonus != null)
-                        ability.Score = ability.BaseScore + raceBonus.Bonus;
-                    else
-                        ability.Score = ability.BaseScore;
-                }
-            }
-            
-        }
-        private void UpdateCClassSaves()
-        {
-
-            if (Character != null)
-            {
-                foreach (var save in Character.Saves)
-                {
-                    if (Character.CClass.GoodSave.SaveType == save.SaveType)
-                    {
-                        save.IsGood = true;
-                    }
-                }
-            }
+            Character.UpdateRaceAbilities();
         }
 
         private void ApplyClass()
         {
-            Character.BabProgress = Character.CClass.BaBProgression;
-            UpdateCClassSaves();
+            Character.UpdateClassSkills(Character.CharacterClass);
+            Character.UpdateCharacterClassSaves();
             Character.SetBab();
         }
 
-
-
-
         public void Handle(RaceChangedEvent message)
         {
-            UpdateRaceAbilities();
-            UpdateCClassSaves();
+            Character.UpdateRaceAbilities();
+            Character.UpdateCharacterClassSaves();
         }
-
-        public void Handle(AbilityChangedEvent message)
+        public void Handle(CharacterClassChangedEvent message)
         {
-            UpdateRaceAbilities();
-            UpdateCClassSaves();
-        }
-
-        public void Handle(CClassChangedEvent message)
-        {
-            UpdateCClassSaves();
+            Character.UpdateCharacterClassSaves();
+            Character.SetBab();
         }
     }
 }

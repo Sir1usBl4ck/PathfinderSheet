@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserInterface.EventModels
 {
-    public class CClassChangedEvent
+    public class CharacterClassChangedEvent
     {
     }
 }
