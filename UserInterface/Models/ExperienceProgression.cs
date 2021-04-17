@@ -34,7 +34,7 @@ namespace UserInterface.Models
 
         public ExperienceProgression(Progression progression)
         {
-            _eventAggregator = new EventAggregator();
+            _eventAggregator = new EventAggregator(); //this doesn't make sense doesn't it?
             Progression = progression;
             GetTab();
 

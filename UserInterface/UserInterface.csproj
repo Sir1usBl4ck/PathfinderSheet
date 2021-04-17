@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Data\Abilities.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\Races.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Data\Skills.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

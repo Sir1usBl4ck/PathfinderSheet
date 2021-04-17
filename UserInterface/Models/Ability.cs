@@ -104,10 +104,15 @@ namespace UserInterface.Models
             }
         }
         public int PointCost { get; set; }
+        public EventAggregator EventAggregator
+        {
+            get => _eventAggregator;
+            set => _eventAggregator = value;
+        }
 
         private void PublishAbilityChange()
         {
-            _eventAggregator.Publish(new AbilityChangedEvent(this));
+            _eventAggregator?.Publish(new AbilityChangedEvent(this));  // is there a better way to handle the Null _eventAggregator?
 
         }
 

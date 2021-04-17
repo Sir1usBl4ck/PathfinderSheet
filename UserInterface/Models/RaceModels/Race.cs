@@ -19,23 +19,25 @@ namespace UserInterface.Models
         Elf,
         Human,
         Dwarf,
-        Native
+        Native,
+        Gnome
     }
     public class Race
     {
 
-        public Race(string name, Type type, SubType subType)
+        public Race(string name, Type type, SubType subType,SizeType size)
 
         {
             ModifiedAbilities = new List<AbilityModifier>();
             Name = name;
             Type = type;
             SubType = subType;
+            SizeType = size;
         }
 
         public List<AbilityModifier> ModifiedAbilities { get; set; }
         public string Name { get; set; }
-        public Size Size { get; set; }
+        public SizeType SizeType { get; set; }
         public Type Type { get; set; }
         public SubType SubType { get; set; }
 

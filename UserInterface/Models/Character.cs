@@ -33,6 +33,7 @@ namespace UserInterface.Models
         private int _MaxHitPoints;
         private int _wounds;
         private int _nonLethalDamage;
+        private Size _size;
 
 
         //--Constructor
@@ -44,56 +45,17 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
-
-
-            Abilities.Add(new Ability("Strength", AbilityType.Strength, _eventAggregator));
-            Abilities.Add(new Ability("Dexterity", AbilityType.Dexterity, _eventAggregator));
-            Abilities.Add(new Ability("Constitution", AbilityType.Constitution, _eventAggregator));
-            Abilities.Add(new Ability("Intelligence", AbilityType.Intelligence, _eventAggregator));
-            Abilities.Add(new Ability("Wisdom", AbilityType.Wisdom, _eventAggregator));
-            Abilities.Add(new Ability("Charisma", AbilityType.Charisma, _eventAggregator));
+            
             Serializer serializer = new Serializer();
 
+            Abilities = serializer.LoadCollection<Ability>("Abilities");
+            foreach (var ability in Abilities)
+            {
+                ability.EventAggregator = _eventAggregator;
+                ability.EventAggregator.Subscribe(ability);
+            }
 
-
-            //Skills.Add(new Skill("Acrobatics", false, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Appraise", false, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Bluff", false, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Climb", false, AbilityType.Strength, true, _eventAggregator));
-            //Skills.Add(new Skill("Craft", false, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Diplomacy", false, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Disable Device", true, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Disguise", false, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Escape Artist", false, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Fly", false, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Handle Animal", true, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Heal", false, AbilityType.Intelligence, _eventAggregator));
-            //Skills.Add(new Skill("Intimidate", false, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (arcana)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (dungeoneering)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (engineering)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (geography)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (history)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (local)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (nature)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (nobility)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (planes)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Knowledge (religion)", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Linguistics", true, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Perception", false, AbilityType.Intelligence, _eventAggregator));
-            //Skills.Add(new Skill("Perform", false, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Profession", true, AbilityType.Wisdom, _eventAggregator));
-            //Skills.Add(new Skill("Ride", false, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Sense Motive", false, AbilityType.Intelligence, _eventAggregator));
-            //Skills.Add(new Skill("Sleight of Hand", true, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Spellcraft", false, AbilityType.Constitution, _eventAggregator));
-            //Skills.Add(new Skill("Stealth", false, AbilityType.Dexterity, true, _eventAggregator));
-            //Skills.Add(new Skill("Survival", false, AbilityType.Intelligence, _eventAggregator));
-            //Skills.Add(new Skill("Swim", false, AbilityType.Strength, true, _eventAggregator));
-            //Skills.Add(new Skill("Use Magic Device", true, AbilityType.Wisdom, _eventAggregator));
-            //serializer.SerializeSkills(Skills);
-
-            Skills = serializer.LoadSkills();
+            Skills = serializer.LoadCollection<Skill>("Skills");
             foreach (var skill in Skills)
             {
                 skill.EventAggregator = _eventAggregator;
@@ -101,16 +63,18 @@ namespace UserInterface.Models
             }
 
 
+
             //Saves.Add(new Save(SaveType.Fortitude, AbilityType.Constitution, "FOR", _eventAggregator));
             //Saves.Add(new Save(SaveType.Reflexes, AbilityType.Dexterity, "REF", _eventAggregator));
             //Saves.Add(new Save(SaveType.Willpower, AbilityType.Intelligence, "WILL", _eventAggregator));
+            Size = new Size(SizeType.Medium);
             PointsLeft = 20;
             Level = 1;
             Name = "NewCharacter";
             Campaign = "NewCampaign";
             Wounds = 0;
             NonLethalDamage = 0;
-
+            
         }
 
         #region General
@@ -144,9 +108,20 @@ namespace UserInterface.Models
             {
                 _race = value;
                 OnPropertyChanged();
-                _eventAggregator.Publish(new RaceChangedEvent());
+                _eventAggregator.Publish(new RaceChangedEvent(_race));
             }
         }
+
+        public Size Size
+        {
+            get => _size;
+            set
+            {
+                _size = value;
+                OnPropertyChanged();
+            }
+        }
+
         public CharacterClass CharacterClass
         {
             get => _CharacterClass;
@@ -273,11 +248,11 @@ namespace UserInterface.Models
             Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier +
             BaseAttackBonus;
 
+
         #endregion
 
         #region Collections
-
-        public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
+       public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
         public ObservableCollection<ExperienceProgression> ExperienceProgressionList { get; } = new ObservableCollection<ExperienceProgression>();
         public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
         public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
@@ -287,8 +262,7 @@ namespace UserInterface.Models
         #region Methods
 
 
-        //foreach level above 1 roll a dice and add bonuses, add the result to the array of RolledLevels
-        // Level = HitDice + sum RolledLevels
+        
         public int RollHitPoints(int level)
         {
             IDice dice = new Dice();
@@ -314,7 +288,6 @@ namespace UserInterface.Models
             }
             return CharacterClass.HitDice + constitutionModifier;
         }
-
         public void SetBab()
         {
             if (CharacterClass!=null) //this is ugly, refactor somehow
@@ -342,6 +315,13 @@ namespace UserInterface.Models
             foreach (var skill in Skills)
                 if (characterClass.ClassSkillNames.Contains(skill.Name))
                     skill.IsClass = true;
+        }
+        public void ApplyRaceSize()
+        {
+            Skills.FirstOrDefault(a => a.Name.Equals("Stealth")).SizeModifier = Size.StealthSizeModifier;
+            Skills.FirstOrDefault(a => a.Name.Equals("Fly")).SizeModifier = Size.FlySizeModifier;
+
+
         }
         public void UpdateRaceAbilities()
         {

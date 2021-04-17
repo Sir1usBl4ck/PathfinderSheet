@@ -12,26 +12,27 @@ namespace UserInterface.Data
 {
     class Serializer
     {
-        public void SerializeSkills(ObservableCollection<Skill> skills)
+        public void SerializeCollection<T>(ObservableCollection<T> t,string filename)
         {
-            var skillsPath = $@".\Data\Skills.json";
+           
+            var filePath = $@".\Data\{filename}.json";
             Directory.CreateDirectory(@".\Data");
-            using (StreamWriter file = File.CreateText(skillsPath))
+            using (StreamWriter file = File.CreateText(filePath))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file,skills);
+                serializer.Serialize(file,t);
             }
 
         }
 
-        public ObservableCollection<Skill> LoadSkills()
+        public ObservableCollection<T> LoadCollection<T>(string filename)
         {
-            using (StreamReader file = File.OpenText($@".\Data\Skills.json"))
+            using (StreamReader file = File.OpenText($@".\Data\{filename}.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                ObservableCollection<Skill> skills =
-                    (ObservableCollection<Skill>) serializer.Deserialize(file, typeof(ObservableCollection<Skill>));
-                return skills;
+                ObservableCollection<T> collection =
+                    (ObservableCollection<T>) serializer.Deserialize(file, typeof(ObservableCollection<T>));
+                return collection;
             }
         }
 

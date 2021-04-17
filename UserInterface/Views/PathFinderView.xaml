@@ -79,6 +79,9 @@
                                              Margin="5"
                                              VerticalAlignment="Center"
                                              Width="20" />
+                                    <TextBlock Text="Size:" Width="50" Margin="5"/>
+                                    <TextBlock Text="{Binding Character.Size.Name}"/>
+
                                 </DockPanel>
                             </StackPanel>
                         </Border>
@@ -219,10 +222,8 @@
                         <DockPanel Margin="5">
                             <TextBlock Text="BAB"
                                        Width="100" />
-                            <TextBlock Text="{Binding Character.BaseAttackBonus}">
-                                <TextBlock.DataContext>
-                                    <ViewModels:PathFinderViewModel />
-                                </TextBlock.DataContext></TextBlock>
+                            <TextBlock Text="{Binding Character.BaseAttackBonus}"/>
+                                
                         </DockPanel>
                         <TextBlock Text="MANEUVERS"
                                    Background="#888"

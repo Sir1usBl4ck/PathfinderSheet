@@ -18,8 +18,9 @@ namespace UserInterface.Models
         private int _rank;
         private bool _trainedOnly;
         private EventAggregator _eventAggregator;
-        private AbilityType _abilityType;
+        private AbilityType _abilityType;   // You might need to add a property when talents/traits change the reference ability
         private int _bonusModifier;
+        private int _sizeModifier;
         
 
 
@@ -74,10 +75,24 @@ namespace UserInterface.Models
             }
         }
 
+        public int SizeModifier
+        {
+            get => _sizeModifier;
+            set
+            {
+                _sizeModifier = value;
+                OnPropertyChanged();
+            }
+        }
+        public Skill()
+        {
+            
+        }
 
-        public Skill(string name, bool trainedOnly, AbilityType abilityType, bool armorCheckPenalty, EventAggregator eventAggregator)
+        public Skill(string name, bool trainedOnly, AbilityType abilityType, bool armorCheckPenalty, EventAggregator eventAggregator, int sizeModifier)
         {
             _eventAggregator = eventAggregator;
+            SizeModifier = sizeModifier;
             _eventAggregator.Subscribe(this);
             _abilityType = abilityType;
             Name = name;
@@ -86,29 +101,28 @@ namespace UserInterface.Models
             TrainedOnly = trainedOnly;
         }
 
-        public Skill(string name, bool trainedOnly, AbilityType abilityType, EventAggregator eventAggregator)
-        : this(name, trainedOnly, abilityType, false, eventAggregator)
+        public Skill(string name, bool trainedOnly, AbilityType abilityType, EventAggregator eventAggregator, int sizeModifier)
+        : this(name, trainedOnly, abilityType, false, eventAggregator, sizeModifier)
         {
         }
         [JsonConstructor]
-        public Skill(string name,AbilityType abilityType, int rank, int bonus, bool isClass, bool trainedOnly, bool armorCheckPenalty)
+        public Skill(string name,AbilityType abilityType, int rank, int bonus, bool isClass, bool trainedOnly, bool armorCheckPenalty, int specialSizeModifier)
         {
             Name = name;
-            AbilityType = _abilityType;
+            AbilityType = abilityType;
             Rank = rank;
             Bonus = bonus;
             IsClass = isClass;
             TrainedOnly = trainedOnly;
+            _sizeModifier = specialSizeModifier;
             ArmorCheckPenalty = isClass;
         }
 
         public void UpdateValue()
         {
-            Bonus = _rank + _bonusModifier;
+            Bonus = _rank + _bonusModifier + _sizeModifier;
             if (IsClass)
                 Bonus += 3;
-
-
         }
         public void Handle(AbilityChangedEvent message)
         {
@@ -120,5 +134,7 @@ namespace UserInterface.Models
 
 
         }
+
+       
     }
 }
