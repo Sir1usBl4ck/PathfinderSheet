@@ -12,7 +12,7 @@ namespace UserInterface.Models
 {
 
     [Serializable]
-    public class Character : ObservableObject, IHandle<AbilityChangedEvent>
+    public class Character : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<SkillChangedEvent>
     {
 
         private string _name;
@@ -27,16 +27,25 @@ namespace UserInterface.Models
         private EventAggregator _eventAggregator;
         private Dictionary<int, int> _pointBuyCost = new()
         {
-            {7,-4},{8,-2},{9,-1},{10,0},{11,1},{12,2},{13,3},{14,5},{15,7},{16,10},{17,13},{18,17}
+            { 7, -4 },
+            { 8, -2 },
+            { 9, -1 },
+            { 10, 0 },
+            { 11, 1 },
+            { 12, 2 },
+            { 13, 3 },
+            { 14, 5 },
+            { 15, 7 },
+            { 16, 10 },
+            { 17, 13 },
+            { 18, 17 }
         };
-        private CharacterClass _CharacterClass;
-        private int _MaxHitPoints;
+        private CharacterClass _characterClass;
+        private int _maxHitPoints;
         private int _wounds;
         private int _nonLethalDamage;
         private Size _size;
 
-
-        //--Constructor
         public Character(EventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -45,7 +54,7 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
-            
+
             Serializer serializer = new Serializer();
 
             Abilities = serializer.LoadCollection<Ability>("Abilities");
@@ -62,23 +71,25 @@ namespace UserInterface.Models
                 skill.EventAggregator.Subscribe(skill);
             }
 
+            Saves = serializer.LoadCollection<Save>("Saves");
+            foreach (var save in Saves)
+            {
+                save.EventAggregator = _eventAggregator;
+                save.EventAggregator.Subscribe(save);
+            }
 
-
-            //Saves.Add(new Save(SaveType.Fortitude, AbilityType.Constitution, "FOR", _eventAggregator));
-            //Saves.Add(new Save(SaveType.Reflexes, AbilityType.Dexterity, "REF", _eventAggregator));
-            //Saves.Add(new Save(SaveType.Willpower, AbilityType.Intelligence, "WILL", _eventAggregator));
             Size = new Size(SizeType.Medium);
+            CharacterClass = new CharacterClass();
             PointsLeft = 20;
             Level = 1;
             Name = "NewCharacter";
             Campaign = "NewCampaign";
+            MaxHitPoints = 0;
+            CurrentHitPoints = 0;
             Wounds = 0;
             NonLethalDamage = 0;
-            
+
         }
-
-        #region General
-
         public string Name
         {
             get => _name;
@@ -97,10 +108,6 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
-        #endregion
-
-        #region Race and Class
         public Race Race
         {
             get => _race;
@@ -111,7 +118,6 @@ namespace UserInterface.Models
                 _eventAggregator.Publish(new RaceChangedEvent(_race));
             }
         }
-
         public Size Size
         {
             get => _size;
@@ -121,19 +127,16 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
         public CharacterClass CharacterClass
         {
-            get => _CharacterClass;
+            get => _characterClass;
             set
             {
-                _CharacterClass = value;
-                _eventAggregator.Publish(new CharacterClassChangedEvent());
+                _characterClass = value;
+                UpdateClassSkills(_characterClass);
+                _eventAggregator.Publish(new CharacterClassChangedEvent(_characterClass));
             }
         }
-        #endregion
-
-        #region Levelling Stuff
         public long Experience
         {
             get
@@ -166,9 +169,11 @@ namespace UserInterface.Models
             set
             {
                 _level = value;
+
                 PublishLevelChanged();
                 SetExperience();
                 SetBab();
+                RollHitPoints(Level);
                 OnPropertyChanged();
                 OnPropertyChanged("BaseAttackBonus");
                 OnPropertyChanged("MaxHitPoints");
@@ -183,20 +188,29 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-        #endregion
-
-        #region Combat Stuff
-
-        public int MaxHitPoints
+        private int _availableSkillRanks;
+        public int AvailableSkillRanks
         {
-            get => RollHitPoints(Level);
+            get
+            {
+                return _availableSkillRanks;
+            }
             set
             {
-               _MaxHitPoints = RollHitPoints(Level);
+                _availableSkillRanks = value;
+                PublishAvailableSkillRanksChanged();
                 OnPropertyChanged();
             }
         }
-
+        public int MaxHitPoints
+        {
+            get => _maxHitPoints;
+            set
+            {
+                _maxHitPoints = value;
+                OnPropertyChanged();
+            }
+        }
         public int CurrentHitPoints
         {
             get { return MaxHitPoints - Wounds; }
@@ -204,10 +218,9 @@ namespace UserInterface.Models
             {
                 _currentHitPoints = value;
                 OnPropertyChanged();
-                
+
             }
         }
-
         public int Wounds
         {
             get => _wounds;
@@ -218,7 +231,6 @@ namespace UserInterface.Models
                 OnPropertyChanged("CurrentHitPoints");
             }
         }
-
         public int NonLethalDamage
         {
             get => _nonLethalDamage;
@@ -228,7 +240,6 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
         public int BaseAttackBonus
         {
             get => _baseAttackBonus;
@@ -247,22 +258,11 @@ namespace UserInterface.Models
             Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier +
             Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier +
             BaseAttackBonus;
-
-
-        #endregion
-
-        #region Collections
-       public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
+        public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
         public ObservableCollection<ExperienceProgression> ExperienceProgressionList { get; } = new ObservableCollection<ExperienceProgression>();
         public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
         public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
 
-        #endregion
-
-        #region Methods
-
-
-        
         public int RollHitPoints(int level)
         {
             IDice dice = new Dice();
@@ -273,43 +273,50 @@ namespace UserInterface.Models
 
             if (level > 1)
             {
-                _MaxHitPoints= 0;
+                _maxHitPoints = 0;
                 for (int i = 1; i <= level; i++)
                 {
-                    if (result.Value > (CharacterClass.HitDice/2))
+                    if (result.Value > (CharacterClass.HitDice / 2))
                     {
                         rolledLevels.Add(result.Value + constitutionModifier);
                     }
-                    rolledLevels.Add((CharacterClass.HitDice/2) + constitutionModifier);
+                    rolledLevels.Add((CharacterClass.HitDice / 2) + constitutionModifier);
                 }
 
                 var rolledLevelSum = rolledLevels.Sum();
-                return rolledLevelSum + CharacterClass.HitDice ;
+                return rolledLevelSum + CharacterClass.HitDice;
             }
             return CharacterClass.HitDice + constitutionModifier;
         }
         public void SetBab()
         {
-            if (CharacterClass!=null) //this is ugly, refactor somehow
+            if (CharacterClass != null) //this is ugly, refactor somehow
             {
                 double dBaseAttackBonus = Level * CharacterClass.BaBProgression;
                 BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
             }
-        } 
+        }
         public void SetExperience()
         {
             Experience = ExperienceProgression.ExperienceTable[Level];
         } //Move to Experience Class?
         public void UpdateCharacterClassSaves()
         {
-                foreach (var save in Saves)
+            foreach (var save in Saves)
+            {
+                if (CharacterClass.GoodSave.SaveType == save.SaveType)
                 {
-                    if (CharacterClass.GoodSave.SaveType == save.SaveType)
-                    {
-                        save.IsGood = true;
-                    }
+                    save.IsGood = true;
+                    save.SetBonus();
                 }
-        } 
+                else
+                {
+                    save.IsGood = false;
+                    save.SetBonus();
+                }
+
+            }
+        }
         public void UpdateClassSkills(CharacterClass characterClass)
         {
             foreach (var skill in Skills)
@@ -318,27 +325,37 @@ namespace UserInterface.Models
         }
         public void ApplyRaceSize()
         {
+
+
             Skills.FirstOrDefault(a => a.Name.Equals("Stealth")).SizeModifier = Size.StealthSizeModifier;
             Skills.FirstOrDefault(a => a.Name.Equals("Fly")).SizeModifier = Size.FlySizeModifier;
 
 
         }
-        public void UpdateRaceAbilities()
+        public void UpdateAbilities()
         {
             foreach (var ability in Abilities)
             {
-                if (Race!=null) //this sucks, change it somehow
+                if (Race != null) //this sucks, change it somehow
                 {
                     var raceBonus = Race.ModifiedAbilities.FirstOrDefault(a => a.Type == ability.Type);
 
                     if (raceBonus != null) //this sucks too.
-                        ability.Score = ability.BaseScore + raceBonus.Bonus;
+                        ability.Score = ability.BaseScore + raceBonus.Bonus + ability.Bonus;
                     else
-                        ability.Score = ability.BaseScore;
+                        ability.Score = ability.BaseScore + ability.Bonus;
                 }
             }
         }
-        public void LevelUp()
+        public void UpdateAvailableSkillRanks()
+        {
+            var intModifier = Abilities.FirstOrDefault(a => a.Type == AbilityType.Intelligence).Modifier;
+            var totalRanks = Skills.Sum(value => value.Rank);
+
+            AvailableSkillRanks = (CharacterClass.SkillRanksPerLevel + intModifier) * Level - totalRanks;
+            OnPropertyChanged(nameof(AvailableSkillRanks));
+        }
+        public void UpdateExperienceTab()
         {
             var xpToLevel = ExperienceProgression.ExperienceTable[Level];
             var experience = Experience;
@@ -359,29 +376,44 @@ namespace UserInterface.Models
                     xpToLevel = ExperienceProgression.ExperienceTable[Level];
                 }
             }
+        }
+        public void LevelUp()
+        {
+            if (Level > 1)
+            {
+                UpdateExperienceTab();
+                UpdateAvailableSkillRanks();
+            }
+
 
         } // Move to ViewModel
-
-        #endregion
-
-        //--- Handlers
-
         public void Handle(AbilityChangedEvent message)
         {
             var ability = message.Ability;                          //Move 
             var oldPointCost = ability.PointCost;               //All
             ability.PointCost = _pointBuyCost[ability.BaseScore];   //This
             PointsLeft -= ability.PointCost - oldPointCost;         //to Ability?
-            UpdateRaceAbilities();
+            UpdateAbilities();
+            UpdateAvailableSkillRanks();
+            OnPropertyChanged(nameof(AvailableSkillRanks));
             OnPropertyChanged("Initiative");
-            
 
-        }  
 
-        //--- Publisher
+        }
         public void PublishLevelChanged()
         {
             _eventAggregator.Publish(new LevelChangedEvent(Level));
+        }
+        public void PublishAvailableSkillRanksChanged()
+        {
+            _eventAggregator.Publish(new AvailableSkillRanksChanged(AvailableSkillRanks));
+
+        }
+        public void Handle(SkillChangedEvent message)
+        {
+            AvailableSkillRanks -= message.Skill.Rank;
+
+            OnPropertyChanged(nameof(AvailableSkillRanks));
         }
     }
 }

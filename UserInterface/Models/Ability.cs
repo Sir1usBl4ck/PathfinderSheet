@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -26,24 +28,17 @@ namespace UserInterface.Models
     [Serializable]
     public class Ability : ObservableObject
     {
-
         private string _name;
         private int _score;
         private int _modifier;
         private int _baseScore;
         private ObservableCollection<int> _baseValues;
         private EventAggregator _eventAggregator;
+        private int _bonus;
+        private List<Bonus> _bonusList;
 
         public Ability()
         {
-            
-        }
-        public Ability(string name, AbilityType type, EventAggregator eventAggregator)
-        :this()
-        {
-            _eventAggregator = eventAggregator;
-            Name = name;
-            Type = type;
             BaseScore = 10;
             BaseValues.Add(7);
             BaseValues.Add(8);
@@ -57,7 +52,6 @@ namespace UserInterface.Models
             BaseValues.Add(16);
             BaseValues.Add(17);
             BaseValues.Add(18);
-
         }
 
         public AbilityType Type { get; set; }
@@ -91,7 +85,7 @@ namespace UserInterface.Models
                 _score = value;
                 OnPropertyChanged();
                 Modifier = (_score - _score % 2) / 2 - 5;
-               
+
             }
         }
         public int Modifier
@@ -104,6 +98,25 @@ namespace UserInterface.Models
             }
         }
         public int PointCost { get; set; }
+        public int Bonus
+        {
+            get { return _bonus; }
+            set
+            {
+                _bonus = value;
+            }
+        }
+        public List<Bonus> BonusList
+        {
+            get => _bonusList;
+            set
+            {
+                _bonusList = value;
+                Bonus = BonusList.Sum(item => item.Value);
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+            }
+        }
         public EventAggregator EventAggregator
         {
             get => _eventAggregator;
@@ -115,6 +128,7 @@ namespace UserInterface.Models
             _eventAggregator?.Publish(new AbilityChangedEvent(this));  // is there a better way to handle the Null _eventAggregator?
 
         }
+
 
 
 

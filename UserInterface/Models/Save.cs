@@ -15,11 +15,18 @@ namespace UserInterface.Models
     {
         Fortitude,
         Reflexes,
-        Willpower
+        Willpower,
+        NoType
     }
     [Serializable]
     public class Save : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>
     {
+        public Save()
+        {
+            BonusList = new List<Bonus>();
+            SaveType = SaveType.NoType;
+            IsGood = false;
+        }
         public Save(SaveType saveType)
         {
             SaveType = saveType;
@@ -29,11 +36,11 @@ namespace UserInterface.Models
 
 
         }
-        public Save(SaveType saveType, Ability ability, string name, EventAggregator eventAggregator)
+        public Save(SaveType saveType, AbilityType abilityType, string name, EventAggregator eventAggregator)
         {
             SaveType = saveType;
             BaseValue = 0;
-            Ability = ability;
+            AbilityType = abilityType;
             Name = name;
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
@@ -42,12 +49,18 @@ namespace UserInterface.Models
 
 
         private EventAggregator _eventAggregator;
-        private int _bonus;
+
+        public EventAggregator EventAggregator
+        {
+            get => _eventAggregator;
+            set => _eventAggregator = value;
+        }
+
+        private int _score;
         private int _level;
         public string Name { get; set; }
         public SaveType SaveType { get; set; }
-
-        public int Bonus
+        public int Score
         {
             get
             {
@@ -57,16 +70,21 @@ namespace UserInterface.Models
             set
             {
                 _bonus = value;
-                
+
                 OnPropertyChanged();
             }
         }
-
         public int BaseValue { get; set; }
-        public Ability Ability { get; set; }
+        public AbilityType AbilityType { get; set; }
+        private int _abilityModifier;
+
+        public int AbilityModifier
+        {
+            get { return _abilityModifier; }
+            set { _abilityModifier = value; }
+        }
 
         public bool IsGood { get; set; }
-
         public int Level
         {
             get => _level;
@@ -78,6 +96,28 @@ namespace UserInterface.Models
             }
         }
 
+        private int _bonus;
+        public int Bonus
+        {
+            get { return _bonus; }
+            set
+            {
+                _bonus = value;
+            }
+        }
+        private List<Bonus> _bonusList;
+        public List<Bonus> BonusList
+        {
+            get => _bonusList;
+            set
+            {
+                _bonusList = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+            }
+        }
+
+
         public void SetBonus()
         {
             if (IsGood)
@@ -85,35 +125,35 @@ namespace UserInterface.Models
                 var dLevel = (double)Level;
                 var dBaseValue = 2 + (dLevel * 0.5);
                 BaseValue = (int)Math.Floor(dBaseValue);
-                _bonus = BaseValue + Ability.Modifier;
-
-
+                _bonus = BaseValue + AbilityModifier + _bonusList.Sum(item => item.Value);
+                OnPropertyChanged(nameof(Bonus));
             }
             else
             {
                 var dLevel = (double)Level;
                 var dBaseValue = (dLevel * 0.33);
                 BaseValue = (int)Math.Floor(dBaseValue);
-                _bonus = BaseValue + Ability.Modifier;
-
+                _bonus = BaseValue + AbilityModifier + _bonusList.Sum(item => item.Value);
+                OnPropertyChanged(nameof(Bonus));
             }
+
         }
-
-        public void Handle(AbilityChangedEvent message) //TODO the same as Skills
+        public void Handle(AbilityChangedEvent message)
         {
-            if (message.Ability.Type == Ability.Type)
+            if (message.Ability.Type == AbilityType)
             {
-                Ability.Modifier = message.Ability.Modifier;
+                AbilityModifier = message.Ability.Modifier;
             }
-
+            SetBonus();
             OnPropertyChanged(nameof(Bonus));
         }
-
         public void Handle(LevelChangedEvent message)
         {
             Level = message.Level;
-            OnPropertyChanged(nameof(Level));
+            SetBonus();
         }
+
+        
     }
 
 

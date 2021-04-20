@@ -12,17 +12,25 @@ using UserInterface.EventModels;
 
 namespace UserInterface.Models
 {
-    public class Skill : ObservableObject, IHandle<AbilityChangedEvent>
+    public class Skill : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>, IHandle<AvailableSkillRanksChanged>
     {
         private int _bonus;
+        private List<Bonus> _bonusList;
         private int _rank;
         private bool _trainedOnly;
         private EventAggregator _eventAggregator;
         private AbilityType _abilityType;   // You might need to add a property when talents/traits change the reference ability
         private int _bonusModifier;
         private int _sizeModifier;
-        
+        private bool _isClass;
 
+
+        public Skill()
+        {
+            Name = "noName";
+            BonusList = new List<Bonus>();
+
+        }
 
         //public Ability Ability { get; set; }
 
@@ -38,10 +46,16 @@ namespace UserInterface.Models
             get => _rank;
             set
             {
-                _rank = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Bonus));
-                UpdateValue();
+
+                if (value<=Level && value<=AvailableSkillRank)
+                {
+                    _rank = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Bonus));
+                    UpdateValue();
+                    PublishSkillChange();
+                }
+                
             }
         }
 
@@ -55,7 +69,15 @@ namespace UserInterface.Models
             }
         }
 
-        public bool IsClass { get; set; }
+        public bool IsClass
+        {
+            get => _isClass;
+            set
+            {
+                _isClass = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool TrainedOnly
         {
@@ -64,6 +86,8 @@ namespace UserInterface.Models
         }
 
         public bool ArmorCheckPenalty { get; set; }
+        public int Level { get; set; }
+        public int AvailableSkillRank { get; set; }
 
         public EventAggregator EventAggregator
         {
@@ -84,43 +108,17 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-        public Skill()
+
+        public List<Bonus> BonusList
         {
-            
+            get { return _bonusList; }
+            set { _bonusList = value; }
         }
 
-        public Skill(string name, bool trainedOnly, AbilityType abilityType, bool armorCheckPenalty, EventAggregator eventAggregator, int sizeModifier)
-        {
-            _eventAggregator = eventAggregator;
-            SizeModifier = sizeModifier;
-            _eventAggregator.Subscribe(this);
-            _abilityType = abilityType;
-            Name = name;
-            IsClass = false;
-            ArmorCheckPenalty = armorCheckPenalty;
-            TrainedOnly = trainedOnly;
-        }
-
-        public Skill(string name, bool trainedOnly, AbilityType abilityType, EventAggregator eventAggregator, int sizeModifier)
-        : this(name, trainedOnly, abilityType, false, eventAggregator, sizeModifier)
-        {
-        }
-        [JsonConstructor]
-        public Skill(string name,AbilityType abilityType, int rank, int bonus, bool isClass, bool trainedOnly, bool armorCheckPenalty, int specialSizeModifier)
-        {
-            Name = name;
-            AbilityType = abilityType;
-            Rank = rank;
-            Bonus = bonus;
-            IsClass = isClass;
-            TrainedOnly = trainedOnly;
-            _sizeModifier = specialSizeModifier;
-            ArmorCheckPenalty = isClass;
-        }
-
+        
         public void UpdateValue()
         {
-            Bonus = _rank + _bonusModifier + _sizeModifier;
+            Bonus = _rank + _bonusModifier + _sizeModifier + BonusList.Sum(item => item.Value);
             if (IsClass)
                 Bonus += 3;
         }
@@ -135,6 +133,20 @@ namespace UserInterface.Models
 
         }
 
-       
+        private void PublishSkillChange()
+        {
+            _eventAggregator?.Publish(new SkillChangedEvent(this));  // is there a better way to handle the Null _eventAggregator?
+
+        }
+
+        public void Handle(LevelChangedEvent message)
+        {
+            Level = message.Level;
+        }
+
+        public void Handle(AvailableSkillRanksChanged message)
+        {
+            AvailableSkillRank = message.AvailableSkillRanks;
+        }
     }
 }

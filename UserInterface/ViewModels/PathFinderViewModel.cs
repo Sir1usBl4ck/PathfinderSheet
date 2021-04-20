@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using UserInterface.Data;
@@ -19,12 +21,16 @@ namespace UserInterface.ViewModels
         //EG:  1- Create private field for EventAggregator 
 
         private EventAggregator _eventAggregator;
-
         public Character Character { get; set; }
         public ObservableCollection<int> PossibleTotalPoints { get; } = new ObservableCollection<int>();
         public ObservableCollection<Race> Races { get; } = new ObservableCollection<Race>();
-        public ObservableCollection<CharacterClass> CharacterClasses { get; } = new ObservableCollection<CharacterClass>();
+
+        public ObservableCollection<CharacterClass> CharacterClasses { get; } =
+            new ObservableCollection<CharacterClass>();
+
         public ObservableCollection<Size> Sizes { get; } = new ObservableCollection<Size>();
+        public ObservableCollection<Spell> Spells { get; } = new ObservableCollection<Spell>();
+
 
         //----Constructor
         public PathFinderViewModel()
@@ -43,6 +49,8 @@ namespace UserInterface.ViewModels
 
 
             Serializer serializer = new Serializer();
+            Spells = serializer.LoadCollection<Spell>("Spells");
+
             //Races
             var norace = new Race("Select a Race", Type.Humanoid, SubType.Human, SizeType.Medium);
 
@@ -66,7 +74,7 @@ namespace UserInterface.ViewModels
             Races.Add(dwarf);
             Races.Add(gnome);
 
-            serializer.SerializeCollection(Races, "Races");
+
 
             //Sizes
 
@@ -75,8 +83,6 @@ namespace UserInterface.ViewModels
             Sizes.Add(new Size(SizeType.Large));
 
             //Classes
-
-            var noclass = new CharacterClass("Select a Class", 1, 6);
 
             var barbarian = new CharacterClass("Barbarian", 1, 12);
             barbarian.GoodSave = new Save(SaveType.Fortitude);
@@ -90,54 +96,70 @@ namespace UserInterface.ViewModels
             barbarian.ClassSkillNames.Add("Ride");
             barbarian.ClassSkillNames.Add("Survival");
             barbarian.ClassSkillNames.Add("Swim");
+            barbarian.SkillRanksPerLevel = 4;
 
-            var wizard = new CharacterClass("Wizard", 0.5, 6);
-            wizard.GoodSave = new Save(SaveType.Willpower);
-
-
-
-            CharacterClasses.Add(noclass);
+            var Wizard = new CharacterClass("Wizard", 0.5, 6);
+            Wizard.GoodSave = new Save(SaveType.Willpower);
+            
             CharacterClasses.Add(barbarian);
-            CharacterClasses.Add(wizard);
+            CharacterClasses.Add(Wizard);
 
             Character = new Character(_eventAggregator);
-            Character.CharacterClass = CharacterClasses[0];
             Character.Race = Races[0];
             Character.Size = Sizes[0];
             Character.ExperienceProgression = Character.ExperienceProgressionList[1];
+            
 
 
-            ApplyRace();
-            ApplyClass();
+
+
+
 
         }
+
+        public void GetClassSpells(CharacterClass characterClass)
+        {
+            foreach (var spell in Spells)
+            {
+
+                int classSpellLevel;
+
+                if (spell.GetType().GetProperty($"{characterClass.Name}")?.GetValue(spell, null) != null)
+                {
+                    classSpellLevel= (int)spell.GetType().GetProperty($"{characterClass.Name}").GetValue(spell, null);
+                   
+                    
+                    Character.CharacterClass.ClassSpells.Add(spell);
+                    
+                }
+
+                
+
+            }
+        }
+
         //----Methods
-
-        private void ApplyRace()
-        {
-            Character.UpdateRaceAbilities();
-            Character.Size = Sizes.FirstOrDefault(a => a.SizeType == Character.Race.SizeType);
-            Character.ApplyRaceSize();
-
-        }
-
-        private void ApplyClass()
-        {
-            Character.UpdateClassSkills(Character.CharacterClass);
-            Character.UpdateCharacterClassSaves();
-            Character.SetBab();
-        }
-
         public void Handle(RaceChangedEvent message)
         {
-            Character.UpdateRaceAbilities();
+            Character.UpdateAbilities();
             Character.UpdateCharacterClassSaves();
+            Character.Size = Sizes.FirstOrDefault(a => a.SizeType.Equals(Character.Race.SizeType));
             Character.ApplyRaceSize();
+            
         }
+
         public void Handle(CharacterClassChangedEvent message)
         {
-            Character.UpdateCharacterClassSaves();
-            Character.SetBab();
+            if (Character != null)
+            {
+                 Character?.UpdateCharacterClassSaves();
+            Character?.SetBab();
+            Character?.UpdateAvailableSkillRanks();
+                GetClassSpells(message.CharacterClass);
+                Console.WriteLine("test");
+
+            }
+
         }
     }
 }

@@ -4,12 +4,14 @@
              xmlns:local="clr-namespace:UserInterface"
              xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
              xmlns:views="clr-namespace:UserInterface.Views"
+             xmlns:models="clr-namespace:UserInterface.Models"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>     
             <DataTemplate DataType="{x:Type viewModels:PathFinderViewModel}">
                 <views:PathFinderView />
             </DataTemplate>
+            <models:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

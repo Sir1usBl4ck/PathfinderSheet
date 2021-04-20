@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:MinHeight="30" d:DesignWidth="800">
     <StackPanel>
-        <TextBlock Text="{Binding Name}" TextAlignment="Center" Margin="5,0"  VerticalAlignment="Center" ToolTip="{Binding Ability.Name}"
+        <TextBlock Text="{Binding Name}" TextAlignment="Center" Margin="5,0"  VerticalAlignment="Center" ToolTip="{Binding AbilityType}"
                    FontWeight="Bold" FontSize="13" MinWidth="50" />
 
         <TextBlock Text="{Binding Bonus}" Margin="5,0" VerticalAlignment="Center" MinWidth="50" TextAlignment="Center"/>

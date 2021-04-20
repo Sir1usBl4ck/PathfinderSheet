@@ -79,9 +79,10 @@
                                              Margin="5"
                                              VerticalAlignment="Center"
                                              Width="20" />
-                                    <TextBlock Text="Size:" Width="50" Margin="5"/>
-                                    <TextBlock Text="{Binding Character.Size.Name}"/>
-
+                                    <TextBlock Text="Size:"
+                                               Width="50"
+                                               Margin="5" />
+                                    <TextBlock Text="{Binding Character.Size.Name}" />
                                 </DockPanel>
                             </StackPanel>
                         </Border>
@@ -123,21 +124,33 @@
                                            Foreground="#FFF"
                                            Margin="0,0,0,5" />
                                 <DockPanel>
+                                    <TextBlock HorizontalAlignment="Left"
+                                               FontSize="9"
+                                               Text="Points Left:"
+                                               Width="50"
+                                               Margin="3" />
+                                    <TextBlock HorizontalAlignment="Left"
+                                               FontSize="9"
+                                               Text="{Binding Character.AvailableSkillRanks}"
+                                               Width="50"
+                                               Margin="3" />
+                                </DockPanel>
+                                <DockPanel>
                                     <TextBlock FontSize="9"
                                                Text="Ability"
                                                Width="195"
-                                               Margin="3"/>
+                                               Margin="3" />
                                     <TextBlock FontSize="9"
                                                Text="Trained"
-                                               Margin="3"/>
+                                               Margin="3" />
                                     <TextBlock FontSize="9"
                                                Text="Class"
                                                Margin="3"
-                                               Width="40"/>
+                                               Width="40" />
                                     <TextBlock FontSize="9"
                                                Text="Bonus"
-                                               Margin="3" 
-                                               Width="40"/>
+                                               Margin="3"
+                                               Width="40" />
                                     <TextBlock FontSize="9"
                                                Text="Rank"
                                                Margin="3" />
@@ -222,8 +235,7 @@
                         <DockPanel Margin="5">
                             <TextBlock Text="BAB"
                                        Width="100" />
-                            <TextBlock Text="{Binding Character.BaseAttackBonus}"/>
-                                
+                            <TextBlock Text="{Binding Character.BaseAttackBonus}" />
                         </DockPanel>
                         <TextBlock Text="MANEUVERS"
                                    Background="#888"
@@ -262,6 +274,170 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Spells"
+                     FontSize="20"
+                     Height="30"
+                     VerticalAlignment="Top">
+                <Grid>
+                    <Grid.Resources>
+                        <DataTemplate x:Key="SpellListBoxTemplate">
+                            <Border Margin="0,0,0,5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Expander Header="{Binding Name}"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              FontWeight="Bold"
+                                              FontSize="13"
+                                              Margin="5,0"
+                                              Width="400">
+                                        <StackPanel Background="AliceBlue">
+                                            <StackPanel>
+                                                <DockPanel>
+                                                    <TextBlock Text="School"
+                                                               FontWeight="Bold"
+                                                               FontSize="12"
+                                                               Margin="5,0" />
+                                                    <TextBlock Text="{Binding School}"
+                                                               Margin="5,0"
+                                                               FontSize="12" />
+                                                    <TextBlock Text="("
+                                                               FontSize="12"
+                                                               Visibility="{Binding Subschool, Converter={StaticResource StringToVisibilityConverter}}" />
+                                                    <TextBlock Text="{Binding Subschool}"
+                                                               Margin="5,0"
+                                                               FontSize="12" />
+                                                    <TextBlock Text=")"
+                                                               FontSize="12"
+                                                               Visibility="{Binding Subschool, Converter={StaticResource StringToVisibilityConverter}}" />
+                                                    <TextBlock Text="["
+                                                               Margin="5,0,0,0"
+                                                               FontSize="12"
+                                                               Visibility="{Binding Descriptor, Converter={StaticResource StringToVisibilityConverter}}" />
+                                                    <TextBlock Text="{Binding Descriptor}"
+                                                               Margin="5,0"
+                                                               FontSize="12" />
+                                                    <TextBlock Text="]"
+                                                               FontSize="12"
+                                                               Visibility="{Binding Descriptor, Converter={StaticResource StringToVisibilityConverter}}" />
+                                                </DockPanel>
+                                                <TextBlock Text="Level"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding SpellLevel}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </StackPanel>
+                                            <TextBlock Text="CASTING"
+                                                       TextAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="12"
+                                                       Margin="5" />
+                                            <DockPanel>
+                                                <TextBlock Text="Casting Time"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding CastingTime}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Components"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding Components}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <TextBlock Text="EFFECT"
+                                                       TextAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="12"
+                                                       Margin="5" />
+                                            <DockPanel>
+                                                <TextBlock Text="Range"
+                                                           HorizontalAlignment="Left"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding Range}"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Target"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding Targets}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <DockPanel
+                                                Visibility="{Binding Area, Converter={StaticResource StringToVisibilityConverter}}">
+                                                <TextBlock Text="Area"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding Area}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Duration"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding Duration}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="Saving Throw"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding SavingThrow}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="Spell Resistance"
+                                                           FontWeight="Bold"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding SpellResistance}"
+                                                           Margin="5,0"
+                                                           FontSize="12" />
+                                            </DockPanel>
+                                            <TextBlock Text="" />
+                                            <TextBlock Text="{Binding Description}"
+                                                       FontSize="12"
+                                                       TextWrapping="Wrap"
+                                                       Margin="5,0" />
+                                        </StackPanel>
+
+                                    </Expander>
+                                    <Button Content=">"
+                                            FontSize="9"
+                                            Width="50"
+                                            MinHeight="20"
+                                            HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                
+                            </Border>
+                        </DataTemplate>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ListView Grid.Column="0"
+                              ItemsSource="{Binding Character.CharacterClass.ClassSpells }"
+                              ItemTemplate="{StaticResource SpellListBoxTemplate}"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling" />
                 </Grid>
             </TabItem>
         </TabControl>
