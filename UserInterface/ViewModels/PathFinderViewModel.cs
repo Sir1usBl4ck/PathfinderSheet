@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+using D20Tek.DiceNotation;
+using D20Tek.DiceNotation.DieRoller;
+using MathNet.Numerics.LinearAlgebra.Solvers;
 using UserInterface.Data;
 using UserInterface.EventModels;
 using UserInterface.Models;
 using UserInterface.Views;
+using Size = UserInterface.Models.Size;
 using Type = UserInterface.Models.Type;
 
 namespace UserInterface.ViewModels
@@ -18,30 +28,59 @@ namespace UserInterface.ViewModels
     [Serializable]
     public class PathFinderViewModel : BaseViewModel, IHandle<RaceChangedEvent>, IHandle<CharacterClassChangedEvent>
     {
-        //EG:  1- Create private field for EventAggregator 
 
+
+        //EG:  1- Create private field for EventAggregator 
+        private CollectionViewSource _spellsView;
         private EventAggregator _eventAggregator;
+        private string _filterText;
+
         public Character Character { get; set; }
         public ObservableCollection<int> PossibleTotalPoints { get; } = new ObservableCollection<int>();
         public ObservableCollection<Race> Races { get; } = new ObservableCollection<Race>();
-
         public ObservableCollection<CharacterClass> CharacterClasses { get; } =
             new ObservableCollection<CharacterClass>();
-
         public ObservableCollection<Size> Sizes { get; } = new ObservableCollection<Size>();
         public ObservableCollection<Spell> Spells { get; } = new ObservableCollection<Spell>();
+        public ObservableCollection<GeneralFeat> Feats { get; } = new ObservableCollection<GeneralFeat>();
+        public ObservableCollection<DiceRoll> DiceRolls { get; set; } = new ObservableCollection<DiceRoll>();
 
+        public ICollectionView SpellsView => this._spellsView.View;
+
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+            set
+            {
+                _filterText = value;
+                this._spellsView.View.Refresh();
+                OnPropertyChanged("FilterText");
+            }
+        }
+
+
+        public ICommand AddSpellToCharacterCommand { get; set; }
+        public ICommand AddFeatToCharacterCommand { get; set; }
+        public ICommand RollSkillCommand { get; set; }
+        public ICommand RollAttackCommand { get; set; }
+        public ICommand RollDamageCommand { get; set; }
 
         //----Constructor
         public PathFinderViewModel()
         {
-
             //EG:  2- Instantiate the EventAggregator
             _eventAggregator = new EventAggregator();
             _eventAggregator.Subscribe(this);
 
 
-
+            AddSpellToCharacterCommand = new RelayCommand<Spell>(AddSpellToCharacterExecute);
+            AddFeatToCharacterCommand = new RelayCommand<GeneralFeat>(AddFeatToCharacterExecute);
+            RollSkillCommand = new RelayCommand<Skill>(RollSkillExecute);
+            RollAttackCommand = new RelayCommand<Attack>(RollAttackExecute);
+            RollDamageCommand = new RelayCommand<Attack>(RollDamageExecute);
 
             PossibleTotalPoints.Add(15);
             PossibleTotalPoints.Add(20);
@@ -50,6 +89,13 @@ namespace UserInterface.ViewModels
 
             Serializer serializer = new Serializer();
             Spells = serializer.LoadCollection<Spell>("Spells");
+            _spellsView = new CollectionViewSource();
+            _spellsView.Source = Spells;
+            _spellsView.Filter += _spellsView_Filter;
+            Feats = serializer.LoadCollection<GeneralFeat>("Feats");
+
+
+
 
             //Races
             var norace = new Race("Select a Race", Type.Humanoid, SubType.Human, SizeType.Medium);
@@ -74,15 +120,9 @@ namespace UserInterface.ViewModels
             Races.Add(dwarf);
             Races.Add(gnome);
 
-
-
-            //Sizes
-
             Sizes.Add(new Size(SizeType.Medium));
             Sizes.Add(new Size(SizeType.Small));
             Sizes.Add(new Size(SizeType.Large));
-
-            //Classes
 
             var barbarian = new CharacterClass("Barbarian", 1, 12);
             barbarian.GoodSave = new Save(SaveType.Fortitude);
@@ -100,7 +140,9 @@ namespace UserInterface.ViewModels
 
             var Wizard = new CharacterClass("Wizard", 0.5, 6);
             Wizard.GoodSave = new Save(SaveType.Willpower);
-            
+            Wizard.IsPreparedCaster = true;
+            Wizard.SkillRanksPerLevel = 2;
+
             CharacterClasses.Add(barbarian);
             CharacterClasses.Add(Wizard);
 
@@ -108,56 +150,122 @@ namespace UserInterface.ViewModels
             Character.Race = Races[0];
             Character.Size = Sizes[0];
             Character.ExperienceProgression = Character.ExperienceProgressionList[1];
-            
+        }
+
+        void _spellsView_Filter(object sender, FilterEventArgs e)
+        {
+            if (string.IsNullOrEmpty(FilterText))
+            {
+                e.Accepted = true;
+                return;
+            }
 
 
+            Spell spell = e.Item as Spell;
+            if (spell.Name.ToUpper().Contains(FilterText.ToUpper()))
+            {
+                e.Accepted = true;
+            }
+            else
+            {
+                e.Accepted = false;
+            }
+        }
+
+        private void AddSpellToCharacterExecute(Spell spell)
+        {
+            bool alreadyExist = Character.CharacterSpells.Contains(spell);
+            if (alreadyExist == false)
+            {
+                Character.CharacterSpells.Add(spell);
+            }
+        }
+        private void AddFeatToCharacterExecute(GeneralFeat feat)
+        {
+            bool alreadyExist = Character.CharacterFeats.Contains(feat);
+            if (alreadyExist == false)
+            {
+                Character.CharacterFeats.Add(feat);
+            }
+        }
+
+        private void RollSkillExecute(Skill skill)
+        {
+            IDice dice = new Dice();
+            dice.Dice(20).Constant(skill.Bonus);
+            DiceResult result = dice.Roll(new RandomDieRoller());
+            DiceRoll roll = new DiceRoll
+            {
+                Expression = result.DiceExpression, 
+                Total = result.Value, Sender = skill.Name, 
+                DiceResult = Convert.ToInt32(result.RollsDisplayText)
+            };
+
+            DiceRolls.Insert(0, roll);
 
 
-
-
+        }
+        private void RollAttackExecute(Attack attack)
+        {
+            var roll = new DiceRoll();
+            roll.RollAttack(attack);
+            DiceRolls.Insert(0, roll);
+            if (roll.DiceResult >= attack.ThreatRange)
+            {
+                roll.Special = "*CRITICAL*";
+                var confirmDice = new DiceRoll();
+                confirmDice.RollAttack(attack);
+                confirmDice.Special = "*CONFIRM*";
+                DiceRolls.Insert(1, confirmDice);
+            }
+        }
+        private void RollDamageExecute(Attack attack)
+        {
+            var roll = new DiceRoll();
+            roll.RollDamage(attack);
+            DiceRolls.Insert(0, roll);
         }
 
         public void GetClassSpells(CharacterClass characterClass)
         {
+
+
+            Character.CharacterClass.ClassSpells.Clear();
+
             foreach (var spell in Spells)
             {
-
                 int classSpellLevel;
+                object classSpell = spell.GetType().GetProperty($"{characterClass.Name}")?.GetValue(spell, null);
 
-                if (spell.GetType().GetProperty($"{characterClass.Name}")?.GetValue(spell, null) != null)
+
+                if (classSpell != null)
                 {
-                    classSpellLevel= (int)spell.GetType().GetProperty($"{characterClass.Name}").GetValue(spell, null);
-                   
-                    
-                    Character.CharacterClass.ClassSpells.Add(spell);
-                    
+
+                    classSpellLevel = (int)spell.GetType().GetProperty($"{characterClass.Name}").GetValue(spell, null);
+                    spell.SelectedClassLevel = classSpellLevel;
+                    if (classSpellLevel <= Character.Level)
+                    {
+                        Character.CharacterClass.ClassSpells.Add(spell);
+                    }
                 }
-
-                
-
             }
         }
-
-        //----Methods
         public void Handle(RaceChangedEvent message)
         {
             Character.UpdateAbilities();
             Character.UpdateCharacterClassSaves();
             Character.Size = Sizes.FirstOrDefault(a => a.SizeType.Equals(Character.Race.SizeType));
             Character.ApplyRaceSize();
-            
         }
 
         public void Handle(CharacterClassChangedEvent message)
         {
             if (Character != null)
             {
-                 Character?.UpdateCharacterClassSaves();
-            Character?.SetBab();
-            Character?.UpdateAvailableSkillRanks();
+                Character?.UpdateCharacterClassSaves();
+                Character?.SetBab();
+                Character?.UpdateAvailableSkillRanks();
                 GetClassSpells(message.CharacterClass);
-                Console.WriteLine("test");
-
             }
 
         }

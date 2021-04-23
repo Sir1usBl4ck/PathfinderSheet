@@ -10,6 +10,11 @@
              d:DesignWidth="800">
     <Border Margin="0,5,0,5">
         <DockPanel LastChildFill="False">
+            <Button Height="30"
+                    Command="{Binding DataContext.RollSkillCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=2, AncestorType=UserControl}}"
+                    CommandParameter="{Binding}"                    >
+                <Image Source="/Resources/d20Icon.jpg"></Image>
+            </Button>
             <TextBlock Text="{Binding Name}"
                        TextAlignment="Left"
                        Margin="5,0"

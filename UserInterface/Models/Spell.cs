@@ -246,6 +246,10 @@ namespace UserInterface.Models
 
         [JsonProperty("summoner_unchained")]
         public int? SummonerUnchained { get; set; }
+
+        public int SelectedClassLevel { get; set; }
+
+        public List<string> ClassList { get; set; }
     }
 
 

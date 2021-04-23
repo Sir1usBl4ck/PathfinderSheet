@@ -23,13 +23,10 @@ namespace UserInterface
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BaseViewModel _viewModel;
-        
         public MainWindow()
         {         
             InitializeComponent();
             
         }
-        
     }
 }

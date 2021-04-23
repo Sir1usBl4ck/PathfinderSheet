@@ -3,443 +3,374 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UserInterface.Views"
-             xmlns:ViewModels="clr-namespace:UserInterface.ViewModels"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              x:Class="UserInterface.Views.PathFinderView"
              mc:Ignorable="d"
-             Height="750"
+             Height="850"
              Width="900">
     <Border Background="#FFFFFF">
-        <Border.DataContext>
-            <ViewModels:PathFinderViewModel />
-        </Border.DataContext>
-        <TabControl TabStripPlacement="Left"
-                    Margin="2"
-                    SelectionChanged="TabControl_SelectionChanged">
-            <TabItem Header="General"
-                     FontSize="20">
-                <Grid Margin="10,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <StackPanel>
-                        <Border Padding="5">
-                            <StackPanel>
-                                <TextBlock Text="CHARACTER"
-                                           Background="#888"
-                                           FontSize="15"
-                                           TextAlignment="Center"
-                                           Foreground="#FFF"
-                                           Margin="0,0,0,5" />
-                                <TextBlock Text="Name"
-                                           Margin="0,0,0,5" />
-                                <TextBox Text="{Binding Character.Name}"
-                                         Padding="4" />
-                                <TextBlock Text="Campaign"
-                                           Margin="0,5,0,5" />
-                                <TextBox Text="{Binding Character.Campaign}"
-                                         Padding="4" />
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center">
-                                    <StackPanel MinWidth="150"
-                                                Margin="5,0">
-                                        <TextBlock Text="XP"
-                                                   Margin="0,5,0,5" />
-                                        <TextBox Text="{Binding Character.Experience}"
-                                                 Padding="4" />
+        <StackPanel>
+            <TabControl TabStripPlacement="Left"
+                        Margin="2">
+                <TabItem Header="General"
+                         FontSize="20">
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <Border Padding="5">
+                                <StackPanel>
+                                    <TextBlock Text="CHARACTER"
+                                               Background="#888"
+                                               FontSize="15"
+                                               TextAlignment="Center"
+                                               Foreground="#FFF"
+                                               Margin="0,0,0,5" />
+                                    <TextBlock Text="Name"
+                                               Margin="0,0,0,5" />
+                                    <TextBox Text="{Binding Character.Name}"
+                                             Padding="4" />
+                                    <TextBlock Text="Campaign"
+                                               Margin="0,5,0,5" />
+                                    <TextBox Text="{Binding Character.Campaign}"
+                                             Padding="4" />
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+                                        <StackPanel MinWidth="150"
+                                                    Margin="5,0">
+                                            <TextBlock Text="XP"
+                                                       Margin="0,5,0,5" />
+                                            <TextBox Text="{Binding Character.Experience}"
+                                                     Padding="4" />
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBlock Text="XP Progress"
+                                                       Margin="0,5,0,5" />
+                                            <ComboBox ItemsSource="{Binding Character.ExperienceProgressionList}"
+                                                      SelectedItem="{Binding Character.ExperienceProgression}"
+                                                      DisplayMemberPath="Name" />
+                                        </StackPanel>
                                     </StackPanel>
-                                    <StackPanel>
-                                        <TextBlock Text="XP Progress"
-                                                   Margin="0,5,0,5" />
-                                        <ComboBox ItemsSource="{Binding Character.ExperienceProgressionList}"
-                                                  SelectedItem="{Binding Character.ExperienceProgression}"
-                                                  DisplayMemberPath="Name"
-                                                  SelectionChanged="ComboBox_SelectionChanged" />
-                                    </StackPanel>
+                                    <TextBlock Text="Race"
+                                               Margin="0,5,0,5"
+                                               Grid.Column="1" />
+                                    <ComboBox ItemsSource="{Binding Races}"
+                                              SelectedItem="{Binding Character.Race}"
+                                              DisplayMemberPath="Name"
+                                              Margin="5" />
+                                    <ComboBox ItemsSource="{Binding CharacterClasses}"
+                                              SelectedItem="{Binding Character.CharacterClass}"
+                                              DisplayMemberPath="Name"
+                                              Margin="5" />
+                                    <DockPanel>
+                                        <TextBlock Text="Level"
+                                                   Margin="5" />
+                                        <TextBox Text="{Binding Character.Level, UpdateSourceTrigger=PropertyChanged}"
+                                                 Margin="5"
+                                                 VerticalAlignment="Center"
+                                                 Width="20" />
+                                        <TextBlock Text="Size:"
+                                                   Width="50"
+                                                   Margin="5" />
+                                        <TextBlock Text="{Binding Character.Size.Name}" />
+                                    </DockPanel>
                                 </StackPanel>
-                                <TextBlock Text="Race"
-                                           Margin="0,5,0,5"
-                                           Grid.Column="1" />
-                                <ComboBox ItemsSource="{Binding Races}"
-                                          SelectedItem="{Binding Character.Race}"
-                                          DisplayMemberPath="Name"
-                                          Margin="5" />
-                                <ComboBox ItemsSource="{Binding CharacterClasses}"
-                                          SelectedItem="{Binding Character.CharacterClass}"
-                                          DisplayMemberPath="Name"
-                                          SelectionChanged="ComboBox_SelectionChanged"
-                                          Margin="5" />
-                                <DockPanel>
-                                    <TextBlock Text="Level"
-                                               Margin="5" />
-                                    <TextBox Text="{Binding Character.Level, UpdateSourceTrigger=PropertyChanged}"
-                                             Margin="5"
-                                             VerticalAlignment="Center"
-                                             Width="20" />
-                                    <TextBlock Text="Size:"
-                                               Width="50"
-                                               Margin="5" />
-                                    <TextBlock Text="{Binding Character.Size.Name}" />
+                            </Border>
+                            <Border Padding="5">
+                                <StackPanel>
+                                    <TextBlock Text="ABILITIES"
+                                               Background="#888"
+                                               FontSize="15"
+                                               TextAlignment="Center"
+                                               Foreground="#FFF"
+                                               Margin="0,0,0,5" />
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding Character.PointsLeft}"
+                                                   Margin="30,0,5,0" />
+                                        <ComboBox ItemsSource="{Binding PossibleTotalPoints}"
+                                                  SelectedItem="{Binding Character.PointsLeft}"
+                                                  Width="50"
+                                                  HorizontalAlignment="Right" />
+                                    </DockPanel>
+                                    <ItemsControl ItemsSource="{Binding Character.Abilities}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <local:AbilityListItemView />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Border Padding="5"
+                                    BorderThickness="3"
+                                    BorderBrush="DarkGray">
+                                <StackPanel>
+                                    <TextBlock Text="SKILLS"
+                                               Background="#888"
+                                               FontSize="15"
+                                               TextAlignment="Center"
+                                               Foreground="#FFF"
+                                               Margin="0,0,0,5" />
+                                    <DockPanel>
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   FontSize="9"
+                                                   Text="Points Left:"
+                                                   Width="50"
+                                                   Margin="3" />
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   FontSize="9"
+                                                   Text="{Binding Character.AvailableSkillRanks}"
+                                                   Width="50"
+                                                   Margin="3" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock FontSize="9"
+                                                   Text="Ability"
+                                                   Width="195"
+                                                   Margin="3" />
+                                        <TextBlock FontSize="9"
+                                                   Text="Trained"
+                                                   Margin="3" />
+                                        <TextBlock FontSize="9"
+                                                   Text="Class"
+                                                   Margin="3"
+                                                   Width="40" />
+                                        <TextBlock FontSize="9"
+                                                   Text="Bonus"
+                                                   Margin="3"
+                                                   Width="40" />
+                                        <TextBlock FontSize="9"
+                                                   Text="Rank"
+                                                   Margin="3" />
+                                    </DockPanel>
+                                    <ScrollViewer Height="550"
+                                                  Width="400">
+                                        <Border BorderBrush="#888"
+                                                BorderThickness="1"
+                                                CornerRadius="8,8,3,3">
+                                            <ItemsControl ItemsSource="{Binding Character.Skills}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <local:SkillListItemView />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Border>
+                                    </ScrollViewer>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Combat"
+                         FontSize="20"
+                         Height="30"
+                         VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition MinHeight="200"/>
+                            <RowDefinition MinHeight="200"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Margin="5">
+                            <TextBlock Text="HEALTH"
+                                       Background="#888"
+                                       FontSize="15"
+                                       TextAlignment="Center"
+                                       Foreground="#FFF"
+                                       Margin="0,0,0,5" />
+                            <DockPanel>
+                                <TextBlock Text="Hit Points"
+                                           TextAlignment="Center"
+                                           Width="130" />
+                                <TextBlock Text="Wounds"
+                                           TextAlignment="Center"
+                                           Width="100" />
+                                <TextBlock Text="Non Lethal"
+                                           TextAlignment="Center"
+                                           Width="100" />
+                            </DockPanel>
+                            <DockPanel Margin="0,5">
+                                <DockPanel Margin="30,0"
+                                           HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Character.MaxHitPoints}" />
+                                    <TextBlock Text="/" />
+                                    <TextBlock Text="{Binding Character.CurrentHitPoints}" />
                                 </DockPanel>
-                            </StackPanel>
-                        </Border>
-                        <Border Padding="5">
-                            <StackPanel>
-                                <TextBlock Text="ABILITIES"
+                                <TextBox Text="{Binding Character.Wounds,UpdateSourceTrigger=PropertyChanged}"
+                                         TextAlignment="Center"
+                                         Margin="30,0"
+                                         Width="50" />
+                                <TextBox Text="{Binding Character.NonLethalDamage, UpdateSourceTrigger=PropertyChanged}"
+                                         TextAlignment="Center"
+                                         Margin="30,0" />
+                            </DockPanel>
+                            <TextBlock Text="COMBAT"
+                                       Background="#888"
+                                       FontSize="15"
+                                       TextAlignment="Center"
+                                       Foreground="#FFF"
+                                       Margin="0,0,0,5" />
+                            <DockPanel Margin="5">
+                                <TextBlock Text="Initiative"
+                                           Width="100" />
+                                <TextBlock Text="{Binding Character.Initiative}" />
+                            </DockPanel>
+                            <DockPanel Margin="5">
+                                <TextBlock Text="Speed"
+                                           Width="100" />
+                                <TextBlock Text="30" />
+                            </DockPanel>
+                            <DockPanel Margin="5">
+                                <TextBlock Text="BAB"
+                                           Width="100" />
+                                <TextBlock Text="{Binding Character.BaseAttackBonus}" />
+                            </DockPanel>
+                            <TextBlock Text="MANEUVERS"
+                                       Background="#888"
+                                       FontSize="15"
+                                       TextAlignment="Center"
+                                       Foreground="#FFF"
+                                       Margin="0,0,0,5" />
+                            <DockPanel Margin="5">
+                                <DockPanel Margin="0,0,40,0">
+                                    <TextBlock Text="CMB"
+                                               Width="100" />
+                                    <TextBlock Text="{Binding Character.CombatManeuverBonus}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="CMD"
+                                               Width="100" />
+                                    <TextBlock Text="{Binding Character.CombatManeuverDefense}" />
+                                </DockPanel>
+                            </DockPanel>
+                            <TextBlock Text="SAVES"
+                                       Background="#888"
+                                       FontSize="15"
+                                       TextAlignment="Center"
+                                       Foreground="#FFF"
+                                       Margin="0,0,0,5" />
+                            <ItemsControl ItemsSource="{Binding Character.Saves}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <local:SaveListItemView />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                        <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                                      Height="280">
+                            <StackPanel >
+                                <TextBlock Text="ATTACKS"
                                            Background="#888"
                                            FontSize="15"
                                            TextAlignment="Center"
                                            Foreground="#FFF"
                                            Margin="0,0,0,5" />
-                                <DockPanel>
-                                    <TextBlock Text="{Binding Character.PointsLeft}"
-                                               Margin="30,0,5,0" />
-                                    <ComboBox ItemsSource="{Binding PossibleTotalPoints}"
-                                              SelectedItem="{Binding Character.PointsLeft}"
-                                              Width="50"
-                                              HorizontalAlignment="Right" />
-                                </DockPanel>
-                                <ItemsControl ItemsSource="{Binding Character.Abilities}">
+                                <ItemsControl ItemsSource="{Binding Character.AttackList}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <local:AbilityListItemView />
+                                            <local:AttackListItemView />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <Border Padding="5"
-                                BorderThickness="3"
-                                BorderBrush="DarkGray">
-                            <StackPanel>
-                                <TextBlock Text="SKILLS"
-                                           Background="#888"
-                                           FontSize="15"
-                                           TextAlignment="Center"
-                                           Foreground="#FFF"
-                                           Margin="0,0,0,5" />
-                                <DockPanel>
-                                    <TextBlock HorizontalAlignment="Left"
-                                               FontSize="9"
-                                               Text="Points Left:"
-                                               Width="50"
-                                               Margin="3" />
-                                    <TextBlock HorizontalAlignment="Left"
-                                               FontSize="9"
-                                               Text="{Binding Character.AvailableSkillRanks}"
-                                               Width="50"
-                                               Margin="3" />
-                                </DockPanel>
-                                <DockPanel>
-                                    <TextBlock FontSize="9"
-                                               Text="Ability"
-                                               Width="195"
-                                               Margin="3" />
-                                    <TextBlock FontSize="9"
-                                               Text="Trained"
-                                               Margin="3" />
-                                    <TextBlock FontSize="9"
-                                               Text="Class"
-                                               Margin="3"
-                                               Width="40" />
-                                    <TextBlock FontSize="9"
-                                               Text="Bonus"
-                                               Margin="3"
-                                               Width="40" />
-                                    <TextBlock FontSize="9"
-                                               Text="Rank"
-                                               Margin="3" />
-                                </DockPanel>
-                                <ScrollViewer Height="550"
-                                              Width="400">
-                                    <Border BorderBrush="#888"
-                                            BorderThickness="1"
-                                            CornerRadius="8,8,3,3">
-                                        <ItemsControl ItemsSource="{Binding Character.Skills}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <local:SkillListItemView />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Border>
-                                </ScrollViewer>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Combat"
-                     FontSize="20"
-                     Height="30"
-                     VerticalAlignment="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Margin="5">
-                        <TextBlock Text="HEALTH"
-                                   Background="#888"
-                                   FontSize="15"
-                                   TextAlignment="Center"
-                                   Foreground="#FFF"
-                                   Margin="0,0,0,5" />
-                        <DockPanel>
-                            <TextBlock Text="Hit Points"
-                                       TextAlignment="Center"
-                                       Width="130" />
-                            <TextBlock Text="Wounds"
-                                       TextAlignment="Center"
-                                       Width="100" />
-                            <TextBlock Text="Non Lethal"
-                                       TextAlignment="Center"
-                                       Width="100" />
-                        </DockPanel>
-                        <DockPanel Margin="0,5">
-                            <DockPanel Margin="30,0"
-                                       HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding Character.MaxHitPoints}" />
-                                <TextBlock Text="/" />
-                                <TextBlock Text="{Binding Character.CurrentHitPoints}" />
-                            </DockPanel>
-                            <TextBox Text="{Binding Character.Wounds,UpdateSourceTrigger=PropertyChanged}"
-                                     TextAlignment="Center"
-                                     Margin="30,0"
-                                     Width="50" />
-                            <TextBox Text="{Binding Character.NonLethalDamage, UpdateSourceTrigger=PropertyChanged}"
-                                     TextAlignment="Center"
-                                     Margin="30,0" />
-                        </DockPanel>
-                        <TextBlock Text="COMBAT"
-                                   Background="#888"
-                                   FontSize="15"
-                                   TextAlignment="Center"
-                                   Foreground="#FFF"
-                                   Margin="0,0,0,5" />
-                        <DockPanel Margin="5">
-                            <TextBlock Text="Initiative"
-                                       Width="100" />
-                            <TextBlock Text="{Binding Character.Initiative}" />
-                        </DockPanel>
-                        <DockPanel Margin="5">
-                            <TextBlock Text="Speed"
-                                       Width="100" />
-                            <TextBlock Text="30" />
-                        </DockPanel>
-                        <DockPanel Margin="5">
-                            <TextBlock Text="BAB"
-                                       Width="100" />
-                            <TextBlock Text="{Binding Character.BaseAttackBonus}" />
-                        </DockPanel>
-                        <TextBlock Text="MANEUVERS"
-                                   Background="#888"
-                                   FontSize="15"
-                                   TextAlignment="Center"
-                                   Foreground="#FFF"
-                                   Margin="0,0,0,5" />
-                        <DockPanel Margin="5">
-                            <DockPanel Margin="0,0,40,0">
-                                <TextBlock Text="CMB"
-                                           Width="100" />
-                                <TextBlock Text="{Binding Character.CombatManeuverBonus}" />
-                            </DockPanel>
-                            <DockPanel>
-                                <TextBlock Text="CMD"
-                                           Width="100" />
-                                <TextBlock Text="{Binding Character.CombatManeuverDefense}" />
-                            </DockPanel>
-                        </DockPanel>
-                        <TextBlock Text="SAVES"
-                                   Background="#888"
-                                   FontSize="15"
-                                   TextAlignment="Center"
-                                   Foreground="#FFF"
-                                   Margin="0,0,0,5" />
-                        <ItemsControl ItemsSource="{Binding Character.Saves}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:SaveListItemView />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Spells"
-                     FontSize="20"
-                     Height="30"
-                     VerticalAlignment="Top">
-                <Grid>
-                    <Grid.Resources>
-                        <DataTemplate x:Key="SpellListBoxTemplate">
-                            <Border Margin="0,0,0,5">
-                                <StackPanel Orientation="Horizontal">
-                                    <Expander Header="{Binding Name}"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              FontWeight="Bold"
-                                              FontSize="13"
-                                              Margin="5,0"
-                                              Width="400">
-                                        <StackPanel Background="AliceBlue">
-                                            <StackPanel>
-                                                <DockPanel>
-                                                    <TextBlock Text="School"
-                                                               FontWeight="Bold"
-                                                               FontSize="12"
-                                                               Margin="5,0" />
-                                                    <TextBlock Text="{Binding School}"
-                                                               Margin="5,0"
-                                                               FontSize="12" />
-                                                    <TextBlock Text="("
-                                                               FontSize="12"
-                                                               Visibility="{Binding Subschool, Converter={StaticResource StringToVisibilityConverter}}" />
-                                                    <TextBlock Text="{Binding Subschool}"
-                                                               Margin="5,0"
-                                                               FontSize="12" />
-                                                    <TextBlock Text=")"
-                                                               FontSize="12"
-                                                               Visibility="{Binding Subschool, Converter={StaticResource StringToVisibilityConverter}}" />
-                                                    <TextBlock Text="["
-                                                               Margin="5,0,0,0"
-                                                               FontSize="12"
-                                                               Visibility="{Binding Descriptor, Converter={StaticResource StringToVisibilityConverter}}" />
-                                                    <TextBlock Text="{Binding Descriptor}"
-                                                               Margin="5,0"
-                                                               FontSize="12" />
-                                                    <TextBlock Text="]"
-                                                               FontSize="12"
-                                                               Visibility="{Binding Descriptor, Converter={StaticResource StringToVisibilityConverter}}" />
-                                                </DockPanel>
-                                                <TextBlock Text="Level"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding SpellLevel}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </StackPanel>
-                                            <TextBlock Text="CASTING"
-                                                       TextAlignment="Left"
-                                                       VerticalAlignment="Center"
-                                                       FontSize="12"
-                                                       Margin="5" />
-                                            <DockPanel>
-                                                <TextBlock Text="Casting Time"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding CastingTime}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock Text="Components"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding Components}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <TextBlock Text="EFFECT"
-                                                       TextAlignment="Left"
-                                                       VerticalAlignment="Center"
-                                                       FontSize="12"
-                                                       Margin="5" />
-                                            <DockPanel>
-                                                <TextBlock Text="Range"
-                                                           HorizontalAlignment="Left"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding Range}"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock Text="Target"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding Targets}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <DockPanel
-                                                Visibility="{Binding Area, Converter={StaticResource StringToVisibilityConverter}}">
-                                                <TextBlock Text="Area"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding Area}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock Text="Duration"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding Duration}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock Text="Saving Throw"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding SavingThrow}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="Spell Resistance"
-                                                           FontWeight="Bold"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding SpellResistance}"
-                                                           Margin="5,0"
-                                                           FontSize="12" />
-                                            </DockPanel>
-                                            <TextBlock Text="" />
-                                            <TextBlock Text="{Binding Description}"
-                                                       FontSize="12"
-                                                       TextWrapping="Wrap"
-                                                       Margin="5,0" />
-                                        </StackPanel>
 
-                                    </Expander>
-                                    <Button Content=">"
-                                            FontSize="9"
-                                            Width="50"
-                                            MinHeight="20"
-                                            HorizontalAlignment="Right"/>
-                                </StackPanel>
-                                
-                            </Border>
-                        </DataTemplate>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="500" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ListView Grid.Column="0"
-                              ItemsSource="{Binding Character.CharacterClass.ClassSpells }"
-                              ItemTemplate="{StaticResource SpellListBoxTemplate}"
-                              VirtualizingPanel.IsVirtualizing="True"
-                              VirtualizingPanel.VirtualizationMode="Recycling" />
-                </Grid>
-            </TabItem>
-        </TabControl>
+                            </StackPanel></ScrollViewer>
+                    </Grid>
+                </TabItem >
+                
+                <TabItem Header="Magic"
+                         FontSize="20">
+                    
+                </TabItem>
+                <TabItem Header="Spells"
+                         FontSize="20">
+                    <Grid MaxHeight="800">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"
+                                              MinWidth="400" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+                        <ListView Grid.Column="0"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding SpellsView}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <local:SpellsListItemView />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView Grid.Column="1"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding Character.CharacterSpells}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <local:SpellsListItemView />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Feats"
+                         FontSize="20">
+                    <Grid MaxHeight="800">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"
+                                              MinWidth="400" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ListView Grid.Column="0"
+                                  ItemsSource="{Binding Feats}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <local:FeatListItemView />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <ListView Grid.Column="1"
+                                  ItemsSource="{Binding Character.CharacterFeats}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <local:FeatListItemView />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <TextBlock Text="DICE LOG"
+                       Background="#888"
+                       FontSize="15"
+                       TextAlignment="Center"
+                       Foreground="#FFF"
+                       Margin="0,0,0,5" />
+            <ItemsControl ItemsSource="{Binding DiceRolls}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:DiceLog />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
     </Border>
 </UserControl>

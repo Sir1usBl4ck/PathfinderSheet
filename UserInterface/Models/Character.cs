@@ -45,6 +45,9 @@ namespace UserInterface.Models
         private int _wounds;
         private int _nonLethalDamage;
         private Size _size;
+        private Attack _attack1;
+        private Attack _attack2;
+        private Attack _attack3;
 
         public Character(EventAggregator eventAggregator)
         {
@@ -54,6 +57,35 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
+
+            Attack1 = new Attack(_eventAggregator);
+            Attack2 = new Attack(_eventAggregator);
+            Attack3 = new Attack(_eventAggregator);
+
+            //test
+
+            Attack1.Name = "TestAttack";
+            Attack1.DiceNumber = 1;
+            Attack1.Dice = 6;
+            Attack1.CriticalMultiplier = 2;
+            
+
+
+            AttackList.Add(Attack1);
+            AttackList.Add(Attack2);
+            AttackList.Add(Attack3);
+            foreach (var attack in AttackList)
+            {
+                attack.EventAggregator.Subscribe(attack);
+            }
+
+
+
+
+
+
+
+
 
             Serializer serializer = new Serializer();
 
@@ -133,6 +165,7 @@ namespace UserInterface.Models
             set
             {
                 _characterClass = value;
+                OnPropertyChanged();
                 UpdateClassSkills(_characterClass);
                 _eventAggregator.Publish(new CharacterClassChangedEvent(_characterClass));
             }
@@ -247,6 +280,7 @@ namespace UserInterface.Models
             {
                 _baseAttackBonus = value;
                 OnPropertyChanged();
+                _eventAggregator.Publish(new BaseAttackBonusChangedEvent(_baseAttackBonus));
             }
         }
         public int Initiative
@@ -262,6 +296,40 @@ namespace UserInterface.Models
         public ObservableCollection<ExperienceProgression> ExperienceProgressionList { get; } = new ObservableCollection<ExperienceProgression>();
         public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
         public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
+        public ObservableCollection<Spell> CharacterSpells { get; } = new ObservableCollection<Spell>();
+        public ObservableCollection<GeneralFeat> CharacterFeats { get; } = new ObservableCollection<GeneralFeat>();
+        public ObservableCollection<Attack> AttackList { get; } = new ObservableCollection<Attack>();
+
+        public Attack Attack1
+        {
+            get => _attack1;
+            set
+            {
+                _attack1 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Attack Attack2
+        {
+            get => _attack2;
+            set
+            {
+                _attack2 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Attack Attack3
+        {
+            get => _attack3;
+            set
+            {
+                _attack3 = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public int RollHitPoints(int level)
         {

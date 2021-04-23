@@ -20,6 +20,12 @@ namespace UserInterface.ViewModels
             }
         }
 
+        public void ChangeView(BaseViewModel viewModel)
+        {
+            CurrentView = viewModel;
+        }
+
+
         public WindowViewModel()
         {
             CurrentView = new PathFinderViewModel();
