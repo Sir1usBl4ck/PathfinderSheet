@@ -2,12 +2,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:UserInterface.Views"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              x:Class="UserInterface.Views.PathFinderView"
              mc:Ignorable="d"
-             Height="850"
-             Width="900">
+             Height="800"
+             Width="1280">
+
+    <UserControl.Resources>
+        <!--<CollectionViewSource x:Key="CharacterSpellsLvl1" Source="{Binding Character.CharacterClass.ClassSpells}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="ClassLevel" />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>-->
+    </UserControl.Resources>
     <Border Background="#FFFFFF">
         <StackPanel>
             <TabControl TabStripPlacement="Left"
@@ -296,6 +305,10 @@
                 
                 <TabItem Header="Magic"
                          FontSize="20">
+                    <Grid MinWidth="400"
+                          MinHeight="600">
+                        <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
+                    </Grid>
                     
                 </TabItem>
                 <TabItem Header="Spells"
@@ -310,10 +323,11 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Text="{Binding ClassLevelFilter, UpdateSourceTrigger=PropertyChanged}" />
+
                         <ListView Grid.Column="0"
                                   Grid.Row="1"
-                                  ItemsSource="{Binding SpellsView}">
+                                  ItemsSource="{Binding ClassSpellView.View}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <local:SpellsListItemView />

@@ -22,7 +22,7 @@
                     Command="{Binding DataContext.AddSpellToCharacterCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=2, AncestorType=UserControl}}"
                     CommandParameter="{Binding}"
                     Grid.Column="2" />
-            <TextBlock Text="{Binding SelectedClassLevel, FallbackValue=10}"
+            <TextBlock Text="{Binding ClassLevel, FallbackValue=10}"
                        Grid.Column="0"/>
             <Expander VerticalAlignment="Center"
 

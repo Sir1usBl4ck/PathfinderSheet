@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
@@ -57,7 +58,7 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
-
+            
             Attack1 = new Attack(_eventAggregator);
             Attack2 = new Attack(_eventAggregator);
             Attack3 = new Attack(_eventAggregator);
@@ -78,15 +79,7 @@ namespace UserInterface.Models
             {
                 attack.EventAggregator.Subscribe(attack);
             }
-
-
-
-
-
-
-
-
-
+            
             Serializer serializer = new Serializer();
 
             Abilities = serializer.LoadCollection<Ability>("Abilities");
@@ -109,6 +102,10 @@ namespace UserInterface.Models
                 save.EventAggregator = _eventAggregator;
                 save.EventAggregator.Subscribe(save);
             }
+
+            BonusList = new ObservableCollection<Bonus>();
+            BonusList.Add(new Bonus { BonusSource = "Armor", BonusType = BonusType.Armor, IsStackable = true, Value = 3 });
+            ArmorClass = new ArmorClass(_eventAggregator);
 
             Size = new Size(SizeType.Medium);
             CharacterClass = new CharacterClass();
@@ -222,6 +219,8 @@ namespace UserInterface.Models
             }
         }
         private int _availableSkillRanks;
+        private ObservableCollection<Bonus> _bonusList;
+
         public int AvailableSkillRanks
         {
             get
@@ -299,6 +298,28 @@ namespace UserInterface.Models
         public ObservableCollection<Spell> CharacterSpells { get; } = new ObservableCollection<Spell>();
         public ObservableCollection<GeneralFeat> CharacterFeats { get; } = new ObservableCollection<GeneralFeat>();
         public ObservableCollection<Attack> AttackList { get; } = new ObservableCollection<Attack>();
+        private ArmorClass _armorClass;
+        private long _xpToLevel;
+
+        public ArmorClass ArmorClass
+        {
+            get { return _armorClass; }
+            set
+            {
+                _armorClass = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Bonus> BonusList
+        {
+            get => _bonusList;
+            set
+            {
+                _bonusList = value;
+                _eventAggregator.Publish(new BonusListChangedEvent(_bonusList));
+            }
+        } 
 
         public Attack Attack1
         {
@@ -326,6 +347,29 @@ namespace UserInterface.Models
             set
             {
                 _attack3 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private long _oldXp;
+
+        public long OldXp
+        {
+            get => _oldXp;
+            set
+            {
+                _oldXp = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public long XpToLevel
+        {
+            get => _xpToLevel;
+            set
+            {
+               _xpToLevel = value;
                 OnPropertyChanged();
             }
         }
@@ -367,6 +411,7 @@ namespace UserInterface.Models
         public void SetExperience()
         {
             Experience = ExperienceProgression.ExperienceTable[Level];
+            XpToLevel = ExperienceProgression.ExperienceTable[Level+1];
         } //Move to Experience Class?
         public void UpdateCharacterClassSaves()
         {
@@ -425,23 +470,23 @@ namespace UserInterface.Models
         }
         public void UpdateExperienceTab()
         {
-            var xpToLevel = ExperienceProgression.ExperienceTable[Level];
+           
             var experience = Experience;
 
-            if (experience > xpToLevel)
+            if (experience > XpToLevel)
             {
-                while (experience > xpToLevel)
+                while (experience > XpToLevel)
                 {
                     Level++;
-                    xpToLevel = ExperienceProgression.ExperienceTable[Level];
+                    XpToLevel = ExperienceProgression.ExperienceTable[Level];
                 }
             }
             else
             {
-                while (experience < xpToLevel)
+                while (experience < XpToLevel)
                 {
                     Level--;
-                    xpToLevel = ExperienceProgression.ExperienceTable[Level];
+                    XpToLevel = ExperienceProgression.ExperienceTable[Level];
                 }
             }
         }
@@ -449,6 +494,7 @@ namespace UserInterface.Models
         {
             if (Level > 1)
             {
+                OldXp = XpToLevel;
                 UpdateExperienceTab();
                 UpdateAvailableSkillRanks();
             }

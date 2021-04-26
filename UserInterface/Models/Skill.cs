@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using UserInterface.EventModels;
+using UserInterface.Services;
 
 
 namespace UserInterface.Models
 {
-    public class Skill : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>, IHandle<AvailableSkillRanksChanged>
+    public class Skill : ObservableObject, IRollable, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>, IHandle<AvailableSkillRanksChanged>
     {
         private int _bonus;
         private List<Bonus> _bonusList;
@@ -35,6 +36,8 @@ namespace UserInterface.Models
         //public Ability Ability { get; set; }
 
         public string Name { get; set; }
+        public int BonusToRoll => Bonus;
+
         public AbilityType AbilityType
         {
             get => _abilityType;

@@ -79,10 +79,10 @@ namespace UserInterface.Models
         [JsonProperty("divine_focus")]
         public bool DivineFocus { get; set; }
 
-        [JsonProperty("sor")]
+        [JsonProperty("sorcerer")]
         public int? Sorcerer { get; set; }
 
-        [JsonProperty("wiz")]
+        [JsonProperty("wizard")]
         public int? Wizard { get; set; }
 
         [JsonProperty("cleric")]
@@ -212,7 +212,7 @@ namespace UserInterface.Models
         public int Id { get; set; }
 
         [JsonProperty("mythic")]
-        public int Mythic { get; set; }
+        public int? Mythic { get; set; }
 
         [JsonProperty("bloodrager")]
         public int? Bloodrager { get; set; }
@@ -247,9 +247,8 @@ namespace UserInterface.Models
         [JsonProperty("summoner_unchained")]
         public int? SummonerUnchained { get; set; }
 
-        public int SelectedClassLevel { get; set; }
-
-        public List<string> ClassList { get; set; }
+        public int ClassLevel { get; set; }
+        
     }
 
 

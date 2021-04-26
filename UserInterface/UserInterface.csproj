@@ -7,13 +7,77 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\ViewResources\Icons\AC.png" />
+    <None Remove="Views\ViewResources\Icons\agile.png" />
+    <None Remove="Views\ViewResources\Icons\charisma.png" />
+    <None Remove="Views\ViewResources\Icons\constitution.png" />
+    <None Remove="Views\ViewResources\Icons\fist.png" />
+    <None Remove="Views\ViewResources\Icons\flatfootedAC.png" />
+    <None Remove="Views\ViewResources\Icons\fortitude.png" />
+    <None Remove="Views\ViewResources\Icons\hitpoints.png" />
+    <None Remove="Views\ViewResources\Icons\initiative.png" />
+    <None Remove="Views\ViewResources\Icons\intelligence.png" />
+    <None Remove="Views\ViewResources\Icons\reflexes.png" />
+    <None Remove="Views\ViewResources\Icons\touchAC.png" />
+    <None Remove="Views\ViewResources\Icons\willpower.png" />
+    <None Remove="Views\ViewResources\Icons\wisdom.png" />
+    <None Remove="Views\ViewResources\Images\MockPortrait.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="d20tek-dicenotation" Version="3.2.3" />
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\d20Icon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\AC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\agile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\charisma.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\constitution.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\fist.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\flatfootedAC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\fortitude.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\hitpoints.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\initiative.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\intelligence.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\reflexes.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\touchAC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\willpower.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\wisdom.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Images\MockPortrait.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

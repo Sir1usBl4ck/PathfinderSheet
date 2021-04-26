@@ -1,1 +1,36 @@
-[{"Name":"FOR","SaveType":0,"Bonus":0,"BaseValue":0,"AbilityType":"Constitution","AbilityModifier":0,"IsGood":false,"Level":0},{"Name":"REF","SaveType":1,"Bonus":0,"BaseValue":0,"AbilityType":"Dexterity","AbilityModifier":0,"IsGood":false,"Level":0},{"Name":"WILL","SaveType":2,"Bonus":0,"BaseValue":0,"AbilityType":"Intelligence","AbilityModifier":0,"IsGood":false,"Level":0}]
+[
+    {
+        "Name": "FOR",
+        "SaveType": 0,
+        "Bonus": 0,
+        "BaseValue": 0,
+        "AbilityType": "Constitution",
+        "AbilityModifier": 0,
+        "IsGood": false,
+        "Level": 0,
+        "Icon": "pack://application:,,,/Views/ViewResources/Icons/fortitude.png"
+    },
+    {
+        "Name": "REF",
+        "SaveType": 1,
+        "Bonus": 0,
+        "BaseValue": 0,
+        "AbilityType": "Dexterity",
+        "AbilityModifier": 0,
+        "IsGood": false,
+        "Level": 0,
+        "Icon": "pack://application:,,,/Views/ViewResources/Icons/reflexes.png"
+    },
+
+    {
+        "Name": "WILL",
+        "SaveType": 2,
+        "Bonus": 0,
+        "BaseValue": 0,
+        "AbilityType": "Intelligence",
+        "AbilityModifier": 0,
+        "IsGood": false,
+        "Level": 0,
+        "Icon": "pack://application:,,,/Views/ViewResources/Icons/willpower.png"
+    }
+]

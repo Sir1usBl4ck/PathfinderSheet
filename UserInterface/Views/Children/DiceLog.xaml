@@ -17,14 +17,12 @@
                        Margin="3,0,3,0" />
             <TextBlock Text="{Binding Total}"
                        Margin="3,0,3,0"
-                       FontWeight="Bold"
-            />
+                       FontWeight="Bold"/>
             <TextBlock Text="[ roll:"
                        Margin="3,0,3,0" />
             <TextBlock Text="{Binding DiceResult, FallbackValue=10}"/>
             <TextBlock Text="]"
                        Margin="3,0,3,0" />
-
             <TextBlock Text="("
                        Margin="3,0,3,0" />
             <TextBlock Text="{Binding Expression}"

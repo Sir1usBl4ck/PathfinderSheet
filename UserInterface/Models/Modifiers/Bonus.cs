@@ -28,14 +28,13 @@ namespace UserInterface.Models
     }
     public class Bonus
     {
-        public string Name { get; set; }
+        public string BonusSource { get; set; }
         public int Value { get; set; }
         public BonusType BonusType { get; set; }
+        public bool IsStackable { get; set; }
 
         public Bonus()
         {
-            Name = "Default";
-            Value = 0;
             
         }
 

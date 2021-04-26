@@ -21,6 +21,7 @@ namespace UserInterface.Models
         public List<string> ClassSkillNames { get; } = new List<string>();
         public int SkillRanksPerLevel { get; set; } 
         public ObservableCollection<Spell> ClassSpells { get; } = new ObservableCollection<Spell>();
+        public bool IsCaster { get; set; }
         public bool IsPreparedCaster { get; set; }
         public bool IsSpontaneousCaster { get; set; }
         

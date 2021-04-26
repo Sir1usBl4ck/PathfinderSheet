@@ -15,7 +15,6 @@ namespace UserInterface.Models
     }
     public class ExperienceProgression : ObservableObject
     {
-        private EventAggregator _eventAggregator;
         private long[] _experienceTable;
         public string Name { get; set; }
         public Progression Progression { get; set; }
@@ -34,8 +33,7 @@ namespace UserInterface.Models
 
         public ExperienceProgression(Progression progression)
         {
-            _eventAggregator = new EventAggregator(); //this doesn't make sense doesn't it?
-            Progression = progression;
+           Progression = progression;
             GetTab();
 
         }
@@ -66,7 +64,7 @@ namespace UserInterface.Models
                     Name = "Slow";
                     ExperienceTable = new long[]
                     {
-                        0,3000,7500,14000,23000,35000,53000,77000,115000,
+                        0,0,3000,7500,14000,23000,35000,53000,77000,115000,
                         160000,235000,330000,475000,665000,955000,1350000,
                         1900000,2700000,3850000,5350000
                     };

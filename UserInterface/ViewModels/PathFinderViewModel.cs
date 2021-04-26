@@ -16,9 +16,11 @@ using System.Windows.Input;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
 using MathNet.Numerics.LinearAlgebra.Solvers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UserInterface.Data;
 using UserInterface.EventModels;
 using UserInterface.Models;
+using UserInterface.Services;
 using UserInterface.Views;
 using Size = UserInterface.Models.Size;
 using Type = UserInterface.Models.Type;
@@ -31,9 +33,9 @@ namespace UserInterface.ViewModels
 
 
         //EG:  1- Create private field for EventAggregator 
-        private CollectionViewSource _spellsView;
         private EventAggregator _eventAggregator;
-        private string _filterText;
+        private CollectionViewSource _classSpellsView;
+        private int _classLevelFilter;
 
         public Character Character { get; set; }
         public ObservableCollection<int> PossibleTotalPoints { get; } = new ObservableCollection<int>();
@@ -45,21 +47,28 @@ namespace UserInterface.ViewModels
         public ObservableCollection<GeneralFeat> Feats { get; } = new ObservableCollection<GeneralFeat>();
         public ObservableCollection<DiceRoll> DiceRolls { get; set; } = new ObservableCollection<DiceRoll>();
 
-        public ICollectionView SpellsView => this._spellsView.View;
+        public CollectionViewSource ClassSpellView
+        {
+            get => _classSpellsView;
+            set => _classSpellsView = value;
+        }
 
-        public string FilterText
+        public int ClassLevelFilter
         {
             get
             {
-                return _filterText;
+                return _classLevelFilter;
             }
             set
             {
-                _filterText = value;
-                this._spellsView.View.Refresh();
-                OnPropertyChanged("FilterText");
+                _classLevelFilter = value;
+                _classSpellsView?.View.Refresh();
+
+                OnPropertyChanged();
             }
         }
+
+        public RollService RollService { get; set; }
 
 
         public ICommand AddSpellToCharacterCommand { get; set; }
@@ -67,17 +76,31 @@ namespace UserInterface.ViewModels
         public ICommand RollSkillCommand { get; set; }
         public ICommand RollAttackCommand { get; set; }
         public ICommand RollDamageCommand { get; set; }
+        public ICommand RollCommand { get; set; }
+
+
+
+        //Visibility Properties
+        public bool IsEditAbilities { get; set; }
+        public bool IsEditSkills { get; set; }
+
+
+
 
         //----Constructor
         public PathFinderViewModel()
         {
+
             //EG:  2- Instantiate the EventAggregator
             _eventAggregator = new EventAggregator();
             _eventAggregator.Subscribe(this);
-
+            RollService = new RollService();
+            
 
             AddSpellToCharacterCommand = new RelayCommand<Spell>(AddSpellToCharacterExecute);
             AddFeatToCharacterCommand = new RelayCommand<GeneralFeat>(AddFeatToCharacterExecute);
+            RollCommand = new RelayCommand<IRollable>(RollExecute);
+
             RollSkillCommand = new RelayCommand<Skill>(RollSkillExecute);
             RollAttackCommand = new RelayCommand<Attack>(RollAttackExecute);
             RollDamageCommand = new RelayCommand<Attack>(RollDamageExecute);
@@ -89,13 +112,8 @@ namespace UserInterface.ViewModels
 
             Serializer serializer = new Serializer();
             Spells = serializer.LoadCollection<Spell>("Spells");
-            _spellsView = new CollectionViewSource();
-            _spellsView.Source = Spells;
-            _spellsView.Filter += _spellsView_Filter;
+
             Feats = serializer.LoadCollection<GeneralFeat>("Feats");
-
-
-
 
             //Races
             var norace = new Race("Select a Race", Type.Humanoid, SubType.Human, SizeType.Medium);
@@ -140,6 +158,7 @@ namespace UserInterface.ViewModels
 
             var Wizard = new CharacterClass("Wizard", 0.5, 6);
             Wizard.GoodSave = new Save(SaveType.Willpower);
+            Wizard.IsCaster = true;
             Wizard.IsPreparedCaster = true;
             Wizard.SkillRanksPerLevel = 2;
 
@@ -147,22 +166,26 @@ namespace UserInterface.ViewModels
             CharacterClasses.Add(Wizard);
 
             Character = new Character(_eventAggregator);
+
             Character.Race = Races[0];
             Character.Size = Sizes[0];
             Character.ExperienceProgression = Character.ExperienceProgressionList[1];
+            _classSpellsView = new CollectionViewSource();
+            Character.CharacterClass = CharacterClasses[1];
+            
         }
 
-        void _spellsView_Filter(object sender, FilterEventArgs e)
+
+        private void RollExecute(IRollable obj)
         {
-            if (string.IsNullOrEmpty(FilterText))
-            {
-                e.Accepted = true;
-                return;
-            }
+            RollService.RollExecute(this.DiceRolls, obj);
+        }
 
-
+        private void CharacterSpellsLvl1Filter(object sender, FilterEventArgs e)
+        {
             Spell spell = e.Item as Spell;
-            if (spell.Name.ToUpper().Contains(FilterText.ToUpper()))
+
+            if (spell?.ClassLevel == ClassLevelFilter)
             {
                 e.Accepted = true;
             }
@@ -171,6 +194,7 @@ namespace UserInterface.ViewModels
                 e.Accepted = false;
             }
         }
+
 
         private void AddSpellToCharacterExecute(Spell spell)
         {
@@ -196,8 +220,9 @@ namespace UserInterface.ViewModels
             DiceResult result = dice.Roll(new RandomDieRoller());
             DiceRoll roll = new DiceRoll
             {
-                Expression = result.DiceExpression, 
-                Total = result.Value, Sender = skill.Name, 
+                Expression = result.DiceExpression,
+                Total = result.Value,
+                Sender = skill.Name,
                 DiceResult = Convert.ToInt32(result.RollsDisplayText)
             };
 
@@ -229,25 +254,28 @@ namespace UserInterface.ViewModels
         public void GetClassSpells(CharacterClass characterClass)
         {
 
-
-            Character.CharacterClass.ClassSpells.Clear();
-
-            foreach (var spell in Spells)
+            if (characterClass.IsCaster)
             {
-                int classSpellLevel;
-                object classSpell = spell.GetType().GetProperty($"{characterClass.Name}")?.GetValue(spell, null);
 
+                Character.CharacterClass.ClassSpells.Clear();
 
-                if (classSpell != null)
+                foreach (var spell in Spells)
                 {
 
-                    classSpellLevel = (int)spell.GetType().GetProperty($"{characterClass.Name}").GetValue(spell, null);
-                    spell.SelectedClassLevel = classSpellLevel;
-                    if (classSpellLevel <= Character.Level)
+                    object? spellObj = spell.GetType().GetProperty($"{characterClass.Name}").GetValue(spell, null);
+
+                    if (spellObj != null)
                     {
+                        var spellClassLevel = (int)spellObj;
+                        spell.ClassLevel = spellClassLevel;
                         Character.CharacterClass.ClassSpells.Add(spell);
                     }
+
                 }
+                ClassSpellView.Source = Character.CharacterClass.ClassSpells;
+                ClassSpellView.Filter += CharacterSpellsLvl1Filter;
+                ClassSpellView.View.Refresh();
+
             }
         }
         public void Handle(RaceChangedEvent message)

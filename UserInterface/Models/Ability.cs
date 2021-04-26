@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using UserInterface.EventModels;
+using UserInterface.Services;
 
 namespace UserInterface.Models
 {
@@ -65,6 +66,7 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
+
         public int BaseScore
         {
             get => _baseScore;

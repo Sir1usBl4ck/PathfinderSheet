@@ -9,9 +9,12 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Views/Styles/MainStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
             <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
             <DataTemplate DataType="{x:Type viewModels:PathFinderViewModel}">
-                <views:PathFinderView />
+                <views:CharacterView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

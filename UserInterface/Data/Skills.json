@@ -1,1 +1,352 @@
-[{"Name":"Acrobatics","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Appraise","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Bluff","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Climb","AbilityType":"Strength","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Craft","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Diplomacy","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Disable Device","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Disguise","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Escape Artist","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Fly","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Handle Animal","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Heal","AbilityType":"Intelligence","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Intimidate","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (arcana)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (dungeoneering)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (engineering)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (geography)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (history)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (local)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (nature)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (nobility)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (planes)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Knowledge (religion)","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Linguistics","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Perception","AbilityType":"Intelligence","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Perform","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Profession","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Ride","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Sense Motive","AbilityType":"Intelligence","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Sleight of Hand","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Spellcraft","AbilityType":"Constitution","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Stealth","AbilityType":"Dexterity","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Survival","AbilityType":"Intelligence","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":false,"EventAggregator":{}},{"Name":"Swim","AbilityType":"Strength","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":false,"ArmorCheckPenalty":true,"EventAggregator":{}},{"Name":"Use Magic Device","AbilityType":"Wisdom","Rank":0,"Bonus":0,"IsClass":false,"TrainedOnly":true,"ArmorCheckPenalty":false,"EventAggregator":{}}]
+[
+    {
+        "Name": "Acrobatics",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Appraise",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Bluff",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Climb",
+        "AbilityType": "Strength",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Craft",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Diplomacy",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Disable Device",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Disguise",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Escape Artist",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Fly",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Handle Animal",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Heal",
+        "AbilityType": "Intelligence",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Intimidate",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (arcana)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (dungeoneering)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (engineering)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (geography)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (history)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (local)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (nature)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (nobility)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (planes)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Knw. (religion)",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Linguistics",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Perception",
+        "AbilityType": "Intelligence",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Perform",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Profession",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Ride",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Sense Motive",
+        "AbilityType": "Intelligence",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Sleight of Hand",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Spellcraft",
+        "AbilityType": "Constitution",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Stealth",
+        "AbilityType": "Dexterity",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Survival",
+        "AbilityType": "Intelligence",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Swim",
+        "AbilityType": "Strength",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": false,
+        "ArmorCheckPenalty": true,
+        "EventAggregator": {}
+    },
+    {
+        "Name": "Use Magic Device",
+        "AbilityType": "Wisdom",
+        "Rank": 0,
+        "Bonus": 0,
+        "IsClass": false,
+        "TrainedOnly": true,
+        "ArmorCheckPenalty": false,
+        "EventAggregator": {}
+    }
+]
