@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views.UserControls
+namespace UserInterface.Views.MainTabViews.DataTemplates
 {
     /// <summary>
-    /// Interaction logic for AbilityListItem.xaml
+    /// Interaction logic for SkillListItemEditable.xaml
     /// </summary>
-    public partial class AbilityListItem : UserControl
+    public partial class SkillListItemEditable : UserControl
     {
-        public AbilityListItem()
+        public SkillListItemEditable()
         {
             InitializeComponent();
         }

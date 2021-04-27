@@ -77,22 +77,13 @@ namespace UserInterface.ViewModels
         public ICommand RollAttackCommand { get; set; }
         public ICommand RollDamageCommand { get; set; }
         public ICommand RollCommand { get; set; }
-
-
-
-        //Visibility Properties
-        public bool IsEditAbilities { get; set; }
-        public bool IsEditSkills { get; set; }
-
-
-
-
+        
         //----Constructor
-        public PathFinderViewModel()
+        public PathFinderViewModel(EventAggregator eventAggregator)
         {
 
             //EG:  2- Instantiate the EventAggregator
-            _eventAggregator = new EventAggregator();
+            _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
             RollService = new RollService();
             

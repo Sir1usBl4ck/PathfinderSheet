@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:sharedViews="clr-namespace:UserInterface.Views.MainTabViews.SharedViews"
+                    xmlns:dataTemplates="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates">
+
+
+
+
+
+
+    <!--#region Saves-->
+    <DataTemplate x:Key="SaveEditDataTemplate">
+        <ContentControl >
+            <ContentControl.Content>
+                <sharedViews:SavingThrowsEditListItem/>
+            </ContentControl.Content>
+        </ContentControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SaveDataTemplate">
+        <ContentControl >
+            <ContentControl.Content>
+                <sharedViews:SavingThrowsListItem/>
+            </ContentControl.Content>
+        </ContentControl>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <!--#region Abilities-->
+    <DataTemplate x:Key="AbilityEditDataTemplate">
+        <dataTemplates:AbilityListItemEditable/>
+    </DataTemplate>
+    <DataTemplate x:Key="AbilityDataTemplate">
+        <dataTemplates:AbilityListItem/>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <!--#region Skills-->
+    <DataTemplate x:Key="SkillEditDataTemplate">
+        <dataTemplates:SkillListItemEditable/>
+    </DataTemplate>
+    <DataTemplate x:Key="SkillDataTemplate">
+        <dataTemplates:SkillListItemView/>
+    </DataTemplate>
+    <!--#endregion-->
+
+
+
+
+
+</ResourceDictionary>

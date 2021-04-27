@@ -64,37 +64,47 @@
             </StackPanel.Background>
             <TextBlock Text="Armor Class &amp; Saving Throws" TextAlignment="Center"  Width="auto" Style="{StaticResource Menu }">
             </TextBlock>
-            <WrapPanel HorizontalAlignment="Center">
-                <StackPanel Margin="30">
+            <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,0">
+                <StackPanel Margin="30,0">
                     <Image Source="../../ViewResources/Icons/AC.png" Width="30"/>
                     <TextBlock Text="AC" TextAlignment="Center" FontSize="18"/>
                     <TextBlock Text="{Binding Character.ArmorClass.Total, FallbackValue=10}" TextAlignment="Center" FontSize="18"/>
                 </StackPanel>
-                <StackPanel Margin="30">
+                <StackPanel Margin="30,0">
                     <Image Source="../../ViewResources/Icons/flatfootedAC.png" Width="30"/>
                     <TextBlock Text="Flat-Footed" TextAlignment="Center" FontSize="18"/>
                     <TextBlock Text="{Binding Character.ArmorClass.Total, FallbackValue=10}" TextAlignment="Center" FontSize="18"/>
                 </StackPanel>
-                <StackPanel Margin="30">
+                <StackPanel Margin="30,0">
                     <Image Source="../../ViewResources/Icons/touchAC.png" Width="30"/>
                     <TextBlock Text="Touch" TextAlignment="Center" FontSize="18"/>
                     <TextBlock Text="{Binding Character.ArmorClass.Total, FallbackValue=10}" TextAlignment="Center" FontSize="18"/>
                 </StackPanel>
-
-
-                <ItemsControl ItemsSource="{Binding Character.Saves}" Margin="20,0,0,0">
+                <ItemsControl x:Name="SavesControl" ItemsSource="{Binding Character.Saves}" Margin="20,0,0,0">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Setter Property="ItemTemplate" Value="{StaticResource SaveDataTemplate}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=EditSavesButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="ItemTemplate" Value="{StaticResource SaveEditDataTemplate}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"  Margin="0,30,0,0"/>
+                            <StackPanel Orientation="Horizontal"  Margin="0,0,0,0"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <sharedViews:SavingThrowsListItem/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ItemsControl>
             </WrapPanel>
+            
+            <ToggleButton Name="EditSavesButton" 
+                          Style="{StaticResource EditButton}"
+                          Content="Edit" 
+                          HorizontalAlignment="Right" 
+                          Margin="10,0,20,0"/>
+                
         </StackPanel>
 
     </Grid>

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace UserInterface.ViewModels
 {
-    public class WindowViewModel : BaseViewModel
+    public class WindowViewModel : BaseViewModel , IHandle<ViewChangedEvent>
     {
         private BaseViewModel _currentView;
+        private EventAggregator _eventAggregator = new EventAggregator();
 
         public BaseViewModel CurrentView
         {
@@ -19,7 +20,7 @@ namespace UserInterface.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public void ChangeView(BaseViewModel viewModel)
         {
             CurrentView = viewModel;
@@ -28,7 +29,7 @@ namespace UserInterface.ViewModels
 
         public WindowViewModel()
         {
-            CurrentView = new PathFinderViewModel();
+            CurrentView = new PathFinderViewModel(_eventAggregator);
         }
     }
 }

@@ -154,6 +154,7 @@ namespace UserInterface.Models
             }
             SetBonus();
             OnPropertyChanged(nameof(Bonus));
+            OnPropertyChanged(nameof(BonusToRoll));
         }
         public void Handle(LevelChangedEvent message)
         {

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             xmlns:characterSkills ="clr-namespace:UserInterface.Views.MainTabViews.CharacterTabViews.CharacterSkills"
+             xmlns:dataTemplates ="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
@@ -15,22 +15,24 @@
                     <UniformGrid Columns="3" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                   <characterSkills:SkillListItemView/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Setter Property="ItemTemplate" Value="{StaticResource SkillDataTemplate}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=EditSkillsButton, Path=IsChecked}" Value="True">
+                            <Setter Property="ItemTemplate" Value="{StaticResource SkillEditDataTemplate}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
 
         </ItemsControl>
-        <Button x:Name="EditSkills" Content="Edit"  Width="50" HorizontalAlignment="Right" Margin="10,10,20,0">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0,0.2" EndPoint="0,0.75">
-                    <GradientStop Color="{StaticResource OrangeButton}" Offset="0.25"/>
-                    <GradientStop Color="DarkOrange" Offset="0.75"/>
-                </LinearGradientBrush>
-            </Button.Background>
-
-        </Button>
+        <TextBlock>
+            <Run Text="Points Left:"/>
+            <Run Text="{Binding Character.AvailableSkillRanks}"></Run>
+        </TextBlock>
+        <ToggleButton x:Name="EditSkillsButton" Style="{StaticResource EditButton}" Content="Edit" HorizontalAlignment="Right" Margin="10,10,20,0">
+            </ToggleButton>
 
 
     </StackPanel>

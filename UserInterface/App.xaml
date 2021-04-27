@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Views/Styles/MainStyles.xaml"/>
+                <ResourceDictionary Source="Views/Styles/DataTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
             <DataTemplate DataType="{x:Type viewModels:PathFinderViewModel}">

@@ -1,25 +1,29 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sharedViews="clr-namespace:UserInterface.Views.MainTabViews.SharedViews">
 
+
+
+    <!--#region Colors-->
 
     <Color x:Key="BlueGray">#2f3c4f</Color>
     <Color x:Key="DarkBlueGray">#10151b</Color>
     <Color x:Key="DarkGray">#1c2124</Color>
     <Color x:Key="LightBlueGray">#34526e</Color>
     <Color x:Key="ColdLightBlueGray">#3c4b62</Color>
-    <Color x:Key="GreenButton">#3e7c33</Color>
-    <Color x:Key="BlueButton">#00a7e8</Color>
-    <Color x:Key="OrangeButton">#fbc153</Color>
+    <Color x:Key="Green">#3e7c33</Color>
+    <Color x:Key="Blue">#00a7e8</Color>
+    <Color x:Key="Orange">#fbc153</Color>
     <SolidColorBrush x:Key="BluGrayBrush" Color="{StaticResource BlueGray}"/>
     <SolidColorBrush x:Key="DarkBlueGrayBrush" Color="{StaticResource DarkBlueGray}"/>
     <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}"/>
     <SolidColorBrush x:Key="LightBlueGrayBrush" Color="{StaticResource LightBlueGray}"/>
     <SolidColorBrush x:Key="ColdLightBlueGrayBrush" Color="{StaticResource ColdLightBlueGray}"/>
-    <SolidColorBrush x:Key="GreeButtonBrush" Color="{StaticResource GreenButton}"/>
-    <SolidColorBrush x:Key="BlueButtonBrush" Color="{StaticResource BlueButton}"/>
-    <SolidColorBrush x:Key="OrangeButtonBrush" Color="{StaticResource OrangeButton}"/>
+    <SolidColorBrush x:Key="GreeButtonBrush" Color="{StaticResource Green}"/>
+    <SolidColorBrush x:Key="BlueButtonBrush" Color="{StaticResource Blue}"/>
+    <SolidColorBrush x:Key="OrangeButtonBrush" Color="{StaticResource Orange}"/>
 
-
+    <!--#endregion-->
 
     <!--#region Transparent Button-->
     <Style TargetType="Button">
@@ -42,14 +46,25 @@
     <!--#endregion-->
 
     <!--#region Green Button-->
-    
+
     <!--#endregion -->
 
+    <!--#region EditButton-->
+    <Style x:Key="EditButton" TargetType="ToggleButton">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0.2" EndPoint="0,0.75">
+                    <GradientStop Color="{StaticResource Orange}" Offset="0.25" />
+                    <GradientStop Color="DarkOrange" Offset="0.75" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
 
-
-
-
-
+    <!--#region MainTextBlock-->
     <Style  TargetType="TextBlock">
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontFamily" Value="Patrick Hand"/>
@@ -65,7 +80,27 @@
                     BlurRadius="0.0" />
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <!--#endregion-->
 
+    <!--#region MainTextBox-->
+    <Style  TargetType="TextBox">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontFamily" Value="Patrick Hand"/>
+        <Setter Property="Foreground" Value="Ivory"/>
+        <Setter Property="Background" Value="{StaticResource DarkGrayBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter  Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect
+                    ShadowDepth="2"
+                    Direction="0"
+                    Color="Black"
+                    Opacity="0.35"
+                    BlurRadius="0.0" />
+            </Setter.Value>
+        </Setter>
     </Style>
     <!--#endregion-->
 
@@ -78,7 +113,7 @@
     </Style>
     <!--#endregion-->
 
-    <!--#region TabItem-->
+    <!--#region MainTabControl-->
 
     <Style TargetType="TabControl">
         <Setter Property="Background">
@@ -173,15 +208,13 @@
                     BlurRadius="0.0" />
             </Setter.Value>
         </Setter>
-           
-      
+
+
 
     </Style>
     <!--#endregion-->
 
-
-
-    <!--#region ToolTip-->
+    <!--#region MainToolTip-->
     <Style x:Key="{x:Type ToolTip}"
            TargetType="{x:Type ToolTip}">
         <Setter Property="Background"

@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             xmlns:userControls="clr-namespace:UserInterface.Views.UserControls"
-             xmlns:models="clr-namespace:UserInterface.Models"
              xmlns:sharedViews="clr-namespace:UserInterface.Views.MainTabViews.SharedViews"
              xmlns:characterView="clr-namespace:UserInterface.Views.MainTabViews.CharacterTabViews"
              mc:Ignorable="d" 
@@ -45,7 +43,8 @@
                                 <MultiBinding StringFormat="{}{0}/{1}">
                                     <Binding Path="Character.OldXp" />
                                     <Binding Path="Character.XpToLevel" />
-                                </MultiBinding></TextBlock.Text>
+                                </MultiBinding>
+                            </TextBlock.Text>
                         </TextBlock>
                     </UniformGrid>
 
@@ -106,28 +105,32 @@
                                                        DockPanel.Dock="Left"
                                                        Margin="0,2" />
                                         </StackPanel>
-                                        <!--<StackPanel>
-                                    <TextBlock Text="STR" Margin="10,0" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="DEX" Margin="10,0" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="CON" Margin="10,0" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="INT" Margin="10,0" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="WIS" Margin="10,0" FontSize="18" FontWeight="Bold"/>
-                                    <TextBlock Text="CHA" Margin="10,0" FontSize="18" FontWeight="Bold"/>
-                                </StackPanel>-->
                                         <ItemsControl ItemsSource="{Binding Character.Abilities}" Margin="20,0,0,0">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <userControls:AbilityListItem />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.Style>
+                                                <Style TargetType="ItemsControl">
+                                                    <Setter Property="ItemTemplate" Value="{StaticResource AbilityDataTemplate}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=EditAbilitiesButton, Path=IsChecked}" Value="True">
+                                                            <Setter Property="ItemTemplate" Value="{StaticResource AbilityEditDataTemplate}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ItemsControl.Style>
                                         </ItemsControl>
 
                                     </StackPanel>
 
+
                                 </StackPanel>
+
                             </DockPanel>
-                            <DockPanel>
-                                <TextBlock Margin="20,20,0,0">
+                            <StackPanel>
+                                <ToggleButton x:Name="EditAbilitiesButton" 
+                                        Style="{StaticResource EditButton}"
+                                        Content="Edit"   HorizontalAlignment="Right" Margin="10,10,20,0" >
+
+                                </ToggleButton>
+                                <TextBlock Margin="20,0,0,0">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} {1}">
                                             <Binding Path="Character.CharacterClass.Name" FallbackValue="Rogue" />
@@ -135,10 +138,10 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                            </DockPanel>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
-                    
+
                     <sharedViews:DiceLogView/>
 
                 </StackPanel>
@@ -152,7 +155,7 @@
 
 
                     <TabItem Header="General"  Height="60">
-                       <local:CharacterGeneralView />
+                        <local:CharacterGeneralView />
                     </TabItem>
                     <TabItem Header="Skills" Width="200" Height="60">
                         <local:SkillsListView/>

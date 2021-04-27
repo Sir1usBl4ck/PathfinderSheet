@@ -15,7 +15,7 @@
                     CommandParameter="{Binding}"                    >
                 <Image Source="/Resources/d20Icon.jpg"></Image>
             </Button>
-            <TextBlock Text="{Binding Name}"
+            <TextBlock Text="{Binding Name, FallbackValue=acrobatics}"
                        TextAlignment="Left"
                        Margin="5,0"
                        VerticalAlignment="Center"
