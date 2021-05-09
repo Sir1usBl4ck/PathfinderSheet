@@ -12,6 +12,6 @@ namespace UserInterface.Models
         
         public string Description { get; set; }
 
-        public List<Penalty> PenaltyList { get; set; }
+        
     }
 }

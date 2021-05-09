@@ -16,9 +16,7 @@ namespace UserInterface.Services
 
         static ConditionsHelper()
         {
-            ConditionList = new ObservableCollection<Condition>();
-            var blind = new Condition();
-            blind.
+            
 
         }
         

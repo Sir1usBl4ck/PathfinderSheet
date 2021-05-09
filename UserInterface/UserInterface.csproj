@@ -55,6 +55,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PathfinderSheetModels\PathfinderSheetModels.csproj" />
+    <ProjectReference Include="..\PathfinderSheetViewModels\PathfinderSheetViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Views\ViewResources\Icons\AC.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
