@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="UserInterface.Views.MainTabViews.CombatViews.AddBuffView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.CombatViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="{StaticResource DarkBlueGrayBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel >
+            <WrapPanel>
+                <TextBlock Text="Name" />
+                <TextBox Width="150" Margin="10" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Text="Bonus Target" />
+                <!--<ComboBox Width="150" Margin="10" ItemsSource="{Binding Source={StaticResource BonusTarget}}" SelectedItem="{Binding NewBonus.Target}" />-->
+                <TextBlock Text="Value" />
+                <TextBox Width="50" Margin="10" Text="{Binding NewBonus.Value, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="Bonus Type" />
+                <ComboBox Width="150" Margin="10" ItemsSource="{Binding Source={StaticResource BonusType}}" SelectedItem="{Binding NewBonus.BonusType}"/>
+                <CheckBox Content="Is Stackable" IsChecked="{Binding NewBonus.IsStackable}"/>
+                <TextBlock Text="Target Name"/>
+                <TextBox Width="150" Margin="10" Text="{Binding NewBonus.TargetName}">
+                    
+                </TextBox>
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center">
+                <Button Content="Add Bonus" Style="{StaticResource GreenButton}" Width="120" Margin="10" 
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor , AncestorLevel=2, AncestorType=ContentControl }, Path=DataContext.AddBonusToBuffListCommand}"/>
+                <Button Content="Remove Bonus" 
+                        Style="{StaticResource RedButton}" 
+                        Width="120" Margin="10"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor , AncestorLevel=2, AncestorType=ContentControl }, Path=DataContext.RemoveBonusFromBuffListCommand}"
+                        CommandParameter="{Binding ElementName=BonusListView, Path=SelectedItem}"/>
+                       
+            </WrapPanel>
+
+        </StackPanel >
+        
+        <ListView Name="BonusListView" Grid.Row="1" 
+                  Margin="10" ItemsSource="{Binding BonusList}" 
+                  Background="{StaticResource DarkGrayBrush}"
+                  Width="Auto">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Target" Width="150" DisplayMemberBinding="{Binding Target}"/>
+                    <GridViewColumn Header="Value" Width="50" DisplayMemberBinding="{Binding Value}" />
+                    <GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding BonusType}"/>
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+        <Button Content="Save Buff" Grid.Row="2" 
+                Style="{StaticResource GreenButton}" 
+                Width="150" Height="50"
+                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor , AncestorLevel=2, AncestorType=ContentControl }, Path=DataContext.AddBuffToListCommand}" CommandParameter="{Binding}"/>
+
+
+
+
+    </Grid>
+</UserControl>

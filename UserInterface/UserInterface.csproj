@@ -8,20 +8,43 @@
 
   <ItemGroup>
     <None Remove="Views\ViewResources\Icons\AC.png" />
-    <None Remove="Views\ViewResources\Icons\agile.png" />
+    <None Remove="Views\ViewResources\Icons\axe-sword.png" />
+    <None Remove="Views\ViewResources\Icons\broken-heart.png" />
     <None Remove="Views\ViewResources\Icons\charisma.png" />
+    <None Remove="Views\ViewResources\Icons\cog.png" />
     <None Remove="Views\ViewResources\Icons\constitution.png" />
-    <None Remove="Views\ViewResources\Icons\fist.png" />
+    <None Remove="Views\ViewResources\Icons\critical.png" />
+    <None Remove="Views\ViewResources\Icons\crossed-swords.png" />
+    <None Remove="Views\ViewResources\Icons\damage.png" />
+    <None Remove="Views\ViewResources\Icons\dexterity.png" />
+    <None Remove="Views\ViewResources\Icons\dice-twenty-faces-twenty.png" />
     <None Remove="Views\ViewResources\Icons\flatfootedAC.png" />
     <None Remove="Views\ViewResources\Icons\fortitude.png" />
+    <None Remove="Views\ViewResources\Icons\heavy-arrow.png" />
     <None Remove="Views\ViewResources\Icons\hitpoints.png" />
+    <None Remove="Views\ViewResources\Icons\hitpoints_minus.png" />
+    <None Remove="Views\ViewResources\Icons\hitpoints_plus.png" />
     <None Remove="Views\ViewResources\Icons\initiative.png" />
     <None Remove="Views\ViewResources\Icons\intelligence.png" />
+    <None Remove="Views\ViewResources\Icons\multishot.png" />
+    <None Remove="Views\ViewResources\Icons\nonlethal.png" />
+    <None Remove="Views\ViewResources\Icons\nonlethal_mins.png" />
+    <None Remove="Views\ViewResources\Icons\nonlethal_plus.png" />
+    <None Remove="Views\ViewResources\Icons\powerattack.png" />
+    <None Remove="Views\ViewResources\Icons\ranged.png" />
     <None Remove="Views\ViewResources\Icons\reflexes.png" />
+    <None Remove="Views\ViewResources\Icons\sharp-axe.png" />
+    <None Remove="Views\ViewResources\Icons\sneak.png" />
+    <None Remove="Views\ViewResources\Icons\spell-book.png" />
+    <None Remove="Views\ViewResources\Icons\star.png" />
+    <None Remove="Views\ViewResources\Icons\strength.png" />
     <None Remove="Views\ViewResources\Icons\touchAC.png" />
+    <None Remove="Views\ViewResources\Icons\twohanded.png" />
     <None Remove="Views\ViewResources\Icons\willpower.png" />
     <None Remove="Views\ViewResources\Icons\wisdom.png" />
     <None Remove="Views\ViewResources\Images\MockPortrait.jpg" />
+    <None Remove="Views\ViewResources\Images\PathfinderDigitalSheetLogo_blackRed.png" />
+    <None Remove="Views\ViewResources\Images\PathfinderDigitalSheetLogo_WhiteOrange.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,22 +55,76 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\d20Icon.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Views\ViewResources\Icons\AC.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Views\ViewResources\Icons\agile.png">
+    <Resource Include="Views\ViewResources\Icons\axe-sword.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\broken-heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\dice-twenty-faces-twenty.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\ranged.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\sharp-axe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\sneak.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\crossed-swords.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\dexterity.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Views\ViewResources\Icons\charisma.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Views\ViewResources\Icons\cog.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Views\ViewResources\Icons\constitution.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Views\ViewResources\Icons\fist.png">
+    <Resource Include="Views\ViewResources\Icons\heavy-arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\hitpoints_minus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\hitpoints_plus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\critical.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\nonlethal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\nonlethal_mins.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\nonlethal_plus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\powerattack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\damage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\spell-book.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\star.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\strength.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Views\ViewResources\Icons\flatfootedAC.png">
@@ -68,6 +145,12 @@
     <Resource Include="Views\ViewResources\Icons\reflexes.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Views\ViewResources\Icons\multishot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Icons\twohanded.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Views\ViewResources\Icons\touchAC.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -80,10 +163,19 @@
     <Resource Include="Views\ViewResources\Images\MockPortrait.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Views\ViewResources\Images\PathfinderDigitalSheetLogo_blackRed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\ViewResources\Images\PathfinderDigitalSheetLogo_WhiteOrange.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Data\Abilities.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\CharacterClasses.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Data\Feats.json">

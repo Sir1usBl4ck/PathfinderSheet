@@ -1,0 +1,90 @@
+[
+    {
+        "Name": "Barbarian",
+        "HitDice": 12,
+        "BaBProgression": 1.0,
+        "GoodSave": {
+            "EventAggregator": null,
+            "Name": null,
+            "BonusToRoll": 0,
+            "SaveType": 0,
+            "Score": 0,
+            "BaseValue": 0,
+            "AbilityType": "Strength",
+            "AbilityModifier": 0,
+            "IsGood": false,
+            "Level": 0,
+            "Bonus": 0,
+            "BonusList": [],
+            "icon": null
+        },
+        "ClassSkillNames": [
+            "Acrobatics",
+            "Climb",
+            "Craft",
+            "Handle Animal",
+            "Intimidate",
+            "Knowledge (nature)",
+            "Perception",
+            "Ride",
+            "Survival",
+            "Swim"
+        ],
+        "SkillRanksPerLevel": 4,
+        "ClassSpells": [],
+        "IsCaster": false,
+        "IsPreparedCaster": false,
+        "IsSpontaneousCaster": false
+    },
+    {
+        "Name": "Wizard",
+        "HitDice": 6,
+        "BaBProgression": 0.5,
+        "GoodSave": {
+            "EventAggregator": null,
+            "Name": null,
+            "BonusToRoll": 0,
+            "SaveType": 2,
+            "Score": 0,
+            "BaseValue": 0,
+            "AbilityType": "Strength",
+            "AbilityModifier": 0,
+            "IsGood": false,
+            "Level": 0,
+            "Bonus": 0,
+            "BonusList": [],
+            "icon": null
+        },
+        "ClassSkillNames": [],
+        "SkillRanksPerLevel": 2,
+        "ClassSpells": [],
+        "IsCaster": true,
+        "IsPreparedCaster": true,
+        "IsSpontaneousCaster": false,
+        "SpellsPerLevel": [
+
+            [ 3, 1, 0, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 4, 2, 0, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 4, 2, 1, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 4, 3, 2, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 4, 3, 2, 1, 0, 0, 0, 0, 0, 0 ],
+            [ 4, 3, 3, 2, 0, 0, 0, 0, 0, 0 ],
+            [ 4, 4, 3, 2, 1, 0, 0, 0, 0, 0 ],
+            [ 4, 4, 3, 3, 2, 0, 0, 0, 0, 0 ],
+            [ 4, 4, 4, 3, 2, 1, 0, 0, 0, 0 ],
+            [ 4, 4, 4, 3, 3, 2, 0, 0, 0, 0 ],
+            [ 4, 4, 4, 4, 3, 2, 1, 0, 0, 0 ],
+            [ 4, 4, 4, 4, 3, 3, 2, 0, 0, 0 ],
+            [ 4, 4, 4, 4, 4, 3, 2, 1, 0, 0 ],
+            [ 4, 4, 4, 4, 4, 3, 3, 2, 0, 0 ],
+            [ 4, 4, 4, 4, 4, 4, 3, 2, 1, 0 ],
+            [ 4, 4, 4, 4, 4, 4, 3, 3, 2, 0 ],
+            [ 4, 4, 4, 4, 4, 4, 4, 3, 2, 1 ],
+            [ 4, 4, 4, 4, 4, 4, 4, 3, 3, 2 ],
+            [ 4, 4, 4, 4, 4, 4, 4, 4, 3, 3 ],
+            [ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 ]
+
+        ]
+
+    }
+]

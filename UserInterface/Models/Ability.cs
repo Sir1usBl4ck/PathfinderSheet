@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using UserInterface.EventModels;
+using UserInterface.Models.Modifiers;
 using UserInterface.Services;
 
 namespace UserInterface.Models
@@ -26,37 +28,24 @@ namespace UserInterface.Models
         [EnumMember(Value = "Charisma")]
         Charisma
     }
+
     [Serializable]
-    public class Ability : ObservableObject
+    public class Ability : ObservableObject, IBonusable, IHandle<BonusListChangedEvent>
+
     {
         private string _name;
-        private int _score;
-        private int _modifier;
         private int _baseScore;
-        private ObservableCollection<int> _baseValues;
         private EventAggregator _eventAggregator;
         private int _bonus;
-        private List<Bonus> _bonusList;
-
+        private ObservableCollection<Bonus> _bonusList;
         public Ability()
         {
             BaseScore = 10;
-            BaseValues.Add(7);
-            BaseValues.Add(8);
-            BaseValues.Add(9);
-            BaseValues.Add(10);
-            BaseValues.Add(11);
-            BaseValues.Add(12);
-            BaseValues.Add(13);
-            BaseValues.Add(14);
-            BaseValues.Add(15);
-            BaseValues.Add(16);
-            BaseValues.Add(17);
-            BaseValues.Add(18);
-        }
+            BonusList = new ObservableCollection<Bonus>();
 
+
+        }
         public AbilityType Type { get; set; }
-        public ObservableCollection<int> BaseValues { get; } = new ObservableCollection<int>();
         public string Name
         {
             get => _name;
@@ -66,7 +55,6 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
         public int BaseScore
         {
             get => _baseScore;
@@ -74,47 +62,33 @@ namespace UserInterface.Models
             {
                 _baseScore = value;
                 OnPropertyChanged();
+                OnPropertyChanged("Score");
+                OnPropertyChanged("Modifier");
                 PublishAbilityChange();
 
             }
         }
-        public int Score
-        {
-            get => _score;
-
-            set
-            {
-                _score = value;
-                OnPropertyChanged();
-                Modifier = (_score - _score % 2) / 2 - 5;
-
-            }
-        }
-        public int Modifier
-        {
-            get => _modifier;
-            set
-            {
-                _modifier = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Score => _baseScore + _bonusList.Sum(a => a.Value);
+        public int Modifier => (Score - Score % 2) / 2 - 5;
         public int PointCost { get; set; }
         public int Bonus
         {
-            get { return _bonus; }
+            get => _bonusList.Sum(item => item.Value);
             set
             {
+
                 _bonus = value;
+                OnPropertyChanged();
+                OnPropertyChanged("Score");
+                OnPropertyChanged("Modifier");
             }
         }
-        public List<Bonus> BonusList
+        public ObservableCollection<Bonus> BonusList
         {
             get => _bonusList;
             set
             {
                 _bonusList = value;
-                Bonus = BonusList.Sum(item => item.Value);
                 OnPropertyChanged();
                 OnPropertyChanged("Score");
             }
@@ -124,15 +98,20 @@ namespace UserInterface.Models
             get => _eventAggregator;
             set => _eventAggregator = value;
         }
-
+        public ObservableCollection<int> BaseValues { get; } = new ObservableCollection<int>();
+        public string Icon { get; set; }
+        public void CalculateBonus()
+        {
+            Bonus = _bonusList.Sum(item => item.Value);
+        }
         private void PublishAbilityChange()
         {
-            _eventAggregator?.Publish(new AbilityChangedEvent(this));  // is there a better way to handle the Null _eventAggregator?
+            _eventAggregator?.Publish(new AbilityChangedEvent(this)); 
 
         }
-
-
-
-
+        public void Handle(BonusListChangedEvent message)
+        {
+           
+        }
     }
 }

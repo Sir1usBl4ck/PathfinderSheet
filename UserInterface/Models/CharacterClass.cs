@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Documents;
+using Newtonsoft.Json;
 
 namespace UserInterface.Models
 {
@@ -14,6 +15,8 @@ namespace UserInterface.Models
     [Serializable]
     public class CharacterClass : ObservableObject
     {
+        private ICollectionView _classSpellsView;
+
         public string Name { get; set; }
         public int HitDice { get; set; }
         public double BaBProgression { get; set; }
@@ -24,12 +27,21 @@ namespace UserInterface.Models
         public bool IsCaster { get; set; }
         public bool IsPreparedCaster { get; set; }
         public bool IsSpontaneousCaster { get; set; }
-        
+        [JsonProperty("SpellsPerLevel")]
+        public List<List<int?>> SpellsPerLevel { get; set; }
+
+        public ICollectionView ClassSpellsView
+        {
+            get => _classSpellsView;
+            set => _classSpellsView = value;
+        }
+
         public CharacterClass()
         {
             BaBProgression = 0;
             HitDice = 1;
             GoodSave = new Save();
+            ClassSpellsView = CollectionViewSource.GetDefaultView(ClassSpells);
 
         }
         public CharacterClass(string name, double baBProgression, int hitDice)

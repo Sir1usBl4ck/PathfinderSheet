@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Models
 {
-    public class AbilityModifier
+    public class AbilityModifier : Bonus
     {
-        public AbilityModifier(AbilityType type, int bonus)
+        public AbilityModifier(AbilityType type, int value)
         {
             Type = type;
-            Bonus = bonus;
+            Value = value;
+            IsStackable = false;
+            BonusType = BonusType.Race;
+            BonusSource = "Race";
         }
 
         public AbilityType Type { get; set; }
-        public int Bonus { get; set; }
-
+        
 
     }
 }

@@ -54,7 +54,7 @@ namespace UserInterface
             foreach (Handler h in _handlers)
                 h.Handle(message.GetType(), message);
 
-            var deadHandlers = _handlers.Where(h => h.IsDead);
+            var deadHandlers = _handlers.Where(h => h.IsDead).ToList();
 
             if (deadHandlers.Any())
                 foreach (Handler deadHandler in deadHandlers)

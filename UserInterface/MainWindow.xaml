@@ -7,7 +7,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+        Title="Pathfinder Sheet v0.1" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <viewModels:WindowViewModel />

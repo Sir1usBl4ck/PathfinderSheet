@@ -11,10 +11,24 @@
                 CommandParameter="{Binding}">
             <Button.Content>
                 <WrapPanel>
+                    <Image Source="../../ViewResources/Icons/star.png" Width="20" Margin="5,0" 
+                           Visibility="{Binding IsClass, Converter={StaticResource BoolToVis}}"/>
                     <TextBlock Text="{Binding BonusToRoll, FallbackValue=10}" Margin="0,0,20,0"/>
                     <TextBlock Text="{Binding Name, FallbackValue=Knw.(Dungeoneering)}" Width="120" FontSize="16"/>
                 </WrapPanel>
             </Button.Content>
+            <Button.ToolTip>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Rank:{0}, AbilityModifier: {1} Class:{2}">
+                            <Binding Path="Rank" />
+                            <Binding Path="BonusModifier" />
+                            <Binding Path="ClassBonus"/>
+                        </MultiBinding>
+                        </TextBlock.Text>
+                </TextBlock>
+                
+            </Button.ToolTip>
         </Button>
     </Border>
 </UserControl>

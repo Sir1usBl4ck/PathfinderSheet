@@ -248,7 +248,10 @@ namespace UserInterface.Models
         public int? SummonerUnchained { get; set; }
 
         public int ClassLevel { get; set; }
+
+        public Dictionary<string, int> ClassSpellLevelDictionary { get; set; } = new Dictionary<string, int>();
         
+
     }
 
 

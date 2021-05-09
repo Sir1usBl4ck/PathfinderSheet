@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="35" d:DesignWidth="215">
     <DockPanel>
+        <Image Source="{Binding Icon}" Width="30" Height="30" Stretch="UniformToFill" Margin="10,0"/>
         <TextBlock Margin="2">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}{0}     +{1}">

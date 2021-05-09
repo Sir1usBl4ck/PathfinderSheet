@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="UserInterface.Views.MainTabViews.CharacterTabViews.InfoAndAbilities"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.CharacterTabViews"
+             xmlns:dataTemplate ="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <TextBlock Text="{Binding Character.Name, FallbackValue=Bob the Error}"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               FontSize="28">
+        </TextBlock>
+        <UniformGrid Columns="3">
+
+            <TextBlock Text="Experience"
+                                   Style="{StaticResource SmallFontStyle}"
+                                   TextAlignment="Left" />
+            <TextBlock Text="{Binding Character.Level, FallbackValue=Level 10, StringFormat=Level {0}}"
+                                   HorizontalAlignment="Center"
+                                   Style="{StaticResource SmallFontStyle}" />
+            <TextBlock Style="{StaticResource SmallFontStyle}"
+                                   TextAlignment="Right">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0}/{1}">
+                        <Binding Path="Character.OldXp" />
+                        <Binding Path="Character.XpToLevel" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </UniformGrid>
+
+        <ProgressBar Height="20" Minimum="0" Maximum="{Binding Character.XpToLevel}"/>
+
+        <Border Margin="0,10" Padding="5"
+                                BorderThickness="0"
+                                Height="370">
+            <StackPanel>
+                <TextBlock Text="{Binding Character.Race.Name}" Margin="0,0,0,10" Width="157" TextAlignment="Center" HorizontalAlignment="Right"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                    <Image Source="../../ViewResources/Images/MockPortrait.jpg"
+                                           Height="200"
+                                           Width="160"
+                                           Margin="0,0"
+                                           VerticalAlignment="Bottom"
+                                           Stretch="Fill" 
+                                           />
+                    <StackPanel Background="{StaticResource DarkGrayBrush}" Margin="5,0,0,0" >
+                        <StackPanel Orientation="Horizontal" Margin="10,5">
+                           <ItemsControl ItemsSource="{Binding Character.Abilities}" Margin="20,0,0,0">
+                               <ItemsControl.ItemTemplate>
+                                   <DataTemplate>
+                                       <dataTemplate:AbilityListItem/>
+                                   </DataTemplate>
+                               </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+
+
+                    </StackPanel>
+
+                </StackPanel>
+                <StackPanel>
+                   <TextBlock Margin="20,0,0,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1}">
+                                <Binding Path="Character.CharacterClass.Name" FallbackValue="Rogue" />
+                                <Binding Path="Character.Level"  FallbackValue="10"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+</UserControl>

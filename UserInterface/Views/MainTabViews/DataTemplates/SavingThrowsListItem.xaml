@@ -9,11 +9,11 @@
     
     
 
-    <StackPanel Margin="30,0" Background="Transparent">
+    <StackPanel Margin="10,0" Background="Transparent">
         <Button Width="40" Height="40"
                 Command="{Binding DataContext.RollCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=2, AncestorType=UserControl}}"
                 CommandParameter="{Binding}">
-            <Image Source="{Binding Icon ,FallbackValue=../../ViewResources/Icons/agile.png}" Width="30" Height="30" Stretch="UniformToFill"/>
+            <Image Source="{Binding Icon}" Width="30" Height="30" Stretch="UniformToFill"/>
         </Button>
         <TextBlock Text="{Binding Name, FallbackValue=FOR}" HorizontalAlignment="Center" FontSize="18"/>
         <TextBlock Text="{Binding Bonus, FallbackValue=10}" HorizontalAlignment="Center" FontSize="18"/>

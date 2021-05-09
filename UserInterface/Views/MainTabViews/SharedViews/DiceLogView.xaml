@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Border Margin="2,20,0,5" Padding="0" Background="{StaticResource DarkGrayBrush}"
-                BorderThickness="0"
+                BorderThickness="2" BorderBrush="DarkGray"
                 Height="250">
             <StackPanel>
                 <TextBlock Style="{StaticResource Menu}" Text="Dice Roller" VerticalAlignment="Top" TextAlignment="Center" />

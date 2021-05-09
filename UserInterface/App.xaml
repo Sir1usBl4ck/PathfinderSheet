@@ -7,15 +7,26 @@
              xmlns:converter="clr-namespace:UserInterface.Converters"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              StartupUri="MainWindow.xaml">
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Views/Styles/MainStyles.xaml"/>
                 <ResourceDictionary Source="Views/Styles/DataTemplates.xaml"/>
+                <ResourceDictionary Source="Views/Styles/CustomComboBox.xaml"/>
+                <ResourceDictionary Source="Views/Styles/Assets.xaml"/>
+
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-            <DataTemplate DataType="{x:Type viewModels:PathFinderViewModel}">
-                <views:CharacterView />
+            <DataTemplate DataType="{x:Type viewModels:PathfinderViewModel}">
+                <views:PathFinderView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:GameViewModel}">
+                <views:GameView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:CharacterCreatorViewModel}">
+                <views:CharacterCreatorView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

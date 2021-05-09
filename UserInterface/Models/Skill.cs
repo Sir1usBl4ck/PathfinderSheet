@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,15 +9,17 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using UserInterface.EventModels;
+using UserInterface.Models.Modifiers;
 using UserInterface.Services;
 
 
 namespace UserInterface.Models
 {
-    public class Skill : ObservableObject, IRollable, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>, IHandle<AvailableSkillRanksChanged>
+    public class Skill : ObservableObject, IRollable, IHandle<AbilityChangedEvent>,
+        IHandle<LevelChangedEvent>, IHandle<AvailableSkillRanksChanged>, IBonusable
     {
         private int _bonus;
-        private List<Bonus> _bonusList;
+        private ObservableCollection<Bonus> _bonusList;
         private int _rank;
         private bool _trainedOnly;
         private EventAggregator _eventAggregator;
@@ -24,12 +27,10 @@ namespace UserInterface.Models
         private int _bonusModifier;
         private int _sizeModifier;
         private bool _isClass;
-
-
+        
         public Skill()
         {
-            Name = "noName";
-            BonusList = new List<Bonus>();
+            BonusList = new ObservableCollection<Bonus>();
 
         }
 
@@ -43,7 +44,7 @@ namespace UserInterface.Models
             get => _abilityType;
             set => _abilityType = value;
         }
-
+        
         public int Rank
         {
             get => _rank;
@@ -55,7 +56,7 @@ namespace UserInterface.Models
                     _rank = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(Bonus));
-                    UpdateValue();
+                    //UpdateValue();
                     PublishSkillChange();
                 }
                 
@@ -64,7 +65,7 @@ namespace UserInterface.Models
 
         public int Bonus
         {
-            get => _bonus;
+            get => _rank + BonusModifier + _sizeModifier + BonusList.Sum(item => item.Value) + ClassBonus;
             set
             {
                 _bonus = value;
@@ -112,25 +113,40 @@ namespace UserInterface.Models
             }
         }
 
-        public List<Bonus> BonusList
+        public ObservableCollection<Bonus> BonusList
         {
             get { return _bonusList; }
             set { _bonusList = value; }
         }
 
-        
-        public void UpdateValue()
+        public int BonusModifier
         {
-            Bonus = _rank + _bonusModifier + _sizeModifier + BonusList.Sum(item => item.Value);
-            if (IsClass)
-                Bonus += 3;
+            get => _bonusModifier;
+            set
+            {
+                _bonusModifier = value;
+                OnPropertyChanged();
+            }
         }
+
+        public int ClassBonus => IsClass && _rank >= 1 ? 3 : 0;
+
+
+
+        //public void UpdateValue()
+        //{
+        //    Bonus = _rank + BonusModifier + _sizeModifier + BonusList.Sum(item => item.Value)+ClassBonus;
+        //    OnPropertyChanged("ClassBonus");
+            
+        //}
+
+
         public void Handle(AbilityChangedEvent message)
         {
             if (message.Ability.Type == _abilityType)
             {
-                _bonusModifier = message.Ability.Modifier;
-                UpdateValue();
+                BonusModifier = message.Ability.Modifier;
+                OnPropertyChanged(nameof(Bonus));
             }
 
 

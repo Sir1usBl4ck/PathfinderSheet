@@ -6,10 +6,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using UserInterface.EventModels;
+using UserInterface.Models.Modifiers;
+using UserInterface.Services;
 
 namespace UserInterface.Models
 {
-    public class ArmorClass : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<BonusListChangedEvent>
+    public class ArmorClass :ObservableObject,IBonusable, IHandle<AbilityChangedEvent>, IHandle<BonusListChangedEvent>
     {
         private int _total;
         private int _dexterityModifier;
@@ -23,8 +25,7 @@ namespace UserInterface.Models
             get { return _eventAggregator; }    
             set { _eventAggregator = value; }
         }
-
-
+        
         public int Total
         {
             get => _total;
@@ -58,6 +59,8 @@ namespace UserInterface.Models
                 OnPropertyChanged("Total");
             }
         }
+
+        public string Name { get; set; } = "ArmorClass";
 
         public int Touch
         {
@@ -94,7 +97,6 @@ namespace UserInterface.Models
             BonusList = new ObservableCollection<Bonus>();
         }
 
-
         public void Handle(AbilityChangedEvent message)
         {
             if (message.Ability.Type == AbilityType.Dexterity)
@@ -106,26 +108,7 @@ namespace UserInterface.Models
 
         public void Handle(BonusListChangedEvent message)
         {
-            foreach (var newBonus in message.BonusList)
-            {
-                BonusList.Remove(BonusList.FirstOrDefault(a => a.BonusSource == newBonus.BonusSource));
-
-                if (newBonus.IsStackable)
-                {
-                    BonusList.Add(newBonus);
-                }
-                else
-                    foreach (var bonus in BonusList)
-                    {
-                        if (bonus.BonusType == newBonus.BonusType)
-                        {
-                            BonusList.Remove(bonus);
-                            BonusList.Add(newBonus);
-                        }
-                    }
-
-            }
-
+           
         }
     }
 }

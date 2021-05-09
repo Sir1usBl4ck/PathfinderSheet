@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="UserInterface.Views.GameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views"
+             xmlns:tabs="clr-namespace:UserInterface.Views.MainTabViews"
+             mc:Ignorable="d" 
+             Height="850" Width="1280">
+    <UserControl.Background>
+        <SolidColorBrush Color="{StaticResource DarkGray}"></SolidColorBrush>
+    </UserControl.Background>
+    <TabControl>
+        
+        <TabItem Header="Character" Width="200" Height="40">
+            <local:CharacterView/>
+        </TabItem>
+        <TabItem Header="Combat" Width="200" Height="40">
+            <tabs:CombatView/>
+        </TabItem>
+        <TabItem Header="Spellbook" Width="200" Height="40" Visibility="{Binding Character.CharacterClass.IsCaster ,Converter={StaticResource BoolToVis}}">
+            <tabs:SpellBookView/>
+        </TabItem>
+        <TabItem Header="Inventory" Width="200" Height="40">
+
+        </TabItem>
+
+
+
+    </TabControl>
+</UserControl>

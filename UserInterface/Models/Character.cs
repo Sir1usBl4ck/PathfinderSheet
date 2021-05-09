@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Data;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
 using UserInterface.Data;
 using UserInterface.EventModels;
+using UserInterface.Models.Modifiers;
 
 
 namespace UserInterface.Models
@@ -46,9 +49,11 @@ namespace UserInterface.Models
         private int _wounds;
         private int _nonLethalDamage;
         private Size _size;
-        private Attack _attack1;
-        private Attack _attack2;
-        private Attack _attack3;
+        private int _availableSkillRanks;
+        private ObservableCollection<Bonus> _bonusList;
+        private ArmorClass _armorClass;
+        private long _xpToLevel;
+        private long _oldXp;
 
         public Character(EventAggregator eventAggregator)
         {
@@ -58,27 +63,6 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
-            
-            Attack1 = new Attack(_eventAggregator);
-            Attack2 = new Attack(_eventAggregator);
-            Attack3 = new Attack(_eventAggregator);
-
-            //test
-
-            Attack1.Name = "TestAttack";
-            Attack1.DiceNumber = 1;
-            Attack1.Dice = 6;
-            Attack1.CriticalMultiplier = 2;
-            
-
-
-            AttackList.Add(Attack1);
-            AttackList.Add(Attack2);
-            AttackList.Add(Attack3);
-            foreach (var attack in AttackList)
-            {
-                attack.EventAggregator.Subscribe(attack);
-            }
             
             Serializer serializer = new Serializer();
 
@@ -104,19 +88,18 @@ namespace UserInterface.Models
             }
 
             BonusList = new ObservableCollection<Bonus>();
-            BonusList.Add(new Bonus { BonusSource = "Armor", BonusType = BonusType.Armor, IsStackable = true, Value = 3 });
+
             ArmorClass = new ArmorClass(_eventAggregator);
 
             Size = new Size(SizeType.Medium);
             CharacterClass = new CharacterClass();
             PointsLeft = 20;
             Level = 1;
-            Name = "NewCharacter";
-            Campaign = "NewCampaign";
             MaxHitPoints = 0;
             CurrentHitPoints = 0;
             Wounds = 0;
             NonLethalDamage = 0;
+
 
         }
         public string Name
@@ -126,6 +109,7 @@ namespace UserInterface.Models
             {
                 _name = value;
                 OnPropertyChanged();
+
             }
         }
         public string Campaign
@@ -203,7 +187,6 @@ namespace UserInterface.Models
                 PublishLevelChanged();
                 SetExperience();
                 SetBab();
-                RollHitPoints(Level);
                 OnPropertyChanged();
                 OnPropertyChanged("BaseAttackBonus");
                 OnPropertyChanged("MaxHitPoints");
@@ -218,9 +201,6 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-        private int _availableSkillRanks;
-        private ObservableCollection<Bonus> _bonusList;
-
         public int AvailableSkillRanks
         {
             get
@@ -286,21 +266,14 @@ namespace UserInterface.Models
         {
             get => Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier;
         }
-        public int CombatManeuverBonus => (Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier + BaseAttackBonus);
+        public int CombatManeuverBonus => 
+        (
+            Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier + BaseAttackBonus
+            );
         public int CombatManeuverDefense =>
             Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier +
             Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier +
             BaseAttackBonus;
-        public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
-        public ObservableCollection<ExperienceProgression> ExperienceProgressionList { get; } = new ObservableCollection<ExperienceProgression>();
-        public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
-        public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
-        public ObservableCollection<Spell> CharacterSpells { get; } = new ObservableCollection<Spell>();
-        public ObservableCollection<GeneralFeat> CharacterFeats { get; } = new ObservableCollection<GeneralFeat>();
-        public ObservableCollection<Attack> AttackList { get; } = new ObservableCollection<Attack>();
-        private ArmorClass _armorClass;
-        private long _xpToLevel;
-
         public ArmorClass ArmorClass
         {
             get { return _armorClass; }
@@ -310,49 +283,6 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
-        public ObservableCollection<Bonus> BonusList
-        {
-            get => _bonusList;
-            set
-            {
-                _bonusList = value;
-                _eventAggregator.Publish(new BonusListChangedEvent(_bonusList));
-            }
-        } 
-
-        public Attack Attack1
-        {
-            get => _attack1;
-            set
-            {
-                _attack1 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Attack Attack2
-        {
-            get => _attack2;
-            set
-            {
-                _attack2 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Attack Attack3
-        {
-            get => _attack3;
-            set
-            {
-                _attack3 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private long _oldXp;
-
         public long OldXp
         {
             get => _oldXp;
@@ -362,19 +292,37 @@ namespace UserInterface.Models
                 OnPropertyChanged();
             }
         }
-
-
         public long XpToLevel
         {
             get => _xpToLevel;
             set
             {
-               _xpToLevel = value;
+                _xpToLevel = value;
                 OnPropertyChanged();
             }
         }
 
-
+        public ObservableCollection<Ability> Abilities { get; } = new ObservableCollection<Ability>();
+        public ObservableCollection<ExperienceProgression> ExperienceProgressionList { get; } = new ObservableCollection<ExperienceProgression>();
+        public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
+        public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
+        public ObservableCollection<Spell> KnownSpells { get; } = new ObservableCollection<Spell>();
+        public ObservableCollection<Spell> PreparedSpells { get; set; } = new ObservableCollection<Spell>();
+        public ObservableCollection<GeneralFeat> CharacterFeats { get; } = new ObservableCollection<GeneralFeat>();
+        public ObservableCollection<Attack> AttackList { get; } = new ObservableCollection<Attack>();
+        public ObservableCollection<Bonus> BonusList
+        {
+            get => _bonusList;
+            set
+            {
+                _bonusList = value;
+                _eventAggregator.Publish(new BonusListChangedEvent(_bonusList));
+                
+            }
+        }
+        public ObservableCollection<Buff> BuffsList { get; } = new ObservableCollection<Buff>();
+        public ObservableCollection<Condition> ConditionsList { get; set; }
+        
         public int RollHitPoints(int level)
         {
             IDice dice = new Dice();
@@ -400,6 +348,7 @@ namespace UserInterface.Models
             }
             return CharacterClass.HitDice + constitutionModifier;
         }
+
         public void SetBab()
         {
             if (CharacterClass != null) //this is ugly, refactor somehow
@@ -408,11 +357,13 @@ namespace UserInterface.Models
                 BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
             }
         }
+
         public void SetExperience()
         {
             Experience = ExperienceProgression.ExperienceTable[Level];
-            XpToLevel = ExperienceProgression.ExperienceTable[Level+1];
+            XpToLevel = ExperienceProgression.ExperienceTable[Level + 1];
         } //Move to Experience Class?
+
         public void UpdateCharacterClassSaves()
         {
             foreach (var save in Saves)
@@ -430,12 +381,14 @@ namespace UserInterface.Models
 
             }
         }
+
         public void UpdateClassSkills(CharacterClass characterClass)
         {
             foreach (var skill in Skills)
                 if (characterClass.ClassSkillNames.Contains(skill.Name))
                     skill.IsClass = true;
         }
+
         public void ApplyRaceSize()
         {
 
@@ -445,21 +398,7 @@ namespace UserInterface.Models
 
 
         }
-        public void UpdateAbilities()
-        {
-            foreach (var ability in Abilities)
-            {
-                if (Race != null) //this sucks, change it somehow
-                {
-                    var raceBonus = Race.ModifiedAbilities.FirstOrDefault(a => a.Type == ability.Type);
 
-                    if (raceBonus != null) //this sucks too.
-                        ability.Score = ability.BaseScore + raceBonus.Bonus + ability.Bonus;
-                    else
-                        ability.Score = ability.BaseScore + ability.Bonus;
-                }
-            }
-        }
         public void UpdateAvailableSkillRanks()
         {
             var intModifier = Abilities.FirstOrDefault(a => a.Type == AbilityType.Intelligence).Modifier;
@@ -468,61 +407,70 @@ namespace UserInterface.Models
             AvailableSkillRanks = (CharacterClass.SkillRanksPerLevel + intModifier) * Level - totalRanks;
             OnPropertyChanged(nameof(AvailableSkillRanks));
         }
-        public void UpdateExperienceTab()
-        {
-           
-            var experience = Experience;
 
-            if (experience > XpToLevel)
-            {
-                while (experience > XpToLevel)
-                {
-                    Level++;
-                    XpToLevel = ExperienceProgression.ExperienceTable[Level];
-                }
-            }
-            else
-            {
-                while (experience < XpToLevel)
-                {
-                    Level--;
-                    XpToLevel = ExperienceProgression.ExperienceTable[Level];
-                }
-            }
-        }
+        //public void UpdateExperienceTab()
+        //{
+
+        //    var experience = Experience;
+
+        //    if (experience > XpToLevel)
+        //    {
+        //        while (experience > XpToLevel)
+        //        {
+        //            Level++;
+        //            XpToLevel = ExperienceProgression.ExperienceTable[Level];
+        //        }
+        //    }
+        //    else
+        //    {
+        //        while (experience < XpToLevel)
+        //        {
+        //            Level--;
+        //            XpToLevel = ExperienceProgression.ExperienceTable[Level];
+        //        }
+        //    }
+        //}
+
         public void LevelUp()
         {
             if (Level > 1)
             {
                 OldXp = XpToLevel;
-                UpdateExperienceTab();
+                //UpdateExperienceTab();
                 UpdateAvailableSkillRanks();
             }
 
 
         } // Move to ViewModel
+        
         public void Handle(AbilityChangedEvent message)
         {
-            var ability = message.Ability;                          //Move 
-            var oldPointCost = ability.PointCost;               //All
-            ability.PointCost = _pointBuyCost[ability.BaseScore];   //This
-            PointsLeft -= ability.PointCost - oldPointCost;         //to Ability?
-            UpdateAbilities();
+            var ability = message.Ability;
+            var oldPointCost = ability.PointCost;
+            if (ability.BaseScore <= 18)
+            {
+                ability.PointCost = _pointBuyCost[ability.BaseScore];
+                PointsLeft -= ability.PointCost - oldPointCost;
+            }
+
             UpdateAvailableSkillRanks();
             OnPropertyChanged(nameof(AvailableSkillRanks));
             OnPropertyChanged("Initiative");
 
 
         }
+        
         public void PublishLevelChanged()
         {
             _eventAggregator.Publish(new LevelChangedEvent(Level));
         }
+        
         public void PublishAvailableSkillRanksChanged()
         {
             _eventAggregator.Publish(new AvailableSkillRanksChanged(AvailableSkillRanks));
 
         }
+        
         public void Handle(SkillChangedEvent message)
         {
             AvailableSkillRanks -= message.Skill.Rank;

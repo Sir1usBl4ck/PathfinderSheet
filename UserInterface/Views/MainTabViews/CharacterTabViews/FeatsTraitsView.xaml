@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="UserInterface.Views.MainTabViews.CharacterTabViews.FeatsTraitsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.CharacterTabViews"
+             xmlns:dataTemplates="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
+             mc:Ignorable="d" 
+             d:DesignHeight="590" d:DesignWidth="810">
+    <Grid>
+        <ContentControl Panel.ZIndex="1000" Name="FeatPopUp">
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+
+                            <DataTrigger Binding="{Binding IsChecked,ElementName=ToggleFeatPopUp}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsChecked,ElementName=AddTalent}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid >
+                    <Grid.Background>
+                        <SolidColorBrush Color="{StaticResource DarkGray}" Opacity="0.9"/>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Name="AllFeatsList" ItemsSource="{Binding Feats}" 
+                  Background="{StaticResource BluGrayBrush}" 
+                  BorderBrush="{StaticResource ColdLightBlueGrayBrush}"
+                  Padding="10">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Background" Value="{StaticResource DarkBlueGrayBrush}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource ColdLightBlueGrayBrush}"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <dataTemplates:FeatListItemView/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListView>
+                    <UniformGrid Grid.Column="1" Rows="2">
+
+                        <StackPanel Margin="10" DataContext="{Binding ElementName=AllFeatsList, Path=SelectedItem, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="10"/>
+                            <StackPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Prerequisites:"
+                                   FontWeight="Bold"
+                                   Style="{StaticResource SmallFontStyle}"
+                                   Margin="0,5,5,5"
+                                   TextWrapping="Wrap"
+                                   Visibility="{Binding Prerequisites, Converter={StaticResource StringToVisibilityConverter}}" />
+                                    <TextBlock Text="{Binding Prerequisites}"
+                                   Style="{StaticResource SmallFontStyle}"
+
+                                   Visibility="{Binding Prerequisites, Converter={StaticResource StringToVisibilityConverter}}"
+                                   Margin="0,5"
+                                   TextWrapping="Wrap"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Type:"
+                                   Style="{StaticResource SmallFontStyle}"
+
+                                   FontWeight="Bold"
+                                   Margin="0,5,5,5" />
+                                    <TextBlock Text="{Binding Type}"
+                                   Style="{StaticResource SmallFontStyle}"
+
+                                   Visibility="{Binding Type, Converter={StaticResource StringToVisibilityConverter}}"
+                                   Margin="0,5" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Benefit:"
+                                   Style="{StaticResource SmallFontStyle}"
+
+                                   FontWeight="Bold"
+                                   Margin="0,5,5,5" />
+                                    <TextBlock Text="{Binding Benefit, FallbackValue=Benefits}"
+                                   Style="{StaticResource SmallFontStyle}"
+                                   Margin="0,5"
+                                   TextWrapping="Wrap" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Special:"
+                                   Style="{StaticResource SmallFontStyle}"
+
+                                   FontWeight="Bold"
+                                   Margin="0,5,5,5"
+                                   Visibility="{Binding Special, Converter={StaticResource StringToVisibilityConverter}}" />
+                                    <TextBlock Text="{Binding Special, FallbackValue=Benefits}"
+                                   Style="{StaticResource SmallFontStyle}"
+
+                                   Visibility="{Binding Special, Converter={StaticResource StringToVisibilityConverter}}"
+                                   Margin="0,5"
+                                   TextWrapping="Wrap" />
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+
+                    </UniformGrid>
+
+
+                </Grid>
+                <ToggleButton Name="AddTalent"
+                    Content="Add"
+                    Width="150" Height="30"
+                              Panel.ZIndex="1000"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,120,50"
+                    Command="{Binding AddFeatToCharacterCommand}" CommandParameter="{Binding ElementName=AllFeatsList,Path=SelectedItem}">
+
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="IsChecked" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked,ElementName=ToggleFeatPopUp}" Value="True">
+                                    <Setter Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+            </Grid>
+
+        </ContentControl>
+
+        <UniformGrid Columns="3">
+            <StackPanel Margin="5">
+                <TextBlock Text="Feats" Width="auto" Style="{StaticResource Menu }" />
+                <ListView Name="CharacterFeats" ItemsSource="{Binding Character.CharacterFeats}" 
+                           Background="{StaticResource BluGrayBrush}" 
+                           BorderBrush="{StaticResource ColdLightBlueGrayBrush}"
+                           Padding="10"
+                           MaxHeight="500"
+                           >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="{StaticResource DarkBlueGrayBrush}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource ColdLightBlueGrayBrush}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <dataTemplates:FeatListItemView/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ListView>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <ToggleButton Name="ToggleFeatPopUp"
+                                  Background="ForestGreen"
+                                  Width="30" Height="30"
+                                  VerticalContentAlignment="Center"
+                                  Margin="0,10,10,0">
+                        <ToggleButton.Content>
+                            <TextBlock Text="+" HorizontalAlignment="Center" Height="36" />
+                        </ToggleButton.Content>
+                        <ToggleButton.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="16" />
+                            </Style>
+                        </ToggleButton.Resources>
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Setter Property="IsChecked" Value="False" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked,ElementName=AddTalent}" Value="True">
+                                        <Setter Property="IsChecked" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+                    <Button Name="RemoveFeat"
+                            Background="Crimson"
+                            Width="30" Height="30"
+                            VerticalContentAlignment="Center"
+                            Margin="10,10,0,0"
+                            Command="{Binding RemoveFeatCommand}"
+                            CommandParameter="{Binding ElementName=CharacterFeats, Path=SelectedItem}">
+                        <Button.Content>
+                            <TextBlock Text="-" HorizontalAlignment="Center" Height="36" />
+                        </Button.Content>
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="16" />
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+                
+
+            </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock Text="Special Abilities" Width="auto" Style="{StaticResource Menu }">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <StackPanel Height="200">
+                    <TextBlock Text="Traits" Width="auto" Style="{StaticResource Menu }">
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Proficiencies" Width="auto" Style="{StaticResource Menu }">
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+        </UniformGrid>
+    </Grid>
+</UserControl>

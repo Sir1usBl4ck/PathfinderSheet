@@ -32,6 +32,7 @@ namespace UserInterface.Models
         }
         public Save(SaveType saveType)
         {
+            BonusList = new List<Bonus>();
             SaveType = saveType;
             BaseValue = 0;
             IsGood = false;
@@ -59,7 +60,6 @@ namespace UserInterface.Models
             set => _eventAggregator = value;
         }
 
-        private int _score;
         private int _level;
         public string Name { get; set; }
         public int BonusToRoll => _bonus;

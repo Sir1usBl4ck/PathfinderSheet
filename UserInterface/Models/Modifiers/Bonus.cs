@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserInterface.Models.Modifiers;
 
 namespace UserInterface.Models
 {
+    
     public enum BonusType
     {
         Alchemical,
@@ -21,6 +23,8 @@ namespace UserInterface.Models
         Morale,
         NaturalArmor,
         Profane,
+        Penalty,
+        Race,
         Resistance,
         Sacred,
         Shield,
@@ -29,6 +33,8 @@ namespace UserInterface.Models
     public class Bonus
     {
         public string BonusSource { get; set; }
+        public IBonusable Target { get; set; }
+        public string TargetName { get; set; }
         public int Value { get; set; }
         public BonusType BonusType { get; set; }
         public bool IsStackable { get; set; }

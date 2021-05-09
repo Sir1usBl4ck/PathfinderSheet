@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="UserInterface.Views.MainTabViews.DataTemplates.SpellToolTip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <StackPanel>
+            <TextBlock Text="{Binding School, StringFormat=Sch: {0}}"/>
+            <TextBlock Text="{Binding SubSchool, StringFormat=Sch: {0}}"/>
+            <TextBlock Text="{Binding ShortDescription, StringFormat=Effect: {0}}" TextWrapping="Wrap"/>
+
+
+        </StackPanel>
+            
+    </StackPanel>
+</UserControl>

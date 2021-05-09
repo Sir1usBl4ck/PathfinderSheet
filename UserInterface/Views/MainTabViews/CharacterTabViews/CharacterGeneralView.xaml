@@ -84,11 +84,6 @@
                     <ItemsControl.Style>
                         <Style TargetType="ItemsControl">
                             <Setter Property="ItemTemplate" Value="{StaticResource SaveDataTemplate}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=EditSavesButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="ItemTemplate" Value="{StaticResource SaveEditDataTemplate}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
                         </Style>
                     </ItemsControl.Style>
                     <ItemsControl.ItemsPanel>
@@ -99,12 +94,6 @@
                     </ItemsControl>
             </WrapPanel>
             
-            <ToggleButton Name="EditSavesButton" 
-                          Style="{StaticResource EditButton}"
-                          Content="Edit" 
-                          HorizontalAlignment="Right" 
-                          Margin="10,0,20,0"/>
-                
         </StackPanel>
 
     </Grid>

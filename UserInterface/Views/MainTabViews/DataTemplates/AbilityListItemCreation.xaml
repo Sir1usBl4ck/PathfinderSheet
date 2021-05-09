@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="UserInterface.Views.MainTabViews.DataTemplates.AbilityListItemCreation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
+             xmlns:source="clr-namespace:UserInterface.Views"
+             xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
+             xmlns:models="clr-namespace:UserInterface.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="800" d:DataContext="{d:DesignInstance models:Ability}">
+    <WrapPanel>
+        <Image Source="{Binding Icon}" Width="30" Height="30" Stretch="UniformToFill" Margin="10,20"/>
+        <ComboBox ItemsSource="{Binding BaseValues, FallbackValue=1}" 
+                  SelectedItem="{Binding BaseScore, FallbackValue=1}" 
+                  Width="80" Height="50" 
+                  HorizontalContentAlignment="Center"/>
+        <TextBlock Text="{Binding Name,FallbackValue=Strength}" Margin="10,0" TextAlignment="Center"/>
+        <UniformGrid Columns="3" Width="150">
+            <TextBlock Text="{Binding Score,FallbackValue=12}" TextAlignment="Center"/>
+            <TextBlock Text="{Binding Modifier, FallbackValue=+2}" TextAlignment="Center"/>
+            <TextBlock Text="{Binding Bonus, FallbackValue=(2), StringFormat=({0})}" TextAlignment="Center"/>
+        </UniformGrid>
+    </WrapPanel>
+</UserControl>

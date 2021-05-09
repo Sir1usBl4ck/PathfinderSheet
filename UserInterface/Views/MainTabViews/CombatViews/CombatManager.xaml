@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="UserInterface.Views.MainTabViews.CombatViews.CombatManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.CombatViews"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="260" d:DesignWidth="512">
+    <UniformGrid Background="{StaticResource DarkGrayBrush}" Rows="2">
+        <Grid HorizontalAlignment="Center" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="10,0,60,0">
+                <Image Source="../../ViewResources/Icons/hitpoints.png"  Width="50" Height="50"/>
+                <TextBlock Text="HP" TextAlignment="Center" Style="{StaticResource SmallFontStyle}"/>
+                <TextBlock TextAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}/{1}">
+                            <Binding Path="Character.CurrentHitPoints"/>
+                            <Binding Path="Character.MaxHitPoints"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                    
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="10,0">
+                <Image Source="../../ViewResources/Icons/broken-heart.png"  Width="50" Height="50"/>
+                <TextBlock Text="Wounds" TextAlignment="Center" Style="{StaticResource SmallFontStyle}"/>
+                <TextBlock Text="{Binding Character.Wounds, FallbackValue=4}" TextAlignment="Center">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <Button Width="40" Height="40" Content="+" Command="{Binding AddWoundCommand}"/>
+                <Button Width="40" Height="40" Content="-" Command="{Binding RemoveWoundCommand}"/>
+
+            </StackPanel>
+            <StackPanel Grid.Column="3" Margin="10,0">
+                <Image Source="../../ViewResources/Icons/nonlethal.png"  Width="50" Height="50"/>
+                <TextBlock Text="NON-LETHAL" TextAlignment="Center" Style="{StaticResource SmallFontStyle}"/>
+                <TextBlock TextAlignment="Center" Text="{Binding Character.NonLethalDamage, FallbackValue=10}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="4">
+                <Button Width="40" Height="40" Content="+" />
+                <Button Width="40" Height="40" Content="-"/>
+
+            </StackPanel>
+        </Grid>
+        <StackPanel>
+            <WrapPanel HorizontalAlignment="Center" Margin="30,0">
+                <StackPanel Margin="10,0">
+                    <Image Source="../../ViewResources/Icons/AC.png" Width="30" />
+                    <TextBlock Text="AC" TextAlignment="Center" FontSize="18" />
+                    <TextBlock Text="{Binding Character.ArmorClass.Total, FallbackValue=10}" TextAlignment="Center"
+                               FontSize="18" />
+                </StackPanel>
+                <StackPanel Margin="10,0">
+                    <Image Source="../../ViewResources/Icons/flatfootedAC.png" Width="30" />
+                    <TextBlock Text="Flat-Footed" TextAlignment="Center" FontSize="18" />
+                    <TextBlock Text="{Binding Character.ArmorClass.Total, FallbackValue=10}" TextAlignment="Center"
+                               FontSize="18" />
+                </StackPanel>
+                <StackPanel Margin="10,0">
+                    <Image Source="../../ViewResources/Icons/touchAC.png" Width="30" />
+                    <TextBlock Text="Touch" TextAlignment="Center" FontSize="18" />
+                    <TextBlock Text="{Binding Character.ArmorClass.Total, FallbackValue=10}" TextAlignment="Center"
+                               FontSize="18" />
+                </StackPanel>
+                <ItemsControl x:Name="SavesControl" ItemsSource="{Binding Character.Saves}"
+                              Margin="0,0,0,0"
+                              HorizontalAlignment="Center">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Setter Property="ItemTemplate" Value="{StaticResource SaveDataTemplate}" />
+
+                        </Style>
+                    </ItemsControl.Style>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </WrapPanel>
+           </StackPanel>
+
+
+
+
+
+    </UniformGrid>
+</UserControl>
