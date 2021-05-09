@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using System.Windows.Xps;
 using Newtonsoft.Json;
 using UserInterface.EventModels;
-using UserInterface.Services;
 
 namespace UserInterface.Models
 {
@@ -22,7 +15,7 @@ namespace UserInterface.Models
         NoType
     }
     [Serializable]
-    public class Save : ObservableObject,IRollable, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>
+    public class Save : ObservableObject, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>
     {
         public Save()
         {

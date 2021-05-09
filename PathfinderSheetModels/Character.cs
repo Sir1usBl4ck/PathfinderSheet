@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Data;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
 using UserInterface.Data;
@@ -322,7 +319,7 @@ namespace UserInterface.Models
         }
         public ObservableCollection<Buff> BuffsList { get; } = new ObservableCollection<Buff>();
         public ObservableCollection<Condition> ConditionsList { get; set; }
-        
+
         public int RollHitPoints(int level)
         {
             IDice dice = new Dice();

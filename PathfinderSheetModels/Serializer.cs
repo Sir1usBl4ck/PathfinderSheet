@@ -10,7 +10,7 @@ using UserInterface.Models;
 
 namespace UserInterface.Data
 {
-    class Serializer
+    public class Serializer
     {
         public void SerializeCollection<T>(ObservableCollection<T> t,string filename)
         {

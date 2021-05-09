@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Windows.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using UserInterface.EventModels;
 using UserInterface.Models.Modifiers;
-using UserInterface.Services;
 
 namespace UserInterface.Models
 {

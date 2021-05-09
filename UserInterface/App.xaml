@@ -6,6 +6,7 @@
              xmlns:views="clr-namespace:UserInterface.Views"
              xmlns:converter="clr-namespace:UserInterface.Converters"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:viewModels1="clr-namespace:UserInterface.ViewModels;assembly=PathfinderSheetModels"
              StartupUri="MainWindow.xaml">
 
     <Application.Resources>
@@ -19,13 +20,13 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-            <DataTemplate DataType="{x:Type viewModels:PathfinderViewModel}">
+            <DataTemplate DataType="{x:Type viewModels1:PathfinderViewModel}">
                 <views:PathFinderView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:GameViewModel}">
+            <DataTemplate DataType="{x:Type viewModels1:GameViewModel}">
                 <views:GameView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:CharacterCreatorViewModel}">
+            <DataTemplate DataType="{x:Type viewModels1:CharacterCreatorViewModel}">
                 <views:CharacterCreatorView/>
             </DataTemplate>
         </ResourceDictionary>

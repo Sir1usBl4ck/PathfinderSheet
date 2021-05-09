@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="D20Tek.Common" Version="3.2.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PathfinderSheetModels\PathfinderSheetModels.csproj" />
     <ProjectReference Include="..\PathfinderSheetServices\PathfinderSheetServices.csproj" />
   </ItemGroup>

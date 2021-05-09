@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-                    xmlns:local="clr-namespace:UserInterface.Models">
+                    xmlns:local="clr-namespace:UserInterface.Models"
+                    xmlns:models="clr-namespace:UserInterface.Models;assembly=PathfinderSheetModels">
 
 
     <Style x:Key="EditButton" TargetType="ToggleButton">
@@ -128,7 +129,7 @@
                         MethodName="GetValues" 
                         ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="local:AbilityType" />
+            <x:Type TypeName="models:AbilityType" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 
@@ -136,14 +137,14 @@
                         MethodName="GetValues" 
                         ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="local:TypeOfAttack" />
+            <x:Type TypeName="models:TypeOfAttack" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
     <ObjectDataProvider x:Key="BonusType"
                         MethodName="GetValues" 
                         ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="local:BonusType" />
+            <x:Type TypeName="models:BonusType" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
     <!--<ObjectDataProvider x:Key="BonusTarget"

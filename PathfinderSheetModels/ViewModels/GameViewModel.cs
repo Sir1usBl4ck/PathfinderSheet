@@ -2,29 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.Serialization;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
-using MathNet.Numerics.LinearAlgebra.Solvers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UserInterface.Data;
 using UserInterface.EventModels;
 using UserInterface.Models;
 using UserInterface.Models.Modifiers;
 using UserInterface.Services;
-using UserInterface.Views;
 using Size = UserInterface.Models.Size;
-using Type = UserInterface.Models.Type;
 
 namespace UserInterface.ViewModels
 {
@@ -42,7 +28,7 @@ namespace UserInterface.ViewModels
             {
                 _stringSpellFilter = value;
                 OnPropertyChanged();
-                ClassSpellsView.Refresh();
+                //ClassSpellsView.Refresh();
             }
         }
         public int SpellsLevelFilter
@@ -52,7 +38,7 @@ namespace UserInterface.ViewModels
             {
                 _spellsLevelFilter = value;
                 OnPropertyChanged();
-                ClassSpellsView.Refresh();
+                //ClassSpellsView.Refresh();
             }
         }
 
@@ -98,9 +84,9 @@ namespace UserInterface.ViewModels
         public ICommand SwitchToConditionView { get; set; }
         public ICommand AddBuffToListCommand { get; set; }
 
-        public ICollectionView ClassSpellsView { get; set; }
-        public ICollectionView KnownSpellsView { get; set; }
-        public ICollectionView PreparedSpellsView { get; set; }
+        //public ICollectionView ClassSpellsView { get; set; }
+        //public ICollectionView KnownSpellsView { get; set; }
+        //public ICollectionView PreparedSpellsView { get; set; }
 
         
         //----Constructor
@@ -216,17 +202,17 @@ namespace UserInterface.ViewModels
                 if (SpellsLevelFilter == level && SpellsLevelFilter != 0)
                 {
 
-                    ClassSpellsView.Filter = null;
-                    ClassSpellsView.Filter = FilterSpellsName;
-                    ClassSpellsView.Refresh();
+                    //ClassSpellsView.Filter = null;
+                    //ClassSpellsView.Filter = FilterSpellsName;
+                    //ClassSpellsView.Refresh();
 
 
                 }
                 else
                 {
-                    ClassSpellsView.Filter += FilterSpells;
-                    SpellsLevelFilter = level;
-                    ClassSpellsView.Refresh();
+                    //ClassSpellsView.Filter += FilterSpells;
+                    //SpellsLevelFilter = level;
+                    //ClassSpellsView.Refresh();
 
                 }
             }
@@ -480,12 +466,12 @@ namespace UserInterface.ViewModels
             Character.ExperienceProgression = Character.ExperienceProgressionList[1];
             GetClassSpells(Character.CharacterClass);
             //ClassSpellsView = CollectionViewSource.GetDefaultView(Character.CharacterClass.ClassSpells);
-            ClassSpellsView = new CollectionViewSource { Source = Character.CharacterClass.ClassSpells }.View;
-            ClassSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
-            KnownSpellsView = new CollectionViewSource { Source = Character.KnownSpells }.View;
-            KnownSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
-            PreparedSpellsView = new CollectionViewSource { Source = Character.PreparedSpells }.View;
-            PreparedSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
+            //ClassSpellsView = new CollectionViewSource { Source = Character.CharacterClass.ClassSpells }.View;
+            //ClassSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
+            //KnownSpellsView = new CollectionViewSource { Source = Character.KnownSpells }.View;
+            //KnownSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
+            //PreparedSpellsView = new CollectionViewSource { Source = Character.PreparedSpells }.View;
+            //PreparedSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
             GetSpellsPerDay(Character.CharacterClass);
             Character.PublishLevelChanged();
 
