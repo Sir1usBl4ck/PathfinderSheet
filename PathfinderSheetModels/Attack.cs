@@ -27,8 +27,8 @@ namespace PathfinderSheetModels
         {
             Name = "Insert Name";
             AttackType = TypeOfAttack.Melee;
-            AttackAbilityType = AbilityType.Strength;
-            DamageAbilityType = AbilityType.Strength;
+            AttackAbilityType = AttributeType.Strength;
+            DamageAbilityType = AttributeType.Strength;
             ThreatRange = 19;
             EventAggregator = eventAggregator;
 
@@ -74,8 +74,8 @@ namespace PathfinderSheetModels
             }
         }
         public int MagicWeaponBonus { get; set; }
-        public AbilityType AttackAbilityType { get; set; }
-        public AbilityType DamageAbilityType { get; set; }
+        public AttributeType AttackAbilityType { get; set; }
+        public AttributeType DamageAbilityType { get; set; }
         public bool IsRapidShot { get; set; }
         public bool IsTwoHanded
         {
@@ -138,7 +138,7 @@ namespace PathfinderSheetModels
         }
         public void UpdateDamageBonus()
         {
-            if (IsTwoHanded && DamageAbilityType == AbilityType.Strength)
+            if (IsTwoHanded && DamageAbilityType == AttributeType.Strength)
             {
                 DamageBonus = Convert.ToInt32(DamageAbilityModifier * 1.5);
             }
@@ -148,14 +148,14 @@ namespace PathfinderSheetModels
 
             }
         }
-        public void UpdateAttackAbilityModifier(int modifier, AbilityType type)
+        public void UpdateAttackAbilityModifier(int modifier, AttributeType type)
         {
             if (AttackAbilityType == type)
             {
                 AttackAbilityModifier = modifier;
             }
         }
-        public void UpdateDamageAbilityModifier(int modifier, AbilityType type)
+        public void UpdateDamageAbilityModifier(int modifier, AttributeType type)
         {
             if (DamageAbilityType == type)
             {
@@ -171,8 +171,8 @@ namespace PathfinderSheetModels
         }
         public void Handle(AbilityChangedEvent message)
         {
-            UpdateDamageAbilityModifier(message.Ability.Modifier, message.Ability.Type);
-            UpdateAttackAbilityModifier(message.Ability.Modifier, message.Ability.Type);
+            UpdateDamageAbilityModifier(message.Ability.Modifier, message.Ability.AttributeType);
+            UpdateAttackAbilityModifier(message.Ability.Modifier, message.Ability.AttributeType);
             UpdateAttackBonus();
             UpdateDamageBonus();
 

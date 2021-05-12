@@ -5,6 +5,7 @@ namespace PathfinderSheetServices
 {
     public class CharacterService
     {
+        
         public static void SetBab(Character character)
         {
             if (character.CharacterClass != null) 
@@ -13,5 +14,7 @@ namespace PathfinderSheetServices
                 character.BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
             }
         }
+
+
     }
 }

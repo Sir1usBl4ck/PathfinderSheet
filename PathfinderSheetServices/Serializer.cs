@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace PathfinderSheetModels
+namespace PathfinderSheetServices
 {
     public class Serializer
     {

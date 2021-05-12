@@ -27,15 +27,15 @@
         <StackPanel Grid.Row="1" Grid.Column="0">
             <DockPanel>
                 <TextBlock Width="120" Text="Attack Ability" Margin="10"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource AbilityType}}"
+                <!--<ComboBox ItemsSource=""
                           SelectedItem="{Binding NewAttack.AttackAbilityType}"
-                          Margin="10"/>
+                          Margin="10"/>-->
             </DockPanel>
             <DockPanel>
                 <TextBlock Width="120" Text="Damage Ability" Margin="10"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource AbilityType}}" 
+                <!--<ComboBox ItemsSource="{Binding Source={StaticResource AbilityType}}" 
                           Margin="10"
-                          SelectedItem="{Binding NewAttack.DamageAbilityType}"/>
+                          SelectedItem="{Binding NewAttack.DamageAbilityType}"/>-->
             </DockPanel>
             <DockPanel >
                 <TextBlock Width="120" Text="Bonus" Margin="10" />
@@ -59,8 +59,8 @@
         <StackPanel Grid.Column="1" Grid.Row="1">
             <DockPanel >
                 <TextBlock Text="Type" Margin="10" Width="120"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource TypeOfAttack}}" SelectedItem="{Binding NewAttack.AttackType}"
-                          Margin="10" />
+                <!--<ComboBox ItemsSource="{Binding Source={StaticResource TypeOfAttack}}" SelectedItem="{Binding NewAttack.AttackType}"
+                          Margin="10" />-->
             </DockPanel>
             <UniformGrid Grid.Row="1" Grid.Column="1" Columns="3" Margin="10" VerticalAlignment="Top">
                 <StackPanel>

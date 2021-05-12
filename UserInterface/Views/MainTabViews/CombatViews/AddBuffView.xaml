@@ -23,7 +23,7 @@
                 <TextBlock Text="Value" />
                 <TextBox Width="50" Margin="10" Text="{Binding NewBonus.Value, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Text="Bonus Type" />
-                <ComboBox Width="150" Margin="10" ItemsSource="{Binding Source={StaticResource BonusType}}" SelectedItem="{Binding NewBonus.BonusType}"/>
+                <!--<ComboBox Width="150" Margin="10" ItemsSource="{Binding Source={StaticResource BonusType}}" SelectedItem="{Binding NewBonus.BonusType}"/>-->
                 <CheckBox Content="Is Stackable" IsChecked="{Binding NewBonus.IsStackable}"/>
                 <TextBlock Text="Target Name"/>
                 <TextBox Width="150" Margin="10" Text="{Binding NewBonus.TargetName}">
@@ -51,7 +51,7 @@
                 <GridView>
                     <GridViewColumn Header="Target" Width="150" DisplayMemberBinding="{Binding Target}"/>
                     <GridViewColumn Header="Value" Width="50" DisplayMemberBinding="{Binding Value}" />
-                    <GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding BonusType}"/>
+                    <!--<GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding BonusType}"/>-->
                 </GridView>
             </ListView.View>
 

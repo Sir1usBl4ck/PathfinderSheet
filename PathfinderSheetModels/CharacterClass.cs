@@ -22,9 +22,7 @@ namespace PathfinderSheetModels
         public bool IsSpontaneousCaster { get; set; }
         [JsonProperty("SpellsPerLevel")]
         public List<List<int?>> SpellsPerLevel { get; set; }
-
         
-
         public CharacterClass()
         {
             BaBProgression = 0;
@@ -32,12 +30,6 @@ namespace PathfinderSheetModels
             GoodSave = new Save();
 
         }
-        public CharacterClass(string name, double baBProgression, int hitDice)
-        {
-            Name = name;
-            BaBProgression = baBProgression;
-            HitDice = hitDice;
-            
-        }
+       
     }
 }

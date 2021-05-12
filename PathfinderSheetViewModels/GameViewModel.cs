@@ -16,7 +16,7 @@ namespace PathfinderSheetViewModels
         private EventAggregator _eventAggregator;
         private int _spellsLevelFilter;
         private string _stringSpellFilter = string.Empty;
-        
+
         //filter
         public string StringSpellFilter
         {
@@ -52,14 +52,12 @@ namespace PathfinderSheetViewModels
         };
         public ObservableCollection<GeneralFeat> Feats { get; } = new ObservableCollection<GeneralFeat>();
         public ObservableCollection<DiceRoll> DiceRolls { get; set; } = new ObservableCollection<DiceRoll>();
-        
+
 
         public bool AttackViewTrigger { get; set; }
         public bool BuffViewTrigger { get; set; }
         public bool DebuffViewTrigger { get; set; }
         public Attack NewAttack { get; set; }
-        public Buff NewBuff { get; set; }
-        
         public RollService RollService { get; set; }
         public ICommand AddSpellToCharacterCommand { get; set; }
         public ICommand AddSpellsFilterLevel { get; set; }
@@ -85,14 +83,14 @@ namespace PathfinderSheetViewModels
         //public ICollectionView KnownSpellsView { get; set; }
         //public ICollectionView PreparedSpellsView { get; set; }
 
-        
+
         //----Constructor
         public GameViewModel(EventAggregator eventAggregator)
         {
             var dataLoader = DataLoader.GetDataLoader();
             Spells = dataLoader.Spells;
             GetClassSpellDictionary(Spells);
-            
+
             Feats = dataLoader.Feats;
 
             _eventAggregator = eventAggregator;
@@ -115,46 +113,10 @@ namespace PathfinderSheetViewModels
             AddWoundCommand = new RelayCommand(AddWound);
             RemoveWoundCommand = new RelayCommand(RemoveWound);
 
-            SwitchToBuffView = new RelayCommand(BuffViewExecute);
-            AddBonusToBuffListCommand = new RelayCommand(AddBonusToBuffList);
-            RemoveBonusFromBuffListCommand = new RelayCommand<Bonus>(RemoveBonusFromBuffList);
-            AddBuffToListCommand = new RelayCommand<Buff>(AddBuffToList);
-
             SwitchToConditionView = new RelayCommand(DebuffViewExecute);
-            
 
 
-        }
 
-        private void AddBuffToList(Buff buff)
-        {
-            Character.BuffsList.Add(buff);
-            foreach (var bonus in buff.BonusList)
-            {
-                Character.BonusList.Add(bonus);
-            }
-            _eventAggregator.Publish(new BonusListChangedEvent(Character.BonusList));
-            BuffViewTrigger = false;
-            OnPropertyChanged(nameof(BuffViewTrigger));
-        }
-
-        private void RemoveBonusFromBuffList(Bonus bonus)
-        {
-            NewBuff.BonusList.Remove(bonus);
-        }
-
-        private void AddBonusToBuffList()
-        {
-            NewBuff.BonusList.Add(NewBuff.NewBonus);
-            NewBuff.NewBonus = new Bonus();
-        }
-
-        private void BuffViewExecute()
-        {
-            NewBuff = new Buff();
-            NewBuff.Name = "test";
-            BuffViewTrigger = true;
-            OnPropertyChanged(nameof(BuffViewTrigger));
         }
 
         private void DebuffViewExecute()
@@ -265,7 +227,7 @@ namespace PathfinderSheetViewModels
         private void AddSpellToCharacterExecute(Spell spell)
         {
             int spellLevel = spell.ClassSpellLevelDictionary[Character.CharacterClass.Name];
-            var canLearn = SpellsPerDay[spellLevel]>0;
+            var canLearn = SpellsPerDay[spellLevel] > 0;
 
             if (Character.KnownSpells.Contains(spell) == false && canLearn)
             {
@@ -277,18 +239,18 @@ namespace PathfinderSheetViewModels
         {
             int spellLevel = spell.ClassSpellLevelDictionary[Character.CharacterClass.Name];
             int spellSlot = SpellsPerDay[spellLevel];
-            
+
 
             // if spellSlot>0 add spell to PreparedSpell and spellSlot -=1
 
-            if (spellSlot>0)
+            if (spellSlot > 0)
             {
                 Character.PreparedSpells.Add(spell);
                 SpellsPerDay[spellLevel] -= 1;
                 OnPropertyChanged(nameof(SpellsPerDay));
             }
         }
-        
+
         private void AddFeatToCharacterExecute(GeneralFeat feat)
         {
             bool alreadyExist = Character.CharacterFeats.Contains(feat);
@@ -301,7 +263,7 @@ namespace PathfinderSheetViewModels
         private void RollSkillExecute(Skill skill)
         {
             IDice dice = new Dice();
-            dice.Dice(20).Constant(skill.Bonus);
+            dice.Dice(20).Constant(skill.Score);
             DiceResult result = dice.Roll(new RandomDieRoller());
             DiceRoll roll = new DiceRoll
             {
@@ -356,7 +318,7 @@ namespace PathfinderSheetViewModels
 
             }
         }
-        
+
         private bool FilterSpellsName(object obj)
         {
             if (obj is Spell spell)
@@ -366,7 +328,7 @@ namespace PathfinderSheetViewModels
 
             return false;
         }
-        
+
         private bool FilterSpells(object obj)
         {
             if (obj is Spell spell)
@@ -390,7 +352,7 @@ namespace PathfinderSheetViewModels
 
 
         }
-        
+
         private void GetSpellsPerDay(CharacterClass characterClass)
         {
             if (Character.CharacterClass.IsCaster)
@@ -398,22 +360,22 @@ namespace PathfinderSheetViewModels
                 var list = characterClass.SpellsPerLevel;
                 ObservableCollection<int> dic = new ObservableCollection<int>();
                 var i = -1;
-            
-                foreach (int number in list[Character.Level-1])
+
+                foreach (int number in list[Character.Level - 1])
                 {
                     i++;
                     int bonusSpell = 0;
-                    var intModifier = Character.Abilities.FirstOrDefault(a => a.Type.Equals(AbilityType.Intelligence)).Modifier;
+                    var intModifier = Character.Abilities.FirstOrDefault(a => a.AttributeType.Equals(AttributeType.Intelligence)).Modifier;
                     if (i > 0)
                     {
                         double bonusSpelld = (((intModifier - i) / 4) + 0.5);
                         bonusSpell = Convert.ToInt32(Math.Round(bonusSpelld, MidpointRounding.AwayFromZero));
                     }
-                  
+
 
                     if (bonusSpell > 0 && number > 0)
                     {
-                        dic.Add(number+bonusSpell);
+                        dic.Add(number + bonusSpell);
                     }
                     else
                     {
@@ -428,49 +390,49 @@ namespace PathfinderSheetViewModels
 
         public void Handle(RaceChangedEvent message)
         {
-            foreach (var ability in Character.Abilities)
-            {
-                foreach (var bonus in message.Race.ModifiedAbilities.Where(bonus => bonus.Type == ability.Type))
-                {
-                    ability.BonusList.Add(bonus);
-                }
+            //foreach (var ability in Character.Abilities)
+            //{
+            //    foreach (var bonus in message.Race.ModifiedAbilities.Where(bonus => bonus.Target.AttributeType == ability.AttributeType))
+            //    {
+            //        ability.BonusList.Add(bonus);
+            //    }
 
-                ability.CalculateBonus();
-            }
+            //    ability.CalculateBonus();
+            //}
 
-            Character.UpdateCharacterClassSaves();
-            Character.Size = Sizes.FirstOrDefault(a => a.SizeType.Equals(Character.Race.SizeType));
-            Character.ApplyRaceSize();
+            //Character.UpdateCharacterClassSaves();
+            //Character.Size = Sizes.FirstOrDefault(a => a.SizeType.Equals(Character.Race.SizeType));
+            //Character.ApplyRaceSize();
         }
 
         public void Handle(CharacterClassChangedEvent message)
         {
-            if (Character != null)
-            {
-                Character?.UpdateCharacterClassSaves();
-                CharacterService.SetBab(Character);
-                Character?.UpdateAvailableSkillRanks();
+            //if (Character != null)
+            //{
+            //    Character?.UpdateCharacterClassSaves();
+            //    CharacterService.SetBab(Character);
+            //    Character?.UpdateAvailableSkillRanks();
 
 
 
-            }
+            //}
 
         }
 
         public void Handle(CharacterChangedEvent message)
         {
             Character = message.Character;
-            Character.ExperienceProgression = Character.ExperienceProgressionList[1];
-            GetClassSpells(Character.CharacterClass);
-            //ClassSpellsView = CollectionViewSource.GetDefaultView(Character.CharacterClass.ClassSpells);
-            //ClassSpellsView = new CollectionViewSource { Source = Character.CharacterClass.ClassSpells }.View;
-            //ClassSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
-            //KnownSpellsView = new CollectionViewSource { Source = Character.KnownSpells }.View;
-            //KnownSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
-            //PreparedSpellsView = new CollectionViewSource { Source = Character.PreparedSpells }.View;
-            //PreparedSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
-            GetSpellsPerDay(Character.CharacterClass);
-            Character.PublishLevelChanged();
+            //Character.ExperienceProgression = Character.ExperienceProgressionList[1];
+            //GetClassSpells(Character.CharacterClass);
+            ////ClassSpellsView = CollectionViewSource.GetDefaultView(Character.CharacterClass.ClassSpells);
+            ////ClassSpellsView = new CollectionViewSource { Source = Character.CharacterClass.ClassSpells }.View;
+            ////ClassSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
+            ////KnownSpellsView = new CollectionViewSource { Source = Character.KnownSpells }.View;
+            ////KnownSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
+            ////PreparedSpellsView = new CollectionViewSource { Source = Character.PreparedSpells }.View;
+            ////PreparedSpellsView.SortDescriptions.Add(new SortDescription(nameof(Spell.Name), ListSortDirection.Ascending));
+            //GetSpellsPerDay(Character.CharacterClass);
+            //Character.PublishLevelChanged();
 
 
 
