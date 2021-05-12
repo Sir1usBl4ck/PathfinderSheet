@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace UserInterface.Models
-{
-    public enum Type
+namespace PathfinderSheetModels
+{ 
+    public enum RaceType
     {
         Humanoid,
         Outsider
     }
 
-    public enum SubType
+    public enum RaceSubType
     {
         Elf,
         Human,
@@ -19,7 +19,7 @@ namespace UserInterface.Models
     public class Race
     {
 
-        public Race(string name, Type type, SubType subType,SizeType size)
+        public Race(string name, RaceType type, RaceSubType subType,SizeType size)
 
         {
             ModifiedAbilities = new List<AbilityModifier>();
@@ -32,17 +32,8 @@ namespace UserInterface.Models
         public List<AbilityModifier> ModifiedAbilities { get; set; }
         public string Name { get; set; }
         public SizeType SizeType { get; set; }
-        public Type Type { get; set; }
-        public SubType SubType { get; set; }
-
-
-
-        public List<RacialTrait> RacialTraitList { get; set; }
-
-
-
-
-
-
+        public RaceType Type { get; set; }
+        public RaceSubType SubType { get; set; }
+        
     }
 }

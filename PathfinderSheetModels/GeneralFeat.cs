@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace UserInterface.Models
+namespace PathfinderSheetModels
 {
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
     public class GeneralFeat

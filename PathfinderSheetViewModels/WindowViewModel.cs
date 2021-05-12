@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserInterface.EventModels;
-using UserInterface.Models;
+﻿using PathfinderSheetModels;
+using PathfinderSheetViewModels.EventModels;
 
-namespace UserInterface.ViewModels
+namespace PathfinderSheetViewModels
 {
-    public class WindowViewModel : BaseViewModel, IHandle<ViewChangedEvent>
+    public class WindowViewModel : BaseViewModel ,IHandle<ViewChangedEvent>
     {
         private BaseViewModel _currentView;
         private EventAggregator _eventAggregator = new EventAggregator();
@@ -34,7 +29,7 @@ namespace UserInterface.ViewModels
         public void Handle(ViewChangedEvent message)
         {
             CurrentView = message.ViewModel;
-            
+
         }
     }
 }

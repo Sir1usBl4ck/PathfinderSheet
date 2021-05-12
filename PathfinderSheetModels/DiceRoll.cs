@@ -3,7 +3,7 @@ using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
 
 
-namespace UserInterface.Models
+namespace PathfinderSheetModels
 {
 
     public class DiceRoll

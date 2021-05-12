@@ -1,4 +1,4 @@
-﻿namespace UserInterface.Models
+﻿namespace PathfinderSheetModels
 {
     public enum Progression
     {

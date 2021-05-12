@@ -7,7 +7,7 @@
              xmlns:sharedViews="clr-namespace:UserInterface.Views.MainTabViews.SharedViews"
              xmlns:dataTemplate="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
              xmlns:characterTabViews="clr-namespace:UserInterface.Views.MainTabViews.CharacterTabViews"
-             xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
+             xmlns:viewModels="clr-namespace:PathfinderSheetViewModels;assembly=PathfinderSheetViewModels"
              mc:Ignorable="d" 
             Height="800" Width="1280"
              >

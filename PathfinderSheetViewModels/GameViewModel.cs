@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
-using UserInterface.EventModels;
-using UserInterface.Models;
-using UserInterface.Models.Modifiers;
-using UserInterface.Services;
-using Size = UserInterface.Models.Size;
+using PathfinderSheetModels;
+using PathfinderSheetServices;
 
-namespace UserInterface.ViewModels
+
+namespace PathfinderSheetViewModels
 {
     public class GameViewModel : BaseViewModel, IHandle<RaceChangedEvent>, IHandle<CharacterClassChangedEvent>, IHandle<CharacterChangedEvent>
     {
@@ -92,7 +89,7 @@ namespace UserInterface.ViewModels
         //----Constructor
         public GameViewModel(EventAggregator eventAggregator)
         {
-            var dataLoader = Data.DataLoader.GetDataLoader();
+            var dataLoader = DataLoader.GetDataLoader();
             Spells = dataLoader.Spells;
             GetClassSpellDictionary(Spells);
             
@@ -451,7 +448,7 @@ namespace UserInterface.ViewModels
             if (Character != null)
             {
                 Character?.UpdateCharacterClassSaves();
-                Character?.SetBab();
+                CharacterService.SetBab(Character);
                 Character?.UpdateAvailableSkillRanks();
 
 

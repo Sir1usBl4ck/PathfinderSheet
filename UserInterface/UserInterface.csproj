@@ -200,14 +200,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Feats\" />
-    <Folder Include="Models\Modifiers\" />
-    <Folder Include="Models\RaceModels\" />
-  </ItemGroup>
-
-  <!--<ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.csproj" />
-  </ItemGroup>-->
-
 </Project>

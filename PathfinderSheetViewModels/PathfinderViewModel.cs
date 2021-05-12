@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using UserInterface.EventModels;
+﻿using System.Windows.Input;
+using PathfinderSheetModels;
+using PathfinderSheetViewModels.EventModels;
 
-namespace UserInterface.ViewModels
+namespace PathfinderSheetViewModels
 {
     public class PathfinderViewModel : BaseViewModel
     {
@@ -33,7 +27,7 @@ namespace UserInterface.ViewModels
 
         private void CreateCharacterExecute()  
         {
-           _eventAggregator.Publish(new ViewChangedEvent(new CharacterCreatorViewModel(_eventAggregator)));
+            _eventAggregator.Publish(new ViewChangedEvent(new CharacterCreatorViewModel(_eventAggregator)));
         }
 
        

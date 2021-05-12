@@ -1,12 +1,9 @@
 ﻿<Application x:Class="UserInterface.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:UserInterface"
-             xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
              xmlns:views="clr-namespace:UserInterface.Views"
              xmlns:converter="clr-namespace:UserInterface.Converters"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:viewModels1="clr-namespace:UserInterface.ViewModels;assembly=PathfinderSheetModels"
+             xmlns:pathfinderSheetViewModels="clr-namespace:PathfinderSheetViewModels;assembly=PathfinderSheetViewModels"
              StartupUri="MainWindow.xaml">
 
     <Application.Resources>
@@ -20,13 +17,13 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-            <DataTemplate DataType="{x:Type viewModels1:PathfinderViewModel}">
+            <DataTemplate DataType="{x:Type pathfinderSheetViewModels:BaseViewModel}">
                 <views:PathFinderView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels1:GameViewModel}">
+            <DataTemplate DataType="{x:Type pathfinderSheetViewModels:GameViewModel}">
                 <views:GameView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels1:CharacterCreatorViewModel}">
+            <DataTemplate DataType="{x:Type pathfinderSheetViewModels:CharacterCreatorViewModel}">
                 <views:CharacterCreatorView/>
             </DataTemplate>
         </ResourceDictionary>

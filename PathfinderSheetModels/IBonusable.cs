@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace UserInterface.Models.Modifiers
+namespace PathfinderSheetModels
 {
     public interface IBonusable
     {

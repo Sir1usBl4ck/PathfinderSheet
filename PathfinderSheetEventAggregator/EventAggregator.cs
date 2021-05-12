@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace UserInterface
+namespace PathfinderSheetModels
 {
     public interface IEventAggregator
     {
@@ -54,7 +54,7 @@ namespace UserInterface
             foreach (Handler h in _handlers)
                 h.Handle(message.GetType(), message);
 
-            var deadHandlers = _handlers.Where(h => h.IsDead).ToList();
+            var deadHandlers = _handlers.Where(h => h.IsDead);
 
             if (deadHandlers.Any())
                 foreach (Handler deadHandler in deadHandlers)

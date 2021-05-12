@@ -1,6 +1,4 @@
-﻿using UserInterface.Models.Modifiers;
-
-namespace UserInterface.Models
+﻿namespace PathfinderSheetModels
 {
     
     public enum BonusType
@@ -28,8 +26,6 @@ namespace UserInterface.Models
     public class Bonus
     {
         public string BonusSource { get; set; }
-        public IBonusable Target { get; set; }
-        public string TargetName { get; set; }
         public int Value { get; set; }
         public BonusType BonusType { get; set; }
         public bool IsStackable { get; set; }

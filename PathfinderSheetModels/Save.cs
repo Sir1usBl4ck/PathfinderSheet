@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using UserInterface.EventModels;
 
-namespace UserInterface.Models
-{
+namespace PathfinderSheetModels
+{ 
 
     public enum SaveType
     {

@@ -4,12 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
-using UserInterface.Data;
-using UserInterface.EventModels;
-using UserInterface.Models.Modifiers;
 
 
-namespace UserInterface.Models
+namespace PathfinderSheetModels
 {
 
     [Serializable]
@@ -51,7 +48,6 @@ namespace UserInterface.Models
         private ArmorClass _armorClass;
         private long _xpToLevel;
         private long _oldXp;
-
         public Character(EventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -60,7 +56,7 @@ namespace UserInterface.Models
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Medium));
             ExperienceProgressionList.Add(new ExperienceProgression(Progression.Fast));
             ExperienceProgression = ExperienceProgressionList[1];
-            
+
             Serializer serializer = new Serializer();
 
             Abilities = serializer.LoadCollection<Ability>("Abilities");
@@ -183,7 +179,6 @@ namespace UserInterface.Models
 
                 PublishLevelChanged();
                 SetExperience();
-                SetBab();
                 OnPropertyChanged();
                 OnPropertyChanged("BaseAttackBonus");
                 OnPropertyChanged("MaxHitPoints");
@@ -263,7 +258,7 @@ namespace UserInterface.Models
         {
             get => Abilities.FirstOrDefault(a => a.Type == AbilityType.Dexterity).Modifier;
         }
-        public int CombatManeuverBonus => 
+        public int CombatManeuverBonus =>
         (
             Abilities.FirstOrDefault(a => a.Type == AbilityType.Strength).Modifier + BaseAttackBonus
             );
@@ -314,11 +309,10 @@ namespace UserInterface.Models
             {
                 _bonusList = value;
                 _eventAggregator.Publish(new BonusListChangedEvent(_bonusList));
-                
+
             }
         }
         public ObservableCollection<Buff> BuffsList { get; } = new ObservableCollection<Buff>();
-        public ObservableCollection<Condition> ConditionsList { get; set; }
 
         public int RollHitPoints(int level)
         {
@@ -346,20 +340,13 @@ namespace UserInterface.Models
             return CharacterClass.HitDice + constitutionModifier;
         }
 
-        public void SetBab()
-        {
-            if (CharacterClass != null) //this is ugly, refactor somehow
-            {
-                double dBaseAttackBonus = Level * CharacterClass.BaBProgression;
-                BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
-            }
-        }
+
 
         public void SetExperience()
         {
             Experience = ExperienceProgression.ExperienceTable[Level];
             XpToLevel = ExperienceProgression.ExperienceTable[Level + 1];
-        } //Move to Experience Class?
+        }
 
         public void UpdateCharacterClassSaves()
         {
@@ -405,29 +392,6 @@ namespace UserInterface.Models
             OnPropertyChanged(nameof(AvailableSkillRanks));
         }
 
-        //public void UpdateExperienceTab()
-        //{
-
-        //    var experience = Experience;
-
-        //    if (experience > XpToLevel)
-        //    {
-        //        while (experience > XpToLevel)
-        //        {
-        //            Level++;
-        //            XpToLevel = ExperienceProgression.ExperienceTable[Level];
-        //        }
-        //    }
-        //    else
-        //    {
-        //        while (experience < XpToLevel)
-        //        {
-        //            Level--;
-        //            XpToLevel = ExperienceProgression.ExperienceTable[Level];
-        //        }
-        //    }
-        //}
-
         public void LevelUp()
         {
             if (Level > 1)
@@ -439,7 +403,7 @@ namespace UserInterface.Models
 
 
         } // Move to ViewModel
-        
+
         public void Handle(AbilityChangedEvent message)
         {
             var ability = message.Ability;
@@ -456,18 +420,18 @@ namespace UserInterface.Models
 
 
         }
-        
+
         public void PublishLevelChanged()
         {
             _eventAggregator.Publish(new LevelChangedEvent(Level));
         }
-        
+
         public void PublishAvailableSkillRanksChanged()
         {
             _eventAggregator.Publish(new AvailableSkillRanksChanged(AvailableSkillRanks));
 
         }
-        
+
         public void Handle(SkillChangedEvent message)
         {
             AvailableSkillRanks -= message.Skill.Rank;

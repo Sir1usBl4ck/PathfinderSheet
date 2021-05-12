@@ -5,8 +5,7 @@
              xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:UserInterface.Views"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:viewModels ="clr-namespace:UserInterface.ViewModels"
-             x:Class="UserInterface.Views.PathFinderView"
+            x:Class="UserInterface.Views.PathFinderView"
              mc:Ignorable="d"
              Height="800"
              Width="1280">

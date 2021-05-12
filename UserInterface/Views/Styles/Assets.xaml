@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-                    xmlns:local="clr-namespace:UserInterface.Models"
-                    xmlns:models="clr-namespace:UserInterface.Models;assembly=PathfinderSheetModels">
+                    xmlns:models="clr-namespace:PathfinderSheetModels;assembly=PathfinderSheetModels">
 
 
     <Style x:Key="EditButton" TargetType="ToggleButton">
@@ -125,7 +124,7 @@
         </Style.Triggers>
     </Style>
 
-    <ObjectDataProvider x:Key="AbilityType"
+    <!--<ObjectDataProvider x:Key="AbilityType"
                         MethodName="GetValues" 
                         ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>
@@ -146,13 +145,13 @@
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="models:BonusType" />
         </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-    <!--<ObjectDataProvider x:Key="BonusTarget"
-                        MethodName="GetValues" 
-                        ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="local:BonusTarget" />
-        </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>-->
+    <!--<objectdataprovider x:key="bonustarget"
+                        methodname="getvalues" 
+                        objecttype="{x:type sys:enum}">
+        <objectdataprovider.methodparameters>
+            <x:type typename="local:bonustarget" />
+        </objectdataprovider.methodparameters>
+    </objectdataprovider>-->
 
 </ResourceDictionary>

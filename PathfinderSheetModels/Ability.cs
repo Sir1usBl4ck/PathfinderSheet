@@ -4,10 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using UserInterface.EventModels;
-using UserInterface.Models.Modifiers;
 
-namespace UserInterface.Models
+namespace PathfinderSheetModels
 {
     [JsonConverter(typeof(StringEnumConverter))]
     public enum AbilityType
@@ -27,7 +25,7 @@ namespace UserInterface.Models
     }
 
     [Serializable]
-    public class Ability : ObservableObject, IBonusable, IHandle<BonusListChangedEvent>
+    public class Ability : ObservableObject,IHandle<BonusListChangedEvent>
 
     {
         private string _name;
@@ -39,8 +37,6 @@ namespace UserInterface.Models
         {
             BaseScore = 10;
             BonusList = new ObservableCollection<Bonus>();
-
-
         }
         public AbilityType Type { get; set; }
         public string Name

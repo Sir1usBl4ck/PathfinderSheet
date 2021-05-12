@@ -2,11 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using UserInterface.Data;
-using UserInterface.EventModels;
-using UserInterface.Models;
+using PathfinderSheetModels;
+using PathfinderSheetServices;
+using PathfinderSheetViewModels.EventModels;
 
-namespace UserInterface.ViewModels
+namespace PathfinderSheetViewModels
 {
     public class CharacterCreatorViewModel : BaseViewModel, IHandle<RaceChangedEvent>
     {

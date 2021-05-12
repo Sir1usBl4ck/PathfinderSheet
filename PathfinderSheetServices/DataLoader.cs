@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserInterface.Models;
+﻿using System.Collections.ObjectModel;
+using PathfinderSheetModels;
 
-namespace UserInterface.Data
+namespace PathfinderSheetServices
 {
     public sealed class DataLoader
     {

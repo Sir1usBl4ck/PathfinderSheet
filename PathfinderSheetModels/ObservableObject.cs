@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace UserInterface
+namespace PathfinderSheetModels
 {
     public class ObservableObject : INotifyPropertyChanged
     {

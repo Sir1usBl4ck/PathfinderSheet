@@ -1,7 +1,6 @@
 ﻿using System;
-using UserInterface.EventModels;
 
-namespace UserInterface.Models
+namespace PathfinderSheetModels
 {
     public enum TypeOfAttack
     {

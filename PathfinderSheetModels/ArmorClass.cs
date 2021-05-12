@@ -1,10 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using UserInterface.EventModels;
-using UserInterface.Models.Modifiers;
 
-namespace UserInterface.Models
-{
+namespace PathfinderSheetModels
+{ 
     public class ArmorClass :ObservableObject,IBonusable, IHandle<AbilityChangedEvent>, IHandle<BonusListChangedEvent>
     {
         private int _total;

@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface", "UserInterface\UserInterface.csproj", "{96B00030-2DA8-4CFD-8D5C-7DB7819D1E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathfinderSheetModels", "PathfinderSheetModels\PathfinderSheetModels.csproj", "{D35EC8BB-81A9-4742-873C-40A28B90D6DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathfinderSheetModels", "PathfinderSheetModels\PathfinderSheetModels.csproj", "{D35EC8BB-81A9-4742-873C-40A28B90D6DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathfinderSheetServices", "PathfinderSheetServices\PathfinderSheetServices.csproj", "{37A3AACC-295D-47A4-A059-49F9585FF633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathfinderSheetServices", "PathfinderSheetServices\PathfinderSheetServices.csproj", "{37A3AACC-295D-47A4-A059-49F9585FF633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathfinderSheetViewModels", "PathfinderSheetViewModels\PathfinderSheetViewModels.csproj", "{54B20793-B670-40C1-93C6-E5FF50BCB278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathfinderSheetViewModels", "PathfinderSheetViewModels\PathfinderSheetViewModels.csproj", "{54B20793-B670-40C1-93C6-E5FF50BCB278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathfinderSheetDataAccess", "PathfinderSheetDataAccess\PathfinderSheetDataAccess.csproj", "{32A79DC2-AAAC-4690-8D63-D1C898976F09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathfinderSheetDataAccess", "PathfinderSheetDataAccess\PathfinderSheetDataAccess.csproj", "{32A79DC2-AAAC-4690-8D63-D1C898976F09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathfinderSheetEventAggregator", "PathfinderSheetEventAggregator\PathfinderSheetEventAggregator.csproj", "{74E7EB9F-B6DA-40E6-B557-B62BFCE4F49C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{32A79DC2-AAAC-4690-8D63-D1C898976F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32A79DC2-AAAC-4690-8D63-D1C898976F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32A79DC2-AAAC-4690-8D63-D1C898976F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E7EB9F-B6DA-40E6-B557-B62BFCE4F49C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E7EB9F-B6DA-40E6-B557-B62BFCE4F49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E7EB9F-B6DA-40E6-B557-B62BFCE4F49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E7EB9F-B6DA-40E6-B557-B62BFCE4F49C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,10 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views.MainTabViews.DataTemplates"
              xmlns:source="clr-namespace:UserInterface.Views"
-             xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
-             xmlns:models="clr-namespace:UserInterface.Models"
+           xmlns:pathfinderSheetModels="clr-namespace:PathfinderSheetModels;assembly=PathfinderSheetModels"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="800" d:DataContext="{d:DesignInstance models:Ability}">
+             d:DesignHeight="100" d:DesignWidth="800" d:DataContext="{d:DesignInstance pathfinderSheetModels:Ability}">
     <WrapPanel>
         <Image Source="{Binding Icon}" Width="30" Height="30" Stretch="UniformToFill" Margin="10,20"/>
         <ComboBox ItemsSource="{Binding BaseValues, FallbackValue=1}" 
