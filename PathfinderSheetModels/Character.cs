@@ -21,7 +21,8 @@ namespace PathfinderSheetModels
         public Race Race { get; set; }
         public CharacterClass CharacterClass { get; set; }
         public Size Size { get; set; }
-        public ArmorClass ArmorClass { get; set; } 
+        public ArmorClass ArmorClass { get; set; }
+        public int MaxHitPoints { get; set; }
         public int TotalHitPoints { get; set; }
         public int Wounds { get; set; }
         public int NonLethalDamage { get; set; }

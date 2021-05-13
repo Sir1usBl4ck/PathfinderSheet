@@ -48,10 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="d20tek-dicenotation" Version="3.2.3" />
-    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
