@@ -1,0 +1,258 @@
+﻿<UserControl x:Class="View.Views.ChildViews.GeneralView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View.Views.ChildViews"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:pathfinderSheetChildViewModels="clr-namespace:PathfinderSheetViewModels.ChildViewModels;assembly=PathfinderSheetViewModels"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="666" d:DesignWidth="1280" d:Foreground="AliceBlue" 
+             >
+    <materialDesign:DialogHost>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <GroupBox Grid.Column="0" Grid.Row="0"
+                      Header="Character Info"
+                      Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.ColumnSpan="2">
+                        <TextBlock Margin="0,5"
+                                   Text="{Binding Character.Name}"
+                                   Style="{DynamicResource MaterialDesignHeadline5TextBlock}"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Margin="0,5"
+                                   Text="{Binding Character.Race.Name}"
+                                   Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
+                                   FontStyle="Italic"
+                                   HorizontalAlignment="Center" />
+                        <UniformGrid Columns="3">
+                            <TextBlock Margin="0,5,0,0"
+                                       Text="Experience" Style="{DynamicResource MaterialDesignOverlineTextBlock}" />
+                            <TextBlock Text="{Binding Character.Level, StringFormat={}Level {0}}"
+                                       Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                       HorizontalAlignment="Center" />
+                            <TextBlock HorizontalAlignment="Right">
+                                <Run Text="{Binding CurrentXp,Mode=OneWay}" />
+                                <Run Text="/" />
+                                <Run Text="{Binding XpToLevel, Mode=OneWay}" />
+                            </TextBlock>
+                        </UniformGrid>
+                        <ProgressBar Minimum="{Binding OldXpToLevel, Mode=OneWay}"
+                                     Maximum="{Binding XpToLevel}"
+                                     Value="{Binding CurrentXp}"
+                                     Height="5" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding Character.Abilities}"
+                                      Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <UserControl HorizontalContentAlignment="Center"
+                                                 VerticalContentAlignment="Center">
+                                        <WrapPanel Margin="0,5">
+                                            <TextBlock Text="{Binding Acronym}" Width="40" VerticalAlignment="Center" />
+                                            <TextBlock Margin="5"
+                                                       Text="{Binding Modifier, StringFormat={}+ {0}}"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource SecondaryHueMidBrush }" />
+                                            <TextBlock Margin="5"
+                                                       Text="{Binding Score}" />
+                                        </WrapPanel>
+                                    </UserControl>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <Image Grid.Column="0" Grid.Row="1" Source="../../Resources/MockPortrait.jpg" Margin="10" />
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" Margin="5">
+                            <Run Text="{Binding Character.CharacterClass.Name}" />
+                            <Run Text="0" />
+                        </TextBlock>
+                    </StackPanel>
+
+
+                </Grid>
+
+
+            </GroupBox>
+            <TabControl Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.RowSpan="2"
+                        Margin="10,10,10,120"
+                        Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                        materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                        TabStripPlacement="Top">
+                <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                         Header="{materialDesign:PackIcon Kind=House}"
+                         ToolTip="General">
+
+                </TabItem>
+                <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                         Header="{materialDesign:PackIcon Kind=AccountHardHat}"
+                         ToolTip="Skills">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox>
+                            <GroupBox.Header>
+                                <UniformGrid Columns="2">
+                                    <TextBlock Text="Skills" />
+                                    <ToggleButton Name="EditSkills"
+                                                  Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                                  ToolTip="Edit"
+                                                  HorizontalAlignment="Right" />
+                                </UniformGrid>
+                            </GroupBox.Header>
+                            <ContentControl Name="SkillsControl">
+                                <ContentControl.Style>
+                                    <Style TargetType="ContentControl">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <ListView ItemsSource="{Binding Character.Skills}">
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridViewColumn>
+                                                                <GridViewColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding Name}">
+                                                                            <TextBlock.Style>
+                                                                                <Style TargetType="TextBlock">
+                                                                                    <Style.Triggers>
+                                                                                        <DataTrigger
+                                                                                            Binding="{Binding Path=IsClass, UpdateSourceTrigger=PropertyChanged}"
+                                                                                            Value="True">
+                                                                                            <Setter
+                                                                                                Property="Foreground"
+                                                                                                Value="{DynamicResource SecondaryHueMidBrush}" />
+                                                                                        </DataTrigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </TextBlock.Style>
+                                                                        </TextBlock>
+                                                                    </DataTemplate>
+                                                                </GridViewColumn.CellTemplate>
+                                                            </GridViewColumn>
+                                                            <GridViewColumn DisplayMemberBinding="{Binding Score}" />
+                                                            <GridViewColumn>
+                                                                <GridViewColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <materialDesign:PackIcon
+                                                                            Kind="BookOpenBlankVariant"
+                                                                            Visibility="{Binding IsTrainedOnly, 
+                                                        Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                    </DataTemplate>
+                                                                </GridViewColumn.CellTemplate>
+                                                            </GridViewColumn>
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=EditSkills, Path=IsChecked}"
+                                                         Value="True">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <ListView ItemsSource="{Binding Character.Skills}">
+                                                            <ListView.View>
+                                                                <GridView>
+                                                                    <GridViewColumn Width="200">
+                                                                        <GridViewColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBlock Text="{Binding Name}">
+                                                                                    <TextBlock.Style>
+                                                                                        <Style TargetType="TextBlock">
+                                                                                            <Style.Triggers>
+                                                                                                <DataTrigger
+                                                                                                    Binding="{Binding Path=IsClass, UpdateSourceTrigger=PropertyChanged}"
+                                                                                                    Value="True">
+                                                                                                    <Setter
+                                                                                                        Property="Foreground"
+                                                                                                        Value="{DynamicResource SecondaryHueMidBrush}" />
+                                                                                                </DataTrigger>
+                                                                                            </Style.Triggers>
+                                                                                        </Style>
+                                                                                    </TextBlock.Style>
+
+                                                                                </TextBlock>
+                                                                            </DataTemplate>
+                                                                        </GridViewColumn.CellTemplate>
+                                                                    </GridViewColumn>
+                                                                    <GridViewColumn>
+                                                                        <GridViewColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <mah:NumericUpDown Minimum="0"
+                                                                                    Maximum="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=DataContext.Character.Level}"
+                                                                                    Value="{Binding BaseScore, Mode=TwoWay}"
+                                                                                    NumericInputMode="Numbers"
+                                                                                    InterceptManualEnter="False"
+                                                                                    Margin="5,0" />
+                                                                            </DataTemplate>
+                                                                        </GridViewColumn.CellTemplate>
+                                                                    </GridViewColumn>
+                                                                    <GridViewColumn>
+                                                                        <GridViewColumn.CellTemplate>
+                                                                            <DataTemplate>
+                                                                                <materialDesign:PackIcon
+                                                                                    Kind="BookOpenBlankVariant"
+                                                                                    Visibility="{Binding IsTrainedOnly, 
+                                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                                    Margin="10,0" />
+                                                                            </DataTemplate>
+                                                                        </GridViewColumn.CellTemplate>
+                                                                    </GridViewColumn>
+                                                                </GridView>
+                                                            </ListView.View>
+                                                        </ListView>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                            </ContentControl>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+                <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                         Header="{materialDesign:PackIcon Kind=Ribbon}">
+                    <Grid>
+
+                        <ContentControl Content="{Binding CurrentFeatView}" />
+                    </Grid>
+
+
+                </TabItem>
+                <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                         Header="{materialDesign:PackIcon Kind=AccountGroup}">
+                    <local:CharacterClassView />
+
+                </TabItem>
+            </TabControl>
+
+
+        </Grid></materialDesign:DialogHost>
+</UserControl>

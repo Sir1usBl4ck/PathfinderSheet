@@ -1,0 +1,83 @@
+[
+    {
+        "ModifiedAbilities": [
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Dexterity",
+                "Value": 2
+            },
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Intelligence",
+                "Value": 2
+            },
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Constitution",
+                "Value": -2
+            }
+        ],
+        "Name": "Elf",
+        "SizeType": 1,
+        "Type": 0,
+        "SubType": 0,
+        "RacialTraitList": null
+    },
+    {
+        "ModifiedAbilities": [
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Constitution",
+                "Value": 2
+            },
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Wisdom",
+                "Value": 2
+            },
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Charisma",
+                "Value": -2
+            }
+        ],
+        "Name": "Dwarf",
+        "SizeType": 1,
+        "Type": 0,
+        "SubType": 2,
+        "RacialTraitList": null
+    },
+    {
+        "ModifiedAbilities": [
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Constitution",
+                "Value": 2
+            },
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Charisma",
+                "Value": 2
+            },
+            {
+                "BonusSource": "Race",
+                "BonusType": "Race",
+                "Target": "Strength",
+                "Value": -2
+            }
+        ],
+        "Name": "Gnome",
+        "SizeType": 0,
+        "Type": 0,
+        "SubType": 4,
+        "RacialTraitList": null
+    }
+]

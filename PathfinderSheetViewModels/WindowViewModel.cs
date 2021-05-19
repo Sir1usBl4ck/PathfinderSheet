@@ -21,7 +21,7 @@ namespace PathfinderSheetViewModels
         public WindowViewModel()
         {
             _eventAggregator.Subscribe(this);
-            CurrentView = new PathfinderViewModel(_eventAggregator);
+            CurrentView = new StartingViewModel(_eventAggregator);
 
 
         }

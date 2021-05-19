@@ -2,8 +2,8 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace PathfinderSheetServices
-{
+namespace PathfinderSheetDataAccess
+{ 
     public class Serializer
     {
         public void SerializeCollection<T>(ObservableCollection<T> t,string filename)
@@ -24,6 +24,7 @@ namespace PathfinderSheetServices
             using (StreamReader file = File.OpenText($@".\Data\{filename}.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 ObservableCollection<T> collection =
                     (ObservableCollection<T>) serializer.Deserialize(file, typeof(ObservableCollection<T>));
                 return collection;

@@ -2,7 +2,8 @@
 {
     public abstract class BaseAttribute : ObservableObject
     {
-        public int BaseScore { get; set; }
+        public abstract int BaseScore { get; set; }
+
         public abstract int Score { get; }
     }
 }

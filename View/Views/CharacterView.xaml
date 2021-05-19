@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="View.CharacterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View"
+             xmlns:child="clr-namespace:View.Views.ChildViews"
+             Name="CharacterUc"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1280" d:Background="{StaticResource MaterialDesignDarkBackground}">
+    <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+        <ContentControl Content="{Binding CurrentChildView}" 
+        Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+        <!--#region DiceLog-->
+            <GroupBox Grid.Column="0" Grid.Row="2"
+                      Header="Dice Log"
+                      Margin="10">
+                <ItemsControl Background="{DynamicResource MaterialDesignDarkSeparatorBackground}"
+                              ItemsSource="{Binding DiceRolls}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <UserControl>
+                                <TextBlock Margin="2">
+                                    <Run Text="{Binding TimeStamp}" />
+                                    <Run Text="-" />
+                                    <Run Text="{Binding Sender}" />
+                                    <Run Text="{Binding Special}" FontWeight="Bold"
+                                         Foreground="{DynamicResource AttentionToActionBrush}" />
+                                    <Run Text="{Binding Total}" FontWeight="Bold" />
+                                    <TextBlock.ToolTip>
+
+                                        <TextBlock TextWrapping="Wrap">
+                                            <Run
+                                                Text="{Binding DiceResult,FallbackValue=Error, StringFormat=Dice: {0}}" />
+                                            <Run Text=" , "></Run>
+                                            <Run Text="{Binding Expression,FallbackValue=Error}" />
+
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+
+                            </UserControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </GroupBox>
+        <!--#endregion-->
+
+        </Grid>
+</UserControl>

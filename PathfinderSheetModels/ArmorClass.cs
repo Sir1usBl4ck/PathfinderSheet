@@ -10,6 +10,7 @@ namespace PathfinderSheetModels
             Ability = ability;
         }
         public Ability Ability { get; set; }
+        public override int BaseScore { get; set; }
         public override int Score => BaseScore + BonusList.Sum(a => a.Value) + Ability.Modifier;
         public AttributeType AttributeType { get; set; }
         public ObservableCollection<Bonus> BonusList { get; set; }

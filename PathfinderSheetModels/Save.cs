@@ -4,27 +4,15 @@ using System.Linq;
 
 namespace PathfinderSheetModels
 { 
-
-    public enum SaveType
-    {
-        Fortitude,
-        Reflexes,
-        Willpower,
-        NoType
-    }
-    [Serializable]
     public class Save : BaseAttribute, IBonusable
     {
-        public Save()
-        {
-            
-        }
-        public Save(AttributeType type, Ability ability)
+       public Save(AttributeType type, Ability ability)
         {
             Ability = ability;
             AttributeType = type;
         }
         public EventAggregator EventAggregator { get; set; }
+        public override int BaseScore { get; set; }
         public override int Score => CalculateScore();
         public AttributeType AttributeType { get; set; }
         public ObservableCollection<Bonus> BonusList { get; set; }

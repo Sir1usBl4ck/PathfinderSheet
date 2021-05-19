@@ -7,6 +7,7 @@ using D20Tek.DiceNotation;
 using D20Tek.DiceNotation.DieRoller;
 using PathfinderSheetModels;
 using PathfinderSheetServices;
+using PathfinderSheetDataAccess;
 
 
 namespace PathfinderSheetViewModels
@@ -212,10 +213,10 @@ namespace PathfinderSheetViewModels
 
         private void RemoveFeat(GeneralFeat feat)
         {
-            bool alreadyExist = Character.CharacterFeats.Contains(feat);
+            bool alreadyExist = Character.Feats.Contains(feat);
             if (alreadyExist == true)
             {
-                Character.CharacterFeats.Remove(feat);
+                Character.Feats.Remove(feat);
             }
         }
 
@@ -253,10 +254,10 @@ namespace PathfinderSheetViewModels
 
         private void AddFeatToCharacterExecute(GeneralFeat feat)
         {
-            bool alreadyExist = Character.CharacterFeats.Contains(feat);
+            bool alreadyExist = Character.Feats.Contains(feat);
             if (alreadyExist == false)
             {
-                Character.CharacterFeats.Add(feat);
+                Character.Feats.Add(feat);
             }
         }
 
