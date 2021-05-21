@@ -7,6 +7,8 @@
              xmlns:child="clr-namespace:View.Views.ChildViews"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:pathfinderSheetModels="clr-namespace:PathfinderSheetModels;assembly=PathfinderSheetModels"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -27,6 +29,37 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml"/>
               
             </ResourceDictionary.MergedDictionaries>
+
+            <ObjectDataProvider MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}"
+                                x:Key="BonusType">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pathfinderSheetModels:BonusType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}"
+                                x:Key="AttributeType">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pathfinderSheetModels:AttributeType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}"
+                                x:Key="SpecialAbilityTypes">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pathfinderSheetModels:SpecialAbilityType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <ObjectDataProvider MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}"
+                                x:Key="TypeOfAttack">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pathfinderSheetModels:TypeOfAttack" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
             <DataTemplate DataType="{x:Type pathfinderSheetViewModels:CharacterCreatorViewModel}">
                 <local:CharacterCreatorView/>
             </DataTemplate>
@@ -45,8 +78,14 @@
             <DataTemplate DataType="{x:Type pathfinderSheetChildViewModels:AddFeatsViewModel}">
                 <child:AddFeatsView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type pathfinderSheetChildViewModels:CharacterClassViewModel}">
-                <child:CharacterClassView/>
+            <DataTemplate DataType="{x:Type pathfinderSheetChildViewModels:CombatViewModel}">
+                <child:CombatView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pathfinderSheetChildViewModels:AddSpecialAbilitiesViewModel}">
+                <child:AddSpecialAbilitiesView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pathfinderSheetChildViewModels:AddAttackViewModel}">
+                <child:AddAttackView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

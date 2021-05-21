@@ -8,8 +8,7 @@
              xmlns:pathfinderSheetChildViewModels="clr-namespace:PathfinderSheetViewModels.ChildViewModels;assembly=PathfinderSheetViewModels"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="666" d:DesignWidth="1280" d:Foreground="AliceBlue" 
-             >
+             d:DesignHeight="666" d:DesignWidth="1280" d:Foreground="AliceBlue">
     <materialDesign:DialogHost>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -32,7 +31,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Grid.ColumnSpan="2">
                         <TextBlock Margin="0,5"
@@ -83,12 +82,33 @@
                         </ItemsControl>
                     </StackPanel>
                     <Image Grid.Column="0" Grid.Row="1" Source="../../Resources/MockPortrait.jpg" Margin="10" />
-                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
                         <TextBlock Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" Margin="5">
                             <Run Text="{Binding Character.CharacterClass.Name}" />
                             <Run Text="0" />
                         </TextBlock>
-                    </StackPanel>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button
+                                Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                Width="100"
+                                ToolTip="Resource name: MaterialDesignRaisedLightButton"
+                                Content="ADD XP" Margin="2" 
+                                VerticalAlignment="Bottom"
+                                />
+                            <Button 
+                                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                    Width="100"
+                                    Content="LEVEL UP"
+                                    VerticalAlignment="Bottom" Margin="2"
+                                    />
+
+                        </StackPanel>
+                    </Grid>
 
 
                 </Grid>
@@ -101,15 +121,10 @@
                         Margin="10,10,10,120"
                         Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
                         materialDesign:ColorZoneAssist.Mode="SecondaryMid"
-                        TabStripPlacement="Top">
+                        TabStripPlacement="Top"  >
                 <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
                          Header="{materialDesign:PackIcon Kind=House}"
-                         ToolTip="General">
-
-                </TabItem>
-                <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                         Header="{materialDesign:PackIcon Kind=AccountHardHat}"
-                         ToolTip="Skills">
+                         ToolTip="Skills" IsEnabled="{Binding IsTabControlEnabled}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -131,31 +146,38 @@
                                     <Style TargetType="ContentControl">
                                         <Setter Property="Content">
                                             <Setter.Value>
-                                                <ListView ItemsSource="{Binding Character.Skills}">
+                                                <ListView ItemsSource="{Binding Character.Skills}" VerticalContentAlignment="Center">
+                                                    <ListView.Resources>
+                                                    <Style TargetType="GridViewColumnHeader">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </Style>
+                                                    </ListView.Resources>
                                                     <ListView.View>
                                                         <GridView>
                                                             <GridViewColumn>
                                                                 <GridViewColumn.CellTemplate>
                                                                     <DataTemplate>
-                                                                        <TextBlock Text="{Binding Name}">
-                                                                            <TextBlock.Style>
-                                                                                <Style TargetType="TextBlock">
-                                                                                    <Style.Triggers>
-                                                                                        <DataTrigger
-                                                                                            Binding="{Binding Path=IsClass, UpdateSourceTrigger=PropertyChanged}"
-                                                                                            Value="True">
-                                                                                            <Setter
-                                                                                                Property="Foreground"
-                                                                                                Value="{DynamicResource SecondaryHueMidBrush}" />
-                                                                                        </DataTrigger>
-                                                                                    </Style.Triggers>
-                                                                                </Style>
-                                                                            </TextBlock.Style>
-                                                                        </TextBlock>
+                                                                        <Button Style="{StaticResource MaterialDesignFlatButton}" Width="200" HorizontalContentAlignment="Left">
+                                                                            <TextBlock Text="{Binding Name}" Foreground="{DynamicResource MaterialDesignDarkForeground}">
+                                                                                <TextBlock.Style>
+                                                                                    <Style TargetType="TextBlock">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger
+                                                                                                Binding="{Binding Path=IsClass, UpdateSourceTrigger=PropertyChanged}"
+                                                                                                Value="True">
+                                                                                                <Setter
+                                                                                                    Property="Foreground"
+                                                                                                    Value="{DynamicResource SecondaryHueMidBrush}" />
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </TextBlock.Style>
+                                                                            </TextBlock></Button>
                                                                     </DataTemplate>
                                                                 </GridViewColumn.CellTemplate>
                                                             </GridViewColumn>
-                                                            <GridViewColumn DisplayMemberBinding="{Binding Score}" />
+                                                            <GridViewColumn DisplayMemberBinding="{Binding Score}">
+                                                            </GridViewColumn>
                                                             <GridViewColumn>
                                                                 <GridViewColumn.CellTemplate>
                                                                     <DataTemplate>
@@ -235,24 +257,130 @@
                                 </ContentControl.Style>
                             </ContentControl>
                         </GroupBox>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Header="Saves" materialDesign:ColorZoneAssist.Mode="PrimaryDark">
+                                <ItemsControl ItemsSource="{Binding Character.Saves}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="3"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate >
+                                        <DataTemplate>
+                                            <Button  Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                                     Height="50">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}"
+                                                               Text="{Binding Score}" HorizontalAlignment="Center"/>
+
+                                                    <TextBlock Grid.Row="1" Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                                               Text="{Binding AttributeType}"/>
+
+                                                </Grid>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+
+                            </GroupBox>
+                            <GroupBox Grid.Row="1" Header="Armor Class"  materialDesign:ColorZoneAssist.Mode="PrimaryDark">
+                                <UniformGrid Columns="3" Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
+                                    <StackPanel>
+                                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}"
+                                                   Text="{Binding Character.ArmorClass.Score}" HorizontalAlignment="Center"/>
+
+                                        <TextBlock Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                                   Text="AC"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}"
+                                                   Text="{Binding Character.ArmorClass.TouchScore}" HorizontalAlignment="Center"/>
+
+                                        <TextBlock Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                                   Text="Touch"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Style="{DynamicResource MaterialDesignButtonTextBlock}"
+                                                   Text="{Binding Character.ArmorClass.FlatFootedScore}" HorizontalAlignment="Center"/>
+
+                                        <TextBlock Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                                   Text="Flat-Footed"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                    
+                                </UniformGrid>
+                            </GroupBox>
+                            <GroupBox Grid.Row="2" Header="Health">
+                                <UniformGrid Columns="4" Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
+                                    <UniformGrid Rows="3" >
+                                        <materialDesign:PackIcon Kind="Heart" HorizontalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" >
+                                            <Run Text="{Binding Character.MaxHitPoints}"/>
+                                            <Run Text=" / "></Run>
+                                            <Run Text="{Binding Character.CurrentHitPoints, Mode=OneWay}"/>
+                                        </TextBlock>
+                                        <TextBlock Text="HitPoints" 
+                                                   HorizontalAlignment="Center" 
+                                                   Style="{DynamicResource MaterialDesignOverlineTextBlock }"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="3">
+                                        <materialDesign:PackIcon Kind="HeartBroken" HorizontalAlignment="Center"/>
+                                        <mah:NumericUpDown NumericInputMode="Numbers"
+                                                           Value="{Binding Character.Wounds}" HorizontalAlignment="Center"
+                                                          />
+                                        <TextBlock Text="Wounds"
+                                                   Style="{DynamicResource MaterialDesignOverlineTextBlock }"
+                                                   HorizontalAlignment="Center"/>
+                                    </UniformGrid>
+                                    <UniformGrid Rows="3">
+                                        <materialDesign:PackIcon Kind="HeadRemoveOutline" HorizontalAlignment="Center"/>
+                                        <mah:NumericUpDown NumericInputMode="Numbers"
+                                                           Value="{Binding Character.NonLethalDamage}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Non-Lethal Damage"
+                                                   TextWrapping="Wrap"
+                                                   Style="{DynamicResource MaterialDesignOverlineTextBlock }"
+                                                   HorizontalAlignment="Center"/>
+                                    </UniformGrid>
+                                </UniformGrid>
+                            </GroupBox>
+                            <GroupBox Grid.Row="3" Header="Buffs and Conditions">
+                                <ListView Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
+
+                                </ListView>
+
+                            </GroupBox>
+                        </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
                          Header="{materialDesign:PackIcon Kind=Ribbon}">
                     <Grid>
-
                         <ContentControl Content="{Binding CurrentFeatView}" />
                     </Grid>
 
 
                 </TabItem>
                 <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                         Header="{materialDesign:PackIcon Kind=AccountGroup}">
-                    <local:CharacterClassView />
+                         Header="{materialDesign:PackIcon Kind=SwordCross}" IsEnabled="{Binding IsTabControlEnabled}">
+                    <ContentControl Content="{Binding CurrentCombatView}" />
 
                 </TabItem>
             </TabControl>
 
 
-        </Grid></materialDesign:DialogHost>
+        </Grid>
+    </materialDesign:DialogHost>
 </UserControl>

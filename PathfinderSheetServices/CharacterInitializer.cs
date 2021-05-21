@@ -86,6 +86,12 @@ namespace PathfinderSheetServices
                 save.EventAggregator = eventAggregator;
                 save.EventAggregator.Subscribe(save);
             }
+
+
+            character.ArmorClass = new ArmorClass(Dexterity, eventAggregator);
+            
+            character.ArmorClass.EventAggregator.Subscribe(character.ArmorClass);
+
         }
         
 

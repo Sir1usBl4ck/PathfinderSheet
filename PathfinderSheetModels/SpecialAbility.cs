@@ -10,8 +10,9 @@ namespace PathfinderSheetModels
 {
     public class SpecialAbility
     {
+        public string Name { get; set; }
         public SpecialAbilityType SpecialAbilityType { get; set; }
-        public ObservableCollection<Bonus> BonusList { get; set; }
+        public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
         public string Description { get; set; }
         public int NumberOfUses { get; set; }
         public bool GrantsAttack { get; set; }

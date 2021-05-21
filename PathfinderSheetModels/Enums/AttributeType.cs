@@ -53,6 +53,9 @@ namespace PathfinderSheetModels
         Survival,
         Swim,
         UseMagicDevice,
+        MeleeAttack,
+        SpellAttack,
+        RangedAttack
 
     }
 }

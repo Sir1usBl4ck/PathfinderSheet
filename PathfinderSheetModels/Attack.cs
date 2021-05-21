@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using PathfinderSheetModels.EventModels;
 
 namespace PathfinderSheetModels
 {
@@ -9,36 +12,29 @@ namespace PathfinderSheetModels
         Spell,
     }
 
-    public class Attack : ObservableObject, IHandle<BaseAttackBonusChangedEvent>, IHandle<AbilityChangedEvent>
+    public class Attack : ObservableObject
     {
         private int _attackBonus;
         private string _name;
-        private int _diceNumber;
         private int _damageBonus;
-        private int _dice;
-        private int _attackAbilityModifier;
-        private int _damageAbilityModifier;
-        private bool _isRanged;
         private bool _isTwoHanded;
-        private int _criticalMultiplier;
-        private EventAggregator _eventAggregator;
-        
+        private Ability _attackAbility;
+        private Ability _damageAbility;
+        private int _magicWeaponBonus;
+        private bool _isPowerAttack;
+        private bool _isOffHand;
+
+
         public Attack(EventAggregator eventAggregator)
         {
-            Name = "Insert Name";
             AttackType = TypeOfAttack.Melee;
-            AttackAbilityType = AttributeType.Strength;
-            DamageAbilityType = AttributeType.Strength;
             ThreatRange = 19;
             EventAggregator = eventAggregator;
 
         }
+
         public TypeOfAttack AttackType { get; set; }
-        public EventAggregator EventAggregator
-        {
-            get => _eventAggregator;
-            set => _eventAggregator = value;
-        }
+        public EventAggregator EventAggregator { get; set; }
         public string Name
         {
             get { return _name; }
@@ -47,35 +43,40 @@ namespace PathfinderSheetModels
                 _name = value; OnPropertyChanged();
             }
         }
-        public int Dice
+        public int Dice { get; set; }
+        public int DiceNumber { get; set; }
+        public int CriticalMultiplier { get; set; }
+        public int MagicWeaponBonus
         {
-            get => _dice;
+            get => _magicWeaponBonus;
             set
             {
-                _dice = value;
+                _magicWeaponBonus = value;
                 OnPropertyChanged();
+                EventAggregator.Publish(new AttackChangedEvent(this));
+
             }
         }
-        public int DiceNumber
+        public Ability AttackAbility
         {
-            get { return _diceNumber; }
+            get => _attackAbility;
             set
             {
-                _diceNumber = value; OnPropertyChanged();
+                _attackAbility = value;
+                EventAggregator.Publish(new AttackChangedEvent(this));
+
+
             }
         }
-        public int CriticalMultiplier
+        public Ability DamageAbility
         {
-            get => _criticalMultiplier;
+            get => _damageAbility;
             set
             {
-                _criticalMultiplier = value;
-                OnPropertyChanged();
+                _damageAbility = value;
+                EventAggregator.Publish(new AttackChangedEvent(this));
             }
         }
-        public int MagicWeaponBonus { get; set; }
-        public AttributeType AttackAbilityType { get; set; }
-        public AttributeType DamageAbilityType { get; set; }
         public bool IsRapidShot { get; set; }
         public bool IsTwoHanded
         {
@@ -83,36 +84,35 @@ namespace PathfinderSheetModels
             set
             {
                 _isTwoHanded = value;
-                OnPropertyChanged();
-                UpdateDamageBonus();
+                EventAggregator.Publish(new AttackChangedEvent(this));
+
 
             }
         }
-        public bool IsPowerAttack { get; set; }
         public bool IsComposite { get; set; }
+        public bool IsOffHand
+        {
+            get { return _isOffHand; }
+            set
+            {
+                _isOffHand = value;
+                EventAggregator.Publish(new AttackChangedEvent(this));
+
+            }
+        }
+        public bool IsPowerAttack
+        {
+            get { return _isPowerAttack; }
+            set
+            {
+                _isPowerAttack = value;
+                EventAggregator.Publish(new AttackChangedEvent(this));
+            }
+        }
         public bool IsSneakAttack { get; set; }
         public int ThreatRange { get; set; }
-        public int BaseAttackBonus { get; set; }
-        public int AttackAbilityModifier
-        {
-            get => _attackAbilityModifier;
-            set
-            {
-                _attackAbilityModifier = value;
-                OnPropertyChanged();
-                OnPropertyChanged("AttackBonus");
-            }
-        }
-        public int DamageAbilityModifier
-        {
-            get => _damageAbilityModifier;
-            set
-            {
-                _damageAbilityModifier = value;
-                OnPropertyChanged();
-            }
-        }
-        public int SizeModifier { get; set; } // TODO
+        public int AttackAbilityModifier { get; set; }
+        public int DamageAbilityModifier { get; set; }
         public int AttackBonus
         {
             get => _attackBonus;
@@ -132,52 +132,11 @@ namespace PathfinderSheetModels
                 OnPropertyChanged();
             }
         }
-        public void UpdateAttackBonus()
-        {
-            AttackBonus = BaseAttackBonus + AttackAbilityModifier + SizeModifier;
-        }
-        public void UpdateDamageBonus()
-        {
-            if (IsTwoHanded && DamageAbilityType == AttributeType.Strength)
-            {
-                DamageBonus = Convert.ToInt32(DamageAbilityModifier * 1.5);
-            }
-            else
-            {
-                DamageBonus = DamageAbilityModifier;
+        public ObservableCollection<Bonus> AttackBonusList { get; set; } = new ObservableCollection<Bonus>();
+        public ObservableCollection<Bonus> DamageBonusList { get; set; } = new ObservableCollection<Bonus>();
 
-            }
-        }
-        public void UpdateAttackAbilityModifier(int modifier, AttributeType type)
-        {
-            if (AttackAbilityType == type)
-            {
-                AttackAbilityModifier = modifier;
-            }
-        }
-        public void UpdateDamageAbilityModifier(int modifier, AttributeType type)
-        {
-            if (DamageAbilityType == type)
-            {
-                DamageAbilityModifier = modifier;
 
-            }
-        }
-        public void Handle(BaseAttackBonusChangedEvent message)
-        {
-            BaseAttackBonus = message.BaseAttackBonus;
-            UpdateAttackBonus();
 
-        }
-        public void Handle(AbilityChangedEvent message)
-        {
-            UpdateDamageAbilityModifier(message.Ability.Modifier, message.Ability.AttributeType);
-            UpdateAttackAbilityModifier(message.Ability.Modifier, message.Ability.AttributeType);
-            UpdateAttackBonus();
-            UpdateDamageBonus();
 
-        }
-
-       
     }
 }

@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace PathfinderSheetModels
 { 
-    public class Save : BaseAttribute, IBonusable
+    public class Save : BaseAttribute, IBonusable, IHandle<AbilityChangedEvent>
     {
-       public Save(AttributeType type, Ability ability)
+        private int _level;
+
+        public Save(AttributeType type, Ability ability)
         {
             Ability = ability;
             AttributeType = type;
@@ -15,9 +17,19 @@ namespace PathfinderSheetModels
         public override int BaseScore { get; set; }
         public override int Score => CalculateScore();
         public AttributeType AttributeType { get; set; }
-        public ObservableCollection<Bonus> BonusList { get; set; }
+        public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
         public Ability Ability { get; set; }
-        public int Level { get; set; }
+
+        public int Level
+        {
+            get => _level;
+            set
+            {
+                _level = value; 
+                OnPropertyChanged(nameof(Score));
+            }
+        }
+
         public bool IsGood { get; set; }
 
 
@@ -41,9 +53,17 @@ namespace PathfinderSheetModels
             }
 
         }
-        
 
-        
+
+        public void Handle(AbilityChangedEvent message)
+        {
+            if (message.Ability.AttributeType == Ability.AttributeType)
+            {
+                Ability = message.Ability;
+                OnPropertyChanged(nameof(Score));
+                OnPropertyChanged(nameof(BaseScore));
+            }
+        }
     }
 
 }

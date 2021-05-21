@@ -26,10 +26,7 @@ namespace PathfinderSheetServices
             }
 
         }
-
-
         
-
         public static void SetBab(Character character)
         {
             if (character.CharacterClass != null) 

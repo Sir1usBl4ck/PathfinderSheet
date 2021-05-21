@@ -20,6 +20,25 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <GroupBox Header="Special Abilities" materialDesign:ColorZoneAssist.Mode="PrimaryDark" Grid.RowSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition  Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ListView ItemsSource="{Binding Character.SpecialAbilities}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Grid.Row="1"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Width="120"
+                        Content="ADD"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}, Path=DataContext.AddSpecialAbilityCommand}"
+                        Margin="10" />
+            </Grid>
            
         </GroupBox>
         <GroupBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace View.Views.ChildViews
 {
     /// <summary>
-    /// Interaction logic for CharacterClassView.xaml
+    /// Interaction logic for AddAttackView.xaml
     /// </summary>
-    public partial class CharacterClassView : UserControl
+    public partial class AddAttackView : UserControl
     {
-        public CharacterClassView()
+        public AddAttackView()
         {
             InitializeComponent();
         }
