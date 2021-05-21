@@ -13,8 +13,8 @@ namespace PathfinderSheetModels
         public string Name { get; set; }
         public int HitDice { get; set; }
         public double BaBProgression { get; set; }
-        public Save GoodSave { get; set; }
-        public List<string> ClassSkillNames { get; } = new List<string>();
+        public AttributeType GoodSave { get; set; }
+        public List<AttributeType> ClassSkillNames { get; } = new List<AttributeType>();
         public int SkillRanksPerLevel { get; set; } 
         public ObservableCollection<Spell> ClassSpells { get; } = new ObservableCollection<Spell>();
         public bool IsCaster { get; set; }
@@ -23,21 +23,6 @@ namespace PathfinderSheetModels
         [JsonProperty("SpellsPerLevel")]
         public List<List<int?>> SpellsPerLevel { get; set; }
 
-        
 
-        public CharacterClass()
-        {
-            BaBProgression = 0;
-            HitDice = 1;
-            GoodSave = new Save();
-
-        }
-        public CharacterClass(string name, double baBProgression, int hitDice)
-        {
-            Name = name;
-            BaBProgression = baBProgression;
-            HitDice = hitDice;
-            
-        }
     }
 }

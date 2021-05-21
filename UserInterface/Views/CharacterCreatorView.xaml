@@ -77,7 +77,7 @@
                                 Width="40"/>
                     </WrapPanel>
 
-                    <TextBlock Text="{Binding NewCharacter.PointsLeft, StringFormat=Points Left {0}}"/>
+                    <TextBlock Text="{Binding AbilityPointsLeft, StringFormat=Points Left {0}}"/>
                     <ItemsControl  ItemsSource="{Binding NewCharacter.Abilities}"
                                    Margin="20,0,0,0">
                         <ItemsControl.ItemTemplate>

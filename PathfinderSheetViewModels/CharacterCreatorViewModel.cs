@@ -1,77 +1,94 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Input;
+using System.Xml.Linq;
 using PathfinderSheetModels;
 using PathfinderSheetServices;
 using PathfinderSheetViewModels.EventModels;
+using PathfinderSheetDataAccess;
+
 
 namespace PathfinderSheetViewModels
 {
-    public class CharacterCreatorViewModel : BaseViewModel, IHandle<RaceChangedEvent>
+    public class CharacterCreatorViewModel : BaseViewModel, IHandle<CharacterClassChangedEvent>, IHandle<RaceChangedEvent>
     {
 
         private EventAggregator _eventAggregator;
+        private int _abilityPointsLeft = 20;
 
         public CharacterCreatorViewModel(EventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
             NewCharacter = new Character(_eventAggregator);
+            CharacterInitializer.InitializeCharacterAbilities(NewCharacter, eventAggregator);
 
-
-            DataLoader dataLoader = DataLoader.GetDataLoader();
+            var dataLoader = DataLoader.GetDataLoader();
             Races = dataLoader.Races;
             CharacterClasses = dataLoader.CharacterClasses;
             Feats = dataLoader.Feats;
-
+            Spells = dataLoader.Spells;
 
             CreateNewCharacterCommand = new RelayCommand(CreateNewCharacter);
             ChangeAbilityPointsLeftCommand = new RelayCommand<string>(ChangeAbilityPointsLeft);
-            RollHpCommand = new RelayCommand(RollHp);
-
-        }
-
-        private void RollHp()
-        {
-            NewCharacter.MaxHitPoints =  NewCharacter.RollHitPoints(NewCharacter.Level);
         }
 
         public ObservableCollection<Race> Races { get; set; }
         public ObservableCollection<CharacterClass> CharacterClasses { get; set; }
+        public ObservableCollection<Spell> Spells { get; set; }
         public ObservableCollection<GeneralFeat> Feats { get; set; }
         public Character NewCharacter { get; set; }
-
-        public ObservableCollection<int> AvailableLevels { get; set; } = new ObservableCollection<int>
+        public List<int> AvailableLevels { get; set; } = new List<int>
             {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+
+        public int AbilityPointsLeft
+        {
+            get => _abilityPointsLeft;
+            set
+            {
+                _abilityPointsLeft = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand ChangeAbilityPointsLeftCommand { get; set; }
         public ICommand CreateNewCharacterCommand { get; set; }
-        public ICommand RollHpCommand { get; set; }
+        
 
         private void ChangeAbilityPointsLeft(string points)
         {
-            NewCharacter.PointsLeft = Int32.Parse(points);
+            AbilityPointsLeft = Int32.Parse(points);
         }
 
         private void CreateNewCharacter()
         {
-            _eventAggregator.Publish(new ViewChangedEvent(new GameViewModel(_eventAggregator)));
-            _eventAggregator.Publish(new CharacterChangedEvent(NewCharacter));
+            _eventAggregator.Publish(new ViewChangedEvent(new CharacterViewModel(NewCharacter, _eventAggregator)));
+        }
+
+
+
+        public void Handle(CharacterClassChangedEvent message)
+        {
+            CharacterService.ApplyClass(NewCharacter);
         }
 
         public void Handle(RaceChangedEvent message)
         {
             foreach (var ability in NewCharacter.Abilities)
             {
-                ability.BonusList.Clear();
-                foreach (var bonus in message.Race.ModifiedAbilities.Where(bonus => bonus.Type == ability.Type))
+                ability.BonusList.Remove(ability.BonusList.SingleOrDefault(a => a.BonusSource == "Race"));
+
+                foreach (var bonus in message.Race.ModifiedAbilities.Where(a => a.Target == ability.AttributeType)
+                    .ToList())
                 {
-                    
                     ability.BonusList.Add(bonus);
+
                 }
-                ability.CalculateBonus();
             }
+
         }
     }
 }

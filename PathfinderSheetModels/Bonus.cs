@@ -1,35 +1,30 @@
-﻿namespace PathfinderSheetModels
+﻿using System.Runtime.Serialization.Formatters;
+
+namespace PathfinderSheetModels
 {
-    
-    public enum BonusType
-    {
-        Alchemical,
-        Armor,
-        Circumstance,
-        Competence,
-        Deflection,
-        Dodge,
-        Enhancement,
-        Inherent,
-        Insight,
-        Luck,
-        Morale,
-        NaturalArmor,
-        Profane,
-        Penalty,
-        Race,
-        Resistance,
-        Sacred,
-        Shield,
-        Size
-    }
     public class Bonus
     {
+        private bool _canStack;
         public string BonusSource { get; set; }
         public int Value { get; set; }
         public BonusType BonusType { get; set; }
-        public bool IsStackable { get; set; }
+        public bool CanStack
+        {
+            get
+            {
+                switch (BonusType)
+                {
+                    case BonusType.Circumstance:
+                       return true;
+                    case BonusType.Dodge:
+                        return true;
+                }
 
+                return false;
+            }
+        }
+
+        public AttributeType Target { get; set; }
         public Bonus()
         {
             

@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="View.Views.ChildViews.AddAttackView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View.Views.ChildViews"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" 
+             d:DesignHeight="666" d:DesignWidth="853
+             " d:Foreground="AliceBlue">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5,5,5,20">
+            <ComboBox Name="AttackTypeComboBox" SelectedItem="{Binding NewAttack.AttackType}"
+                      ItemsSource="{Binding Source={StaticResource TypeOfAttack}}"
+                      materialDesign:HintAssist.HelperText="Attack Type" Width="150"
+                      materialDesign:HintAssist.IsFloating="True"
+                      Margin="5" />
+            <TextBox Text="{Binding NewAttack.Name}"
+                     materialDesign:HintAssist.HelperText="Attack Name"
+                     materialDesign:HintAssist.IsFloating="True"
+                     Width="200" HorizontalAlignment="Left"
+                     Margin="5" />
+            <ComboBox SelectedItem="{Binding NewAttack.MagicWeaponBonus}"
+                      materialDesign:HintAssist.HelperText="Magical" Width="50"
+                      materialDesign:HintAssist.IsFloating="True"
+                      Margin="5"
+                      ItemStringFormat="{}+ {0}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type system:Int32}">
+                        <system:Int32>1</system:Int32>
+                        <system:Int32>2</system:Int32>
+                        <system:Int32>3</system:Int32>
+                        <system:Int32>4</system:Int32>
+                        <system:Int32>5</system:Int32>
+                    </x:Array>
+                </ComboBox.ItemsSource>
+                </ComboBox>
+        </StackPanel>
+        <GroupBox Grid.Row="2" Header="Attack" >
+            <StackPanel  Orientation="Horizontal" Margin="5,5,5,20">
+                <ComboBox ItemsSource="{Binding Character.Abilities}" DisplayMemberPath="Name" SelectedItem="{Binding NewAttack.AttackAbility}"
+                          materialDesign:HintAssist.HelperText="Attack Ability"
+                          materialDesign:HintAssist.IsFloating="True"
+                          Width="150"/>
+
+                <TextBox
+                    Text="{Binding NewAttack.AttackBonus, StringFormat={}+ {0}}"
+                           materialDesign:HintAssist.HelperText="Ability Bonus" Width="100"
+                           materialDesign:HintAssist.IsFloating="True"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    IsReadOnly="True"/>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel Grid.Row="3">
+            <GroupBox  Header="Damage">
+                <StackPanel Orientation=" Horizontal" Margin="0,5">
+                    <ComboBox ItemsSource="{Binding Character.Abilities}" DisplayMemberPath="Name"
+                              SelectedItem="{Binding NewAttack.DamageAbility}"
+                              materialDesign:HintAssist.HelperText="Damage Ability"
+                              materialDesign:HintAssist.IsFloating="True"
+                              Width="150"
+                              />
+                    <TextBox materialDesign:HintAssist.HelperText="n°"
+                             materialDesign:HintAssist.IsFloating="True"
+                             Text="{Binding NewAttack.DiceNumber}" Width="50"
+                             Margin="5" />
+                    <ComboBox materialDesign:HintAssist.HelperText="Dice"
+                              materialDesign:HintAssist.IsFloating="True"
+                              Text="{Binding NewAttack.Dice}" Width="50" ItemStringFormat="d{0}"
+                              Margin="5">
+                        <ComboBox.ItemsSource>
+                            <x:Array Type="{x:Type system:Int32}">
+                                <system:Int32>2</system:Int32>
+                                <system:Int32>3</system:Int32>
+                                <system:Int32>4</system:Int32>
+                                <system:Int32>6</system:Int32>
+                                <system:Int32>8</system:Int32>
+                                <system:Int32>10</system:Int32>
+                                <system:Int32>12</system:Int32>
+                            </x:Array>
+                        </ComboBox.ItemsSource>
+                    </ComboBox>
+                    <ComboBox SelectedItem="{Binding NewAttack.CriticalMultiplier}"
+                              materialDesign:HintAssist.HelperText="Crit" Width="50"
+                              materialDesign:HintAssist.IsFloating="True"
+                              Margin="5"
+                              ItemStringFormat="{}x {0}">
+                        <ComboBox.ItemsSource>
+                            <x:Array Type="{x:Type system:Int32}">
+                                <system:Int32>2</system:Int32>
+                                <system:Int32>3</system:Int32>
+                                <system:Int32>4</system:Int32>
+                            </x:Array>
+                        </ComboBox.ItemsSource>
+                    </ComboBox>
+                    <TextBox
+                        Text="{Binding NewAttack.DamageBonus, StringFormat={}+ {0}}"
+                        materialDesign:HintAssist.HelperText="Ability Bonus" Width="100"
+                        materialDesign:HintAssist.IsFloating="True"
+                        VerticalAlignment="Center"
+                        Margin="5"
+                        IsReadOnly="True">
+                    </TextBox>
+                </StackPanel>
+
+            </GroupBox>
+            <Button  Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                    Width="150"
+                    Content="Add Attack"
+                    Margin="50"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding AddAttackToCharacterCommand}"/>
+            </StackPanel>
+        <Button Grid.Row="4"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Width="120"
+                ToolTip="Resource name: MaterialDesignRaisedButton"
+                Content="BACK"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="10"
+                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2},Path=DataContext.BackCommand}" />
+        
+
+
+    </Grid>
+</UserControl>

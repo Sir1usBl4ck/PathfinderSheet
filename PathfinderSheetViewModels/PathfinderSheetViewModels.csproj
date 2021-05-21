@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PathfinderSheetDataAccess\PathfinderSheetDataAccess.csproj" />
     <ProjectReference Include="..\PathfinderSheetEventAggregator\PathfinderSheetEventAggregator.csproj" />
     <ProjectReference Include="..\PathfinderSheetModels\PathfinderSheetModels.csproj" />
     <ProjectReference Include="..\PathfinderSheetServices\PathfinderSheetServices.csproj" />

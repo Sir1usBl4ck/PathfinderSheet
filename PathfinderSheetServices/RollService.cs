@@ -6,18 +6,12 @@ using PathfinderSheetModels;
 
 namespace PathfinderSheetServices
 {
-    public interface IRollable
-    {
-        public string Name { get;}
-        public int BonusToRoll { get;}
-    }
-
     public class RollService
     {
         public void RollExecute(ObservableCollection<DiceRoll> diceRolls, IRollable o )
         {
             IDice dice = new Dice();
-            dice.Dice(20).Constant(o.BonusToRoll);
+            dice.Dice(20).Constant(o.Score);
             DiceResult result = dice.Roll(new RandomDieRoller());
             DiceRoll roll = new DiceRoll
             {

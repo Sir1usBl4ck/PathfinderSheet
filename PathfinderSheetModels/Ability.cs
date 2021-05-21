@@ -1,110 +1,47 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace PathfinderSheetModels
 {
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum AbilityType
-    {
-        [EnumMember(Value = "Strength")]
-        Strength,
-        [EnumMember(Value = "Dexterity")]
-        Dexterity,
-        [EnumMember(Value = "Constitution")]
-        Constitution,
-        [EnumMember(Value = "Intelligence")]
-        Intelligence,
-        [EnumMember(Value = "Wisdom")]
-        Wisdom,
-        [EnumMember(Value = "Charisma")]
-        Charisma
-    }
-
-    [Serializable]
-    public class Ability : ObservableObject,IHandle<BonusListChangedEvent>
+    public class Ability : BaseAttribute,  IBonusable, IRollable, IHandle<RaceChangedEvent>
 
     {
-        private string _name;
         private int _baseScore;
-        private EventAggregator _eventAggregator;
-        private int _bonus;
-        private ObservableCollection<Bonus> _bonusList;
-        public Ability()
+
+        public Ability(AttributeType type, string name, string abbreviated)
         {
+            AttributeType = type;
+            Name = name;
             BaseScore = 10;
-            BonusList = new ObservableCollection<Bonus>();
+            Acronym = abbreviated;
         }
-        public AbilityType Type { get; set; }
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-        public int BaseScore
+        
+        public EventAggregator EventAggregator { get; set; }
+        public AttributeType AttributeType { get; set; }
+        public string Name { get; set; }
+        public string Acronym { get; set; }
+
+        public override int BaseScore
         {
             get => _baseScore;
             set
             {
-                _baseScore = value;
+                _baseScore = value; 
                 OnPropertyChanged();
-                OnPropertyChanged("Score");
-                OnPropertyChanged("Modifier");
-                PublishAbilityChange();
-
+                OnPropertyChanged(nameof(Score));
+                OnPropertyChanged(nameof(Modifier));
             }
         }
-        public int Score => _baseScore + _bonusList.Sum(a => a.Value);
+
+        public override int Score => BaseScore + BonusList.Sum(a => a.Value);
         public int Modifier => (Score - Score % 2) / 2 - 5;
-        public int PointCost { get; set; }
-        public int Bonus
-        {
-            get => _bonusList.Sum(item => item.Value);
-            set
-            {
+        public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
 
-                _bonus = value;
-                OnPropertyChanged();
-                OnPropertyChanged("Score");
-                OnPropertyChanged("Modifier");
-            }
-        }
-        public ObservableCollection<Bonus> BonusList
+        public void Handle(RaceChangedEvent message)
         {
-            get => _bonusList;
-            set
-            {
-                _bonusList = value;
-                OnPropertyChanged();
-                OnPropertyChanged("Score");
-            }
-        }
-        public EventAggregator EventAggregator
-        {
-            get => _eventAggregator;
-            set => _eventAggregator = value;
-        }
-        public ObservableCollection<int> BaseValues { get; } = new ObservableCollection<int>();
-        public string Icon { get; set; }
-        public void CalculateBonus()
-        {
-            Bonus = _bonusList.Sum(item => item.Value);
-        }
-        private void PublishAbilityChange()
-        {
-            _eventAggregator?.Publish(new AbilityChangedEvent(this)); 
-
-        }
-        public void Handle(BonusListChangedEvent message)
-        {
-           
+            OnPropertyChanged(nameof(Score));
+            OnPropertyChanged(nameof(Modifier));
+            
         }
     }
 }

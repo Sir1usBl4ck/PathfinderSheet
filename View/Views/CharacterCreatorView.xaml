@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="View.CharacterCreatorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1280" >
+
+    <Grid Margin="100">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="20,20,100,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Text="Name" Margin="5,15"/>
+                <TextBlock Text="Race" Margin="5,15"/>
+                <TextBlock Text="Size" Margin="5,15"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="0">
+                <TextBox Width="150" Margin="5,10" Style="{StaticResource MahApps.Styles.TextBox}"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             mah:TextBoxHelper.Watermark="Character Name"
+                             Text="{Binding NewCharacter.Name, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             />
+                <ComboBox Width="150" Margin="5,10" 
+                              ItemsSource="{Binding Races}"
+                              mah:TextBoxHelper.Watermark="Choose Race"
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding NewCharacter.Race}"/>
+                <TextBlock Width="150" Margin="5,15" Text="{Binding NewCharacter.Size}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="1">
+                <TextBlock Text="Class" Margin="5,15"/>
+                <TextBlock Text="Archetype" Margin="5,15"/>
+                <TextBlock Text="Level" Margin="5,15"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <ComboBox Width="150" Margin="5,10" ItemsSource="{Binding CharacterClasses}" 
+                          DisplayMemberPath="Name" 
+                          mah:TextBoxHelper.Watermark="Choose a Class"
+                          SelectedItem="{Binding NewCharacter.CharacterClass}"/>
+                <ComboBox Width="150" Margin="5,10"/>
+                <ComboBox Width="150" Margin="5,10" ItemsSource="{Binding AvailableLevels}" 
+                          mah:TextBoxHelper.Watermark="Starting Level"
+                          SelectedItem="{Binding NewCharacter.Level}"/>
+            </StackPanel>
+
+        </Grid>
+
+        <StackPanel Grid.Column="1">
+            <GroupBox 
+                      Header="Abilities"
+                      Width="300"
+                      Height="400"
+                      VerticalAlignment="Top"
+                      >
+
+
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding NewCharacter.Abilities}" HorizontalContentAlignment="Center">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <UserControl HorizontalContentAlignment="Center"
+                                             VerticalContentAlignment="Center">
+                                    <WrapPanel Margin="0,10">
+                                        <TextBlock Text="{Binding Name}" Width="80" VerticalAlignment="Center" />
+                                        <mah:NumericUpDown Minimum="7"
+                                                           Maximum="18"
+                                                           Value="{Binding BaseScore, Mode=TwoWay}"
+                                                           NumericInputMode="Numbers"
+                                                           BorderThickness="1"
+                                                           Margin="10,0"
+                                                           />
+                                        <TextBlock Margin="5"
+                                                   Text="{Binding Modifier, StringFormat={}+ {0}}"/>
+                                        <TextBlock Margin="10,5"
+                                                   Text="{Binding Score}"
+                                                   Foreground="{DynamicResource SecondaryHueMidBrush }"/>
+
+                                    </WrapPanel>
+
+                                </UserControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+
+                </StackPanel>
+            </GroupBox>
+            <WrapPanel HorizontalAlignment="Center">
+                
+                <Button Content="Back"
+                        Margin="10,50"
+                        Width="100"
+                        Height="40"
+                        Command="{Binding CreateNewCharacterCommand}" />
+                <Button Content="Create"
+                        Margin="10,50"
+                        Width="100"
+                        Height="40"
+                        Command="{Binding CreateNewCharacterCommand}" />
+            </WrapPanel>
+        </StackPanel>
+
+    </Grid>
+
+
+</UserControl>

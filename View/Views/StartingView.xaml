@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="View.StartingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1280">
+    <StackPanel>
+        <Image Source="../Resources/LogoType.png" Width="400" Margin="50"/>
+        <WrapPanel HorizontalAlignment="Center" Margin="20">
+            <Button Content="LOAD" 
+                    Width="150" 
+                    Height="50"
+                    Margin="0,0,20,0"/>
+            <Button Content="NEW"
+                    Command="{Binding CreateCharacterCommand}" 
+                    Width="150" 
+                    Height="50"
+                    Margin="20,0,0,0"/>
+
+        </WrapPanel>
+    </StackPanel>
+</UserControl>
