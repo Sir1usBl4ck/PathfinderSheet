@@ -10,7 +10,7 @@ using PathfinderSheetServices;
 using PathfinderSheetDataAccess;
 
 
-namespace PathfinderSheetViewModels
+namespace PathWalkerViewModels
 {
     public class GameViewModel : BaseViewModel, IHandle<RaceChangedEvent>, IHandle<CharacterClassChangedEvent>, IHandle<CharacterChangedEvent>
     {

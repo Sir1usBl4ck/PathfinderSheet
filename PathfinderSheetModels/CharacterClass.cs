@@ -17,7 +17,7 @@ namespace PathfinderSheetModels
         public List<AttributeType> ClassSkillNames { get; } = new List<AttributeType>();
         public int SkillRanksPerLevel { get; set; } 
         public ObservableCollection<Spell> ClassSpells { get; } = new ObservableCollection<Spell>();
-        public bool IsCaster { get; set; }
+        public bool IsCaster { get; set; } = false;
         public bool IsPreparedCaster { get; set; }
         public bool IsSpontaneousCaster { get; set; }
         [JsonProperty("SpellsPerLevel")]

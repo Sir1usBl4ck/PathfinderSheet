@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PathfinderSheetViewModels\PathfinderSheetViewModels.csproj" />
+    <ProjectReference Include="..\PathWalkerViewModels\PathWalkerViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

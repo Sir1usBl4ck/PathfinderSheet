@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using PathfinderSheetModels;
 
-namespace PathfinderSheetViewModels.ChildViewModels
+namespace PathWalkerViewModels.ChildViewModels
 {
     public class CombatViewModel : ChildViewModel
     {

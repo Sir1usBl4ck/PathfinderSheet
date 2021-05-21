@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Input;
-using System.Xml.Linq;
 using PathfinderSheetModels;
 using PathfinderSheetServices;
-using PathfinderSheetViewModels.EventModels;
 using PathfinderSheetDataAccess;
+using PathWalkerViewModels.EventModels;
 
 
-namespace PathfinderSheetViewModels
+namespace PathWalkerViewModels
 {
     public class CharacterCreatorViewModel : BaseViewModel, IHandle<CharacterClassChangedEvent>, IHandle<RaceChangedEvent>
     {

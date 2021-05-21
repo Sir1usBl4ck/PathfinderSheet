@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:View.Views.ChildViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:pathfinderSheetChildViewModels="clr-namespace:PathfinderSheetViewModels.ChildViewModels;assembly=PathfinderSheetViewModels"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="666" d:DesignWidth="1280" d:Foreground="AliceBlue">
@@ -123,8 +122,13 @@
                         materialDesign:ColorZoneAssist.Mode="SecondaryMid"
                         TabStripPlacement="Top"  >
                 <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                         Header="{materialDesign:PackIcon Kind=House}"
                          ToolTip="Skills" IsEnabled="{Binding IsTabControlEnabled}">
+                    <TabItem.Header>
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="House" HorizontalAlignment="Center" />
+                            <TextBlock Text="Home" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -366,7 +370,13 @@
                     </Grid>
                 </TabItem>
                 <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                         Header="{materialDesign:PackIcon Kind=Ribbon}">
+                         >
+                    <TabItem.Header>
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="Ribbon" HorizontalAlignment="Center" />
+                            <TextBlock Text="Feats" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </StackPanel>
+                    </TabItem.Header>
                     <Grid>
                         <ContentControl Content="{Binding CurrentFeatView}" />
                     </Grid>
@@ -374,8 +384,25 @@
 
                 </TabItem>
                 <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
-                         Header="{materialDesign:PackIcon Kind=SwordCross}" IsEnabled="{Binding IsTabControlEnabled}">
+                          IsEnabled="{Binding IsTabControlEnabled}">
+                   <TabItem.Header>
+                       <StackPanel>
+                           <materialDesign:PackIcon Kind="SwordCross" HorizontalAlignment="Center" />
+                           <TextBlock Text="Combat" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                       </StackPanel>
+                   </TabItem.Header>
                     <ContentControl Content="{Binding CurrentCombatView}" />
+
+                </TabItem>
+                <TabItem Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                          IsEnabled="{Binding Character.CharacterClass.IsCaster}" >
+                    <TabItem.Header>
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="WizardHat" HorizontalAlignment="Center" />
+                            <TextBlock Text="Magic" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <ContentControl Content="{Binding CurrentMagicView}" />
 
                 </TabItem>
             </TabControl>

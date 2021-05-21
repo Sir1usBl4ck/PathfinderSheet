@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PathfinderSheetDataAccess\PathfinderSheetDataAccess.csproj" />
+    <ProjectReference Include="..\PathfinderSheetEventAggregator\PathfinderSheetEventAggregator.csproj" />
+    <ProjectReference Include="..\PathfinderSheetModels\PathfinderSheetModels.csproj" />
+    <ProjectReference Include="..\PathfinderSheetServices\PathfinderSheetServices.csproj" />
+  </ItemGroup>
+
+</Project>

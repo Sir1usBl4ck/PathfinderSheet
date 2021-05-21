@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:View"
-        xmlns:pathfinderSheetViewModels="clr-namespace:PathfinderSheetViewModels;assembly=PathfinderSheetViewModels"
+        xmlns:viewModels="clr-namespace:PathWalkerViewModels;assembly=PathWalkerViewModels"
         mc:Ignorable="d"
         Title="PathWalker" Height="800" Width="1280" ResizeMode="CanResizeWithGrip" Icon="Resources/Logo.png" WindowStartupLocation="CenterScreen"
         
@@ -18,7 +18,7 @@
         BorderThickness="0"
         >
     <mah:MetroWindow.DataContext>
-        <pathfinderSheetViewModels:WindowViewModel />
+        <viewModels:WindowViewModel />
     </mah:MetroWindow.DataContext>
     <ContentControl Content="{Binding CurrentView}" />
 </mah:MetroWindow>

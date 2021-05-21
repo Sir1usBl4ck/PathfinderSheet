@@ -53,7 +53,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PathfinderSheetModels\PathfinderSheetModels.csproj" />
-    <ProjectReference Include="..\PathfinderSheetViewModels\PathfinderSheetViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

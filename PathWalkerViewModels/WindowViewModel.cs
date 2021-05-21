@@ -1,7 +1,7 @@
 ﻿using PathfinderSheetModels;
-using PathfinderSheetViewModels.EventModels;
+using PathWalkerViewModels.EventModels;
 
-namespace PathfinderSheetViewModels
+namespace PathWalkerViewModels
 {
     public class WindowViewModel : BaseViewModel ,IHandle<ViewChangedEvent>
     {

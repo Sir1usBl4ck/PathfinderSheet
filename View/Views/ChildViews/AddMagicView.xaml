@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="View.Views.ChildViews.AddMagicView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View.Views.ChildViews"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="666" d:DesignWidth="853
+             " d:Foreground="AliceBlue">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBox Text="{Binding StringSpellFilter}"
+                         Margin="5"
+                         mah:TextBoxHelper.Watermark="Search.."
+                         Style="{DynamicResource MahApps.Styles.TextBox.Search}" />
+                <RadioButton Margin="10"
+                             Content="Name"
+                             Command="{Binding FilterNameCommand}"/>
+                <RadioButton Margin="10"
+                             Content="Description"
+                             Command="{Binding FilterDescriptionCommand}"/>
+            </StackPanel>
+            <GroupBox Grid.Column="0" Grid.Row="1" Header="Spells Known">
+            </GroupBox>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
+                <TextBlock Text="{Binding ElementName=SpellsList, Path=SelectedItem.Name}" Style="{DynamicResource MaterialDesignHeadline6TextBlock}" Margin="5"/>
+                <ScrollViewer Height="380">
+                    <StackPanel
+                        VerticalAlignment="Top"
+                        Margin="5"
+                        DataContext="{Binding ElementName=SpellsList, Path=SelectedItem}">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Margin" Value="5,1"/>
+                                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <WrapPanel>
+                            <TextBlock Text="School "/>
+                            <TextBlock Text="{Binding School}" Style="{DynamicResource MaterialDesignOverlineTextBlock}" />
+                            <TextBlock
+                            Text="{Binding SubSchool, StringFormat={}[{0}], Converter={StaticResource StringToVisibilityConverter}}" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Level " />
+                            <TextBlock Text="{Binding SpellLevel}"
+                                   Style="{DynamicResource MaterialDesignOverlineTextBlock}" />
+                        </WrapPanel>
+                        <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
+                            <TextBlock Text="CASTING" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </Border>
+                        <WrapPanel>
+                            <TextBlock Text="Casting Time"/>
+                            <TextBlock Text="{Binding CastingTime}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Components"/>
+                            <TextBlock Text="{Binding Components}" 
+                                   Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                   TextWrapping="Wrap"/>
+                        </WrapPanel>
+                        <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
+                            <TextBlock Text="EFFECT" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </Border>
+                        <WrapPanel>
+                            <TextBlock Text="Range"/>
+                            <TextBlock Text="{Binding Range}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Area"/>
+                            <TextBlock Text="{Binding Area}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Duration"/>
+                            <TextBlock Text="{Binding Duration}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Saving Throw"/>
+                            <TextBlock Text="{Binding SavingThrow}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Spell Resistance"/>
+                            <TextBlock Text="{Binding SpellResistance}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </WrapPanel>
+                        <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
+                            <TextBlock Text="DESCRIPTION" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
+                        </Border>
+                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Style="{DynamicResource MaterialDesignOverlineTextBlock}"
+                                   Margin="10,10"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+
+            <GroupBox Grid.Row="1" Header="All Spells">
+                <ListView Name="SpellsList"
+                ItemsSource="{Binding SpellsView}" DisplayMemberPath="Name"/>
+            </GroupBox>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

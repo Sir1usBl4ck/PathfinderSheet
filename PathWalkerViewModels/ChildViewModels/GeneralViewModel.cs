@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using PathfinderSheetModels;
 using PathfinderSheetServices;
 
-namespace PathfinderSheetViewModels.ChildViewModels
+namespace PathWalkerViewModels.ChildViewModels
 {
     public class GeneralViewModel : ChildViewModel
     {
@@ -24,6 +18,7 @@ namespace PathfinderSheetViewModels.ChildViewModels
             XpTable = ExperienceService.Table(Progression.Medium);
             CurrentFeatView = new FeatsViewModel(Character, EventAggregator);
             CurrentCombatView = new CombatViewModel(Character, EventAggregator);
+            CurrentMagicView = new AddMagicViewModel(Character, EventAggregator);
             AddAttackCommand = new RelayCommand(ChangeViewToAddAttack);
             AddFeatCommand = new RelayCommand(ChangeViewToAddFeats);
             AddSpecialAbilityCommand = new RelayCommand(ChangeViewToAddSpecialAbility);
@@ -33,7 +28,7 @@ namespace PathfinderSheetViewModels.ChildViewModels
 
         private void ChangeViewToAddAttack()
         {
-           CurrentCombatView = new AddAttackViewModel(Character, EventAggregator);
+            CurrentCombatView = new AddAttackViewModel(Character, EventAggregator);
         }
 
         private void ChangeViewToAddSpecialAbility()
@@ -85,8 +80,25 @@ namespace PathfinderSheetViewModels.ChildViewModels
         public ChildViewModel CurrentCombatView
         {
             get => _currentCombatView;
-            set { _currentCombatView = value; OnPropertyChanged(); }
+            set
+            {
+                _currentCombatView = value;
+                OnPropertyChanged();
+            }
         }
+
+        private ChildViewModel _currentMagicView;
+
+        public ChildViewModel CurrentMagicView
+        {
+            get => _currentMagicView;
+            set
+            {
+                _currentMagicView = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public long OldXpToLevel => Character.Level != 1 ? 0 : XpTable[Character.Level];
         public long XpToLevel => XpTable[Character.Level + 1];

@@ -5,20 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:View"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1280">
-    <StackPanel>
-        <Image Source="../Resources/LogoType.png" Width="400" Margin="50"/>
-        <WrapPanel HorizontalAlignment="Center" Margin="20">
-            <Button Content="LOAD" 
-                    Width="150" 
-                    Height="50"
-                    Margin="0,0,20,0"/>
-            <Button Content="NEW"
-                    Command="{Binding CreateCharacterCommand}" 
-                    Width="150" 
-                    Height="50"
-                    Margin="20,0,0,0"/>
-
-        </WrapPanel>
-    </StackPanel>
+             d:DesignHeight="800" d:DesignWidth="1280" d:Foreground="AliceBlue">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Image Source="../Resources/LogoType.png" Width="400" Margin="50,50,50,10" HorizontalAlignment="Center" />
+            <TextBlock Text="V.0.2" HorizontalAlignment="Center" Margin="0,0,0,50" />
+            <WrapPanel HorizontalAlignment="Center" Margin="20">
+                <Button Content="LOAD"
+                        Width="120"
+                        Margin="0,0,20,0" />
+                <Button Content="NEW"
+                        Command="{Binding CreateCharacterCommand}"
+                        Width="120"
+                        Margin="20,0,0,0" />
+            </WrapPanel>
+        </StackPanel>
+        <TextBlock Grid.Row="1" Text="Copyright © 2021 Sir1us " Margin="10"/>
+    </Grid>
 </UserControl>

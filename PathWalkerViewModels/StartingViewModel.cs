@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
 using PathfinderSheetModels;
-using PathfinderSheetViewModels.EventModels;
+using PathWalkerViewModels.EventModels;
 
-namespace PathfinderSheetViewModels
+namespace PathWalkerViewModels
 {
     public class StartingViewModel : BaseViewModel
     {

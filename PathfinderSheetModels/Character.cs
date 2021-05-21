@@ -14,6 +14,7 @@ namespace PathfinderSheetModels
         private int _wounds;
         private int _maxHitPoints;
         private int _baseAttackBonus;
+        private int _nonLethalDamage;
 
         public Character(EventAggregator eventAggregator)
         {
@@ -74,7 +75,16 @@ namespace PathfinderSheetModels
             }
         }
 
-        public int NonLethalDamage { get; set; }
+        public int NonLethalDamage
+        {
+            get => _nonLethalDamage;
+            set
+            {
+                _nonLethalDamage = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public int Initiative { get; set; }
         public int BaseAttackBonus
         {

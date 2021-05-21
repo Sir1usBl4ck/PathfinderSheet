@@ -1,13 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Windows.Input;
-using PathfinderSheetDataAccess;
 using PathfinderSheetModels;
-using PathfinderSheetServices;
-using PathfinderSheetViewModels.ChildViewModels;
-using PathfinderSheetViewModels.EventModels;
+using PathWalkerViewModels.ChildViewModels;
+using PathWalkerViewModels.EventModels;
 
-namespace PathfinderSheetViewModels
+namespace PathWalkerViewModels
 {
     public class CharacterViewModel : BaseViewModel
     {

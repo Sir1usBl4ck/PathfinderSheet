@@ -3,7 +3,7 @@ using System.Windows.Input;
 using PathfinderSheetDataAccess;
 using PathfinderSheetModels;
 
-namespace PathfinderSheetViewModels.ChildViewModels
+namespace PathWalkerViewModels.ChildViewModels
 {
     public class AddFeatsViewModel : ChildViewModel
     {

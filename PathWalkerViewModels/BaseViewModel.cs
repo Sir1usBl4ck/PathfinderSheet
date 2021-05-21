@@ -1,6 +1,6 @@
 ﻿using PathfinderSheetModels;
 
-namespace PathfinderSheetViewModels
+namespace PathWalkerViewModels
 {
     public class BaseViewModel : ObservableObject
     {
