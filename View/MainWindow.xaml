@@ -8,15 +8,15 @@
         xmlns:viewModels="clr-namespace:PathWalkerViewModels;assembly=PathWalkerViewModels"
         mc:Ignorable="d"
         Title="PathWalker" Height="800" Width="1280" ResizeMode="CanResizeWithGrip" Icon="Resources/Logo.png" WindowStartupLocation="CenterScreen"
-        
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:view="clr-namespace:View"
+        xmlns:view1="clr-namespace:View"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        BorderThickness="0"
-        >
+        BorderThickness="0">
     <mah:MetroWindow.DataContext>
         <viewModels:WindowViewModel />
     </mah:MetroWindow.DataContext>

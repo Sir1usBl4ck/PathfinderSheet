@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 
 
 namespace PathfinderSheetModels
@@ -15,6 +16,7 @@ namespace PathfinderSheetModels
         private int _maxHitPoints;
         private int _baseAttackBonus;
         private int _nonLethalDamage;
+        private int _level;
 
         public Character(EventAggregator eventAggregator)
         {
@@ -24,12 +26,23 @@ namespace PathfinderSheetModels
         }
 
         public EventAggregator EventAggregator { get; set; }
+
         public string Name
         {
             get => _name;
             set { _name = value; OnPropertyChanged();}
         }
-        public int Level { get; set; }
+
+        public int Level
+        {
+            get => _level;
+            set
+            {
+                _level = value;
+                EventAggregator.Publish(new LevelChangedEvent(_level));
+            }
+        }
+
         public Race Race
         {
             get => _race;
@@ -50,6 +63,7 @@ namespace PathfinderSheetModels
         }
 
         public Size Size { get; set; }
+
         public ArmorClass ArmorClass { get; set; }
 
         public int MaxHitPoints
@@ -64,6 +78,7 @@ namespace PathfinderSheetModels
         }
 
         public int CurrentHitPoints => MaxHitPoints - Wounds;
+
         public int Wounds
         {
             get => _wounds;
@@ -86,6 +101,7 @@ namespace PathfinderSheetModels
         }
 
         public int Initiative { get; set; }
+
         public int BaseAttackBonus
         {
             get => _baseAttackBonus;
@@ -97,18 +113,29 @@ namespace PathfinderSheetModels
 
         }
 
+        public long Experience { get; set; }
+
         public int CombatManeuverBonus { get; set; }
+
         public int CombatManeuverDefense { get; set; }
 
+        public Inventory Inventory { get; set; }
+
         public ObservableCollection<Ability> Abilities { get; set; } = new ObservableCollection<Ability>();
+
         public ObservableCollection<Skill> Skills { get; } = new ObservableCollection<Skill>();
+
         public ObservableCollection<Save> Saves { get; } = new ObservableCollection<Save>();
-        public ObservableCollection<Spell> KnownSpells { get; } = new ObservableCollection<Spell>();
+
+        public ObservableCollection<Spell> KnownSpells { get; set; } = new ObservableCollection<Spell>();
+
         public ObservableCollection<Spell> PreparedSpells { get; set; } = new ObservableCollection<Spell>();
 
-        public ObservableCollection<SpecialAbility> SpecialAbilities { get; set; } =
+        public ObservableCollection<SpecialAbility> SpecialAbilities { get;} =
             new ObservableCollection<SpecialAbility>();
+
         public ObservableCollection<GeneralFeat> Feats { get; } = new ObservableCollection<GeneralFeat>();
+
         public ObservableCollection<Attack> AttackList { get; } = new ObservableCollection<Attack>();
 
        

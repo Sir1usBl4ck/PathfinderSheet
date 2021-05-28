@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="View.Views.ChildViews.FeatsDialogs.AddSpecialAbilitiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View.Views.ChildViews"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             Height="666" Width="500" d:Foreground="AliceBlue">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Create New Special Ability" Margin="0,0,2,0" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
+                    <TextBox Text="{Binding NewSpecialAbility.Name , UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Insert Name"
+                             materialDesign:HintAssist.HintOpacity=".26" 
+                             Background="{StaticResource MaterialDesignDarkSeparatorBackground}"/>
+                    <WrapPanel>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource SpecialAbilityTypes}}"
+                                  SelectedItem="{Binding NewSpecialAbility.SpecialAbilityType}"
+                                  materialDesign:HintAssist.Hint="Type"
+                                  materialDesign:HintAssist.HintOpacity=".26" Width="120" HorizontalAlignment="Left" />
+                        <CheckBox Content="Active Ability" IsChecked="{Binding NewSpecialAbility.IsActive}" Margin="30,0"/>
+                        </WrapPanel>
+                    <TextBox Text="{Binding NewSpecialAbility.Description, UpdateSourceTrigger=PropertyChanged}" 
+                             TextWrapping="Wrap" Height="130"  Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
+                             materialDesign:HintAssist.Hint="Add Description"
+                             materialDesign:HintAssist.HintOpacity=".26"
+                             />
+                    <WrapPanel Margin="0,10">
+                        <TextBox Text="{Binding NewSpecialAbility.NumberOfUses , UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="Uses"
+                                 materialDesign:HintAssist.IsFloating="True"
+                                 materialDesign:HintAssist.HintOpacity=".26"
+                                 Width="80"
+                                 Background="{StaticResource MaterialDesignDarkSeparatorBackground}" IsEnabled="{Binding NewSpecialAbility.IsActive}"/>
+                    </WrapPanel>
+                </StackPanel>
+                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                          Header="Bonus" 
+                          Style="{DynamicResource MahApps.Styles.GroupBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation=" Horizontal" Margin="5">
+                            <ComboBox ItemsSource="{Binding 
+                               Source={StaticResource BonusType}}" 
+                                     SelectedItem="{Binding NewBonus.BonusType}"
+                                     materialDesign:HintAssist.Hint="Bonus Type"
+                                     materialDesign:HintAssist.IsFloating="True"
+                                     Margin="10,5"/>
+                            <mah:NumericUpDown Minimum="1"
+                                               Value="{Binding NewBonus.Value, Mode=TwoWay}"
+                                               NumericInputMode="Numbers"
+                                               materialDesign:HintAssist.Hint="Value"
+                                               materialDesign:HintAssist.IsFloating="True"
+                                               VerticalContentAlignment="Bottom"
+                                               Margin="10,5"/>
+
+                            <ComboBox ItemsSource="{Binding 
+                                Source={StaticResource AttributeType}}" 
+                                      SelectedItem="{Binding NewBonus.Target}"
+                                      materialDesign:HintAssist.Hint="Target"
+                                      materialDesign:HintAssist.IsFloating="True"
+                                      Margin="10,5"/>
+                            <Button 
+                                Command="{Binding AddBonusToSpecialAbilityCommand}"
+                                Style="{DynamicResource MaterialDesignFlatButton}"
+                                Content="Add"
+                                />
+                        </StackPanel>
+                        <ItemsControl Grid.Row="1" 
+                                  ItemsSource="{Binding NewSpecialAbility.BonusList}" 
+                                  Margin="10,5">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Background="{StaticResource MaterialDesignDarkSeparatorBackground}">
+                                        <TextBlock Text="{Binding BonusType}" Margin="5,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding Value, StringFormat={} + {0}}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Target, StringFormat={} - {0}}" VerticalAlignment="Center"/>
+                                        <Button Margin="10,0" 
+                                            Style="{DynamicResource MaterialDesignFlatButton}">
+                                            <materialDesign:PackIcon Kind="CloseThick" Height="15" Width="15"/>
+                                        </Button>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </Grid>
+                </GroupBox>
+                <WrapPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                    <Button 
+                        Content="Add"
+                            Command="{Binding AddSpecialAbilityToListCommand}"
+                            Style="{DynamicResource MaterialDesignFlatMidBgButton}"
+                            Width="120"
+                            Margin="5"/>
+                    <Button  
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Width="120"
+                            ToolTip="Resource name: MaterialDesignRaisedButton"
+                            Content="BACK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Margin="10"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=3},Path=DataContext.BackCommand}" />
+
+                </WrapPanel>
+            </Grid>
+
+        </GroupBox>
+
+    </Grid>
+</UserControl>

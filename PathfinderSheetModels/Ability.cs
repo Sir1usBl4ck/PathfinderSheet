@@ -15,8 +15,8 @@ namespace PathfinderSheetModels
             BaseScore = 10;
             Acronym = abbreviated;
         }
-        
-        public EventAggregator EventAggregator { get; set; }
+
+        public EventAggregator EventAggregator { get; set; } = new EventAggregator();
         public AttributeType AttributeType { get; set; }
         public string Name { get; set; }
         public string Acronym { get; set; }
@@ -30,12 +30,19 @@ namespace PathfinderSheetModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Score));
                 OnPropertyChanged(nameof(Modifier));
+                EventAggregator.Publish(new AbilityChangedEvent(this));
             }
         }
 
-        public override int Score => BaseScore + BonusList.Sum(a => a.Value);
+        public override int Score => BaseScore + ActiveBonusList.Sum(a => a.Value);
         public int Modifier => (Score - Score % 2) / 2 - 5;
+        public ObservableCollection<Bonus> ActiveBonusList { get; set; } = new ObservableCollection<Bonus>();
+
         public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
+        public void RecalculateScore()
+        {
+            OnPropertyChanged(nameof(Score));
+        }
 
         public void Handle(RaceChangedEvent message)
         {

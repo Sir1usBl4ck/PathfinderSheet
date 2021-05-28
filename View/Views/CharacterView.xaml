@@ -9,19 +9,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1280" d:Background="{StaticResource MaterialDesignDarkBackground}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu IsMainMenu="True">
+            <MenuItem Header="Menu">
+                <MenuItem Header="Quit to Main Menu" Command="{Binding BackToMainMenuCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
-        <Button Content="Back" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Command="{Binding BackToMainMenuCommand}"></Button>
-        <ContentControl Content="{Binding CurrentChildView}" 
-        Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
-        <!--#region DiceLog-->
+            <ContentControl Content="{Binding CurrentChildView}"
+                            Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" />
+            <!--#region DiceLog-->
             <GroupBox Grid.Column="0" Grid.Row="2"
                       Header="Dice Log"
                       Margin="10">
@@ -55,7 +64,8 @@
 
                 </ItemsControl>
             </GroupBox>
-        <!--#endregion-->
+            <!--#endregion-->
 
         </Grid>
+    </Grid>
 </UserControl>

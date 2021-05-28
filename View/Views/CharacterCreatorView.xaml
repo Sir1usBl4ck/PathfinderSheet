@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:View"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1280" >
 
     <Grid Margin="100">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
@@ -96,11 +98,10 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-
                 </StackPanel>
             </GroupBox>
             <WrapPanel HorizontalAlignment="Center">
-                
+
                 <Button Content="Back"
                         Margin="10,50"
                         Width="100"
@@ -112,6 +113,36 @@
                         Height="40"
                         Command="{Binding CreateNewCharacterCommand}" />
             </WrapPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Margin="10">
+            <TextBlock Text="Point Buy" HorizontalAlignment="Center" Margin="10"/>
+            <WrapPanel>
+                <RadioButton Content="15" 
+                             Command="{Binding SetPointsBuyCommand}" 
+                             Style="{StaticResource MaterialDesignToolRadioButton}"
+                >
+                    <RadioButton.CommandParameter>
+                        <system:Int32>15</system:Int32>
+                    </RadioButton.CommandParameter>
+                </RadioButton>
+                <RadioButton Content="20" 
+                             Command="{Binding SetPointsBuyCommand}" 
+                             Style="{StaticResource MaterialDesignToolRadioButton}"
+                             IsChecked="True">
+                    <RadioButton.CommandParameter>
+                        <system:Int32>20</system:Int32>
+                    </RadioButton.CommandParameter>
+                </RadioButton>
+                <RadioButton Content="25" 
+                        Command="{Binding SetPointsBuyCommand}" 
+                        Style="{StaticResource MaterialDesignToolRadioButton}">
+                    <RadioButton.CommandParameter>
+                        <system:Int32>25</system:Int32>
+                    </RadioButton.CommandParameter>
+                </RadioButton>
+            </WrapPanel>
+            <TextBlock Text="{Binding PointsLeft, StringFormat={}Points Left: {0}}" Margin="10" HorizontalAlignment="Center"/>
+
         </StackPanel>
 
     </Grid>

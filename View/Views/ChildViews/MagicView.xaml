@@ -4,10 +4,198 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:View.Views.ChildViews"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="666" d:DesignWidth="853
              " d:Foreground="AliceBlue">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <GroupBox Header="Spells Per Level">
+                    <ItemsControl ItemsSource="{Binding SpellsPerLevel}" AlternationCount="10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1" Padding="10">
+                                        <TextBlock
+                                            Text="{Binding Path=(ItemsControl.AlternationIndex), 
+                    RelativeSource={RelativeSource TemplatedParent}, 
+                    FallbackValue=FAIL}" Margin="2" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                                    </Border>
+                                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1" Padding="10">
+                                        <TextBlock Text="{Binding}" Margin="2" Foreground="{DynamicResource SecondaryHueMidBrush}"/>
+                                    </Border>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+                </GroupBox>
+            </StackPanel>
+
+            <GroupBox Grid.Row="1" Header="Prepared Spells">
+                <ListView ItemsSource="{Binding PreparedSpellsView}"
+                          SelectedItem="{Binding SelectedSpell}">
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                        HorizontalAlignment="Left">
+                                    <materialDesign:PackIcon Kind="Magic" Height="20"/>
+                                </Button>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Bottom" />
+                                <Button Grid.Column="2"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RemoveSpellFromPreparedCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                        HorizontalAlignment="Right">
+                                    <materialDesign:PackIcon Kind="Delete" Height="20"/>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </GroupBox>
+        </Grid>
+
+        <StackPanel Grid.Column="1">
+            <GroupBox  Header="Spells Known">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ListView Name="SpellsList" ItemsSource="{Binding SpellsView}"
+                              Background="{DynamicResource MaterialDesignDarkSeparatorBackground}"
+                              SelectedItem="{Binding SelectedSpell}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Button
+                                        VerticalAlignment="Center"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.AddSpellToPreparedCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                        Margin="10,0">
+                                        <materialDesign:PackIcon Kind="ArrowLeft" Height="20" />
+                                    </Button>
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                                </Grid>
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackPanel Grid.Column="1" Margin="5,0">
+                        <StackPanel.Resources>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Margin" Value="0,2"></Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="All"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>-1</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="0"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>0</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="1"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>1</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="2"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>2</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="3"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>3</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="4"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>4</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="5"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>5</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="6"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>6</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="7"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>7</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="8"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>8</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="9"
+                                     Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>9</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <Button Content="Learn New Spells" Width="150" Margin="10" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2},Path=DataContext.ChangeViewToAddMagicCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

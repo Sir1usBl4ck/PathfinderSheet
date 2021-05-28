@@ -10,6 +10,10 @@ namespace PathfinderSheetModels
     public interface IBonusable
     {
         public AttributeType AttributeType { get; set; }
+        public ObservableCollection<Bonus> ActiveBonusList { get; set; }
         public ObservableCollection<Bonus> BonusList { get; set; }
+
+        public void RecalculateScore();
+
     }
 }

@@ -14,15 +14,23 @@ namespace PathfinderSheetModels
         public EventAggregator EventAggregator { get; set; }
         public Ability Ability { get; set; }
         public override int BaseScore { get; set; } = 10;
-        public override int Score => BaseScore + BonusList.Sum(a => a.Value) + Ability.Modifier;
+        public override int Score => BaseScore + ActiveBonusList.Sum(a => a.Value) + Ability.Modifier;
         public AttributeType AttributeType { get; set; }
+        public ObservableCollection<Bonus> ActiveBonusList { get; set; } = new ObservableCollection<Bonus>();
+
         public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
+        public void RecalculateScore()
+        {
+            OnPropertyChanged(nameof(Score));
+
+        }
+
         public int TouchScore => CalculateTouchScore();
         public int FlatFootedScore => CalculateFlatFootedScore();
 
         private int CalculateFlatFootedScore()
         {
-            var flatFootedList = BonusList
+            var flatFootedList = ActiveBonusList
                 .Where(b => (b.BonusType == BonusType.Deflection))
                 .Where(b => b.BonusType == BonusType.Armor)
                 .Where(b => b.BonusType == BonusType.Shield)
@@ -34,7 +42,7 @@ namespace PathfinderSheetModels
         private int CalculateTouchScore()
         {
             var touchList =
-                BonusList.Where(b => (b.BonusType == BonusType.Deflection)).Where(b => b.BonusType == BonusType.Dodge);
+                ActiveBonusList.Where(b => (b.BonusType == BonusType.Deflection)).Where(b => b.BonusType == BonusType.Dodge);
             return BaseScore + touchList.Sum(a => a.Value) + Ability.Modifier;
         }
 

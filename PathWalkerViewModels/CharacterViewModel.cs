@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using PathfinderSheetModels;
+using PathfinderSheetServices;
 using PathWalkerViewModels.ChildViewModels;
 using PathWalkerViewModels.EventModels;
 
@@ -16,9 +17,6 @@ namespace PathWalkerViewModels
             EventAggregator = eventAggregator;
             CurrentChildView = new GeneralViewModel(Character,EventAggregator);
             BackToMainMenuCommand = new RelayCommand(ChangeViewToMainMenu);
-
-
-
         }
 
         private void ChangeViewToMainMenu()

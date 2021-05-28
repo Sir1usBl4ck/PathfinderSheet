@@ -9,6 +9,11 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:pathfinderSheetModels="clr-namespace:PathfinderSheetModels;assembly=PathfinderSheetModels"
+             xmlns:inventoryDialogs="clr-namespace:View.Views.ChildViews.InventoryDialogs"
+             xmlns:converters="clr-namespace:View.Converters"
+             xmlns:featsDialogs="clr-namespace:View.Views.ChildViews.FeatsDialogs"
+
+
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -29,6 +34,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml"/>
               
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
 
             <ObjectDataProvider MethodName="GetValues"
                                 ObjectType="{x:Type sys:Enum}"
@@ -60,6 +67,22 @@
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
 
+            <ObjectDataProvider MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}"
+                                x:Key="ItemSlots">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pathfinderSheetModels:ItemSlot" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <ObjectDataProvider MethodName="GetValues"
+                                ObjectType="{x:Type sys:Enum}"
+                                x:Key="ArmorType">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="pathfinderSheetModels:ArmorType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
             <DataTemplate DataType="{x:Type viewModels:CharacterCreatorViewModel}">
                 <local:CharacterCreatorView/>
             </DataTemplate>
@@ -76,13 +99,13 @@
                 <child:FeatsView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type childViewModels:AddFeatsViewModel}">
-                <child:AddFeatsView/>
+                <featsDialogs:AddFeatsView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type childViewModels:CombatViewModel}">
                 <child:CombatView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type childViewModels:AddSpecialAbilitiesViewModel}">
-                <child:AddSpecialAbilitiesView/>
+                <featsDialogs:AddSpecialAbilitiesView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type childViewModels:AddAttackViewModel}">
                 <child:AddAttackView/>
@@ -92,6 +115,24 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type childViewModels:MagicViewModel}">
                 <child:MagicView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type childViewModels:CharacterInfoViewModel}">
+                <child:CharacterInfo/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type childViewModels:SpellDetailViewModel}">
+                <child:SpellDetails/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type childViewModels:PrepareSpellViewModel}">
+                <child:PrepareSpellsView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type childViewModels:InventoryViewModel}">
+                <child:InventoryView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type childViewModels:WornItemsViewModel}">
+                <child:WornItemsView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type childViewModels:InventorySlotViewModel}">
+                <inventoryDialogs:InventorySlotView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

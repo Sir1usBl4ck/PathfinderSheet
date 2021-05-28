@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="View.Views.ChildViews.SpellDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View.Views.ChildViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <GroupBox Header="Spell Details" Margin="10">
+            <ScrollViewer Margin="5">
+                <StackPanel
+                    VerticalAlignment="Top"
+                    Margin="5"
+                    DataContext="{Binding SelectedSpell}">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="5,1" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="{Binding Name}"
+                               Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
+                               Foreground="{DynamicResource SecondaryHueMidBrush}" />
+                    <StackPanel >
+                        <WrapPanel>
+                            <TextBlock Text="School " />
+                            <TextBlock Text="{Binding School}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                            <TextBlock
+                                Text="{Binding Subschool, StringFormat={}[{0}], Converter={StaticResource StringToVisibilityConverter}}" 
+                                Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Level " />
+                            <TextBlock Text="{Binding SpellLevel}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
+                        </WrapPanel>
+                        <Border BorderThickness="0,1" Margin="0,5"
+                                BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
+                            <TextBlock Text="CASTING" Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                        </Border>
+                        <WrapPanel>
+                            <TextBlock Text="Casting Time" />
+                            <TextBlock Text="{Binding CastingTime}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Components" />
+                            <TextBlock Text="{Binding Components}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom"
+                                       TextWrapping="Wrap" />
+                        </WrapPanel>
+                        <Border BorderThickness="0,1"
+                                BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
+                            <TextBlock Text="EFFECT" Style="{DynamicResource MaterialDesignBody2TextBlock}"  VerticalAlignment="Bottom" Margin="0,5"/>
+                        </Border>
+                        <WrapPanel>
+                            <TextBlock Text="Range" />
+                            <TextBlock Text="{Binding Range}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Area" />
+                            <TextBlock Text="{Binding Area}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Duration" />
+                            <TextBlock Text="{Binding Duration}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Saving Throw" />
+                            <TextBlock Text="{Binding SavingThrow}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock Text="Spell Resistance" />
+                            <TextBlock Text="{Binding SpellResistance}"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"  VerticalAlignment="Bottom"/>
+                        </WrapPanel>
+                    </StackPanel>
+                    <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
+                        <TextBlock Text="DESCRIPTION" Style="{DynamicResource MaterialDesignBody2TextBlock}" VerticalAlignment="Bottom" Margin="0,5"/>
+                    </Border>
+                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap"
+                               Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                               Margin="10,10" 
+                               VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </ScrollViewer></GroupBox>
+
+    </Grid>
+</UserControl>

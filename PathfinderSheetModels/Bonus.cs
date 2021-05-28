@@ -4,9 +4,8 @@ namespace PathfinderSheetModels
 {
     public class Bonus
     {
-        private bool _canStack;
         public string BonusSource { get; set; }
-        public int Value { get; set; }
+        public int Value { get; set; } = 1;
         public BonusType BonusType { get; set; }
         public bool CanStack
         {
@@ -19,7 +18,6 @@ namespace PathfinderSheetModels
                     case BonusType.Dodge:
                         return true;
                 }
-
                 return false;
             }
         }

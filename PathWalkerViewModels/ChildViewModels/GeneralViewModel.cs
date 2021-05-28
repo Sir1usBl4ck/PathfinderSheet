@@ -6,48 +6,49 @@ namespace PathWalkerViewModels.ChildViewModels
 {
     public class GeneralViewModel : ChildViewModel
     {
-        private long[] _xpTable;
+
         private ChildViewModel _currentFeatView;
         private ChildViewModel _currentCombatView;
+        private ChildViewModel _currentInventoryView;
+        private ChildViewModel _currentMagicView;
+        private ChildViewModel _currentInfoView;
+        private int _tabIndex;
         private bool _isTabControlEnabled = true;
 
         public GeneralViewModel(Character character, EventAggregator eventAggregator)
         {
             Character = character;
             EventAggregator = eventAggregator;
-            XpTable = ExperienceService.Table(Progression.Medium);
+            EventAggregator.Subscribe(this);
             CurrentFeatView = new FeatsViewModel(Character, EventAggregator);
             CurrentCombatView = new CombatViewModel(Character, EventAggregator);
-            CurrentMagicView = new AddMagicViewModel(Character, EventAggregator);
+            CurrentMagicView = new MagicViewModel(Character, EventAggregator);
+            CurrentInfoView = new CharacterInfoViewModel(Character, EventAggregator);
+            WornItemsViewModel = new WornItemsViewModel(Character, EventAggregator);
+            CurrentInventoryView = new InventoryViewModel(Character, EventAggregator);
             AddAttackCommand = new RelayCommand(ChangeViewToAddAttack);
             AddFeatCommand = new RelayCommand(ChangeViewToAddFeats);
-            AddSpecialAbilityCommand = new RelayCommand(ChangeViewToAddSpecialAbility);
-            BackCommand = new RelayCommand(ChangeViewToFeats);
+            
+            BackCommand = new RelayCommand(ChangeViewToDefault);
+            ChangeInfoToSpellCommand = new RelayCommand(ChangeInfoViewToSpell);
+            ChangeViewToAddMagicCommand = new RelayCommand(ChangeViewToAddMagic);
 
         }
 
-        private void ChangeViewToAddAttack()
+        
+        public int TabIndex
         {
-            CurrentCombatView = new AddAttackViewModel(Character, EventAggregator);
-        }
-
-        private void ChangeViewToAddSpecialAbility()
-        {
-            IsTabControlEnabled = false;
-            CurrentFeatView = new AddSpecialAbilitiesViewModel(Character, EventAggregator);
-        }
-
-        private void ChangeViewToFeats()
-        {
-            IsTabControlEnabled = true;
-            CurrentFeatView = new FeatsViewModel(Character, EventAggregator);
-            CurrentCombatView = new CombatViewModel(Character, EventAggregator);
-        }
-
-        private void ChangeViewToAddFeats()
-        {
-            IsTabControlEnabled = false;
-            CurrentFeatView = new AddFeatsViewModel(Character, EventAggregator);
+            get => _tabIndex;
+            set
+            {
+                _tabIndex = value;
+                CurrentInfoView = _tabIndex switch
+                {
+                    3 => new SpellDetailViewModel(EventAggregator),
+                    4 => WornItemsViewModel,
+                    _ => new CharacterInfoViewModel(Character, EventAggregator)
+                };
+            }
         }
 
         public bool IsTabControlEnabled
@@ -60,14 +61,13 @@ namespace PathWalkerViewModels.ChildViewModels
             }
         }
 
-        public long[] XpTable
+        public ChildViewModel CurrentInventoryView
         {
-            get => _xpTable;
+            get { return _currentInventoryView; }
             set
             {
-                _xpTable = value;
-                OnPropertyChanged(nameof(OldXpToLevel));
-                OnPropertyChanged(nameof(XpToLevel));
+                _currentInventoryView = value;
+                OnPropertyChanged();
             }
         }
 
@@ -87,27 +87,76 @@ namespace PathWalkerViewModels.ChildViewModels
             }
         }
 
-        private ChildViewModel _currentMagicView;
-
         public ChildViewModel CurrentMagicView
         {
             get => _currentMagicView;
             set
             {
                 _currentMagicView = value;
+                CurrentInfoView = new SpellDetailViewModel(EventAggregator);
                 OnPropertyChanged();
             }
         }
 
+        public ChildViewModel CurrentInfoView
+        {
+            get => _currentInfoView;
+            set
+            {
+                _currentInfoView = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public long OldXpToLevel => Character.Level != 1 ? 0 : XpTable[Character.Level];
-        public long XpToLevel => XpTable[Character.Level + 1];
-        public long CurrentXp { get; set; }
+        public ChildViewModel WornItemsViewModel { get; set; } 
 
         public ICommand BackCommand { get; set; }
+
         public ICommand AddFeatCommand { get; set; }
-        public ICommand AddSpecialAbilityCommand { get; set; }
-        public ICommand ResetDefaultViewsCommand { get; set; }
+
         public ICommand AddAttackCommand { get; set; }
+
+        public ICommand ChangeInfoToSpellCommand { get; set; }
+
+        public ICommand ChangeViewToAddMagicCommand { get; set; }
+
+        private void ChangeViewToAddMagic()
+        {
+            CurrentMagicView = new AddMagicViewModel(Character, EventAggregator);
+        }
+
+        private void ChangeInfoViewToSpell()
+        {
+            CurrentInfoView = new SpellDetailViewModel(EventAggregator);
+
+        }
+
+        private void ChangeViewToAddAttack()
+        {
+            CurrentCombatView = new AddAttackViewModel(Character, EventAggregator);
+        }
+
+        private void ChangeViewToDefault()
+        {
+            IsTabControlEnabled = true;
+            CurrentFeatView = new FeatsViewModel(Character, EventAggregator);
+            CurrentCombatView = new CombatViewModel(Character, EventAggregator);
+            CurrentInfoView = new CharacterInfoViewModel(Character, EventAggregator);
+            CurrentMagicView = new MagicViewModel(Character, EventAggregator);
+            TabIndex = _tabIndex;
+
+
+
+        }
+
+        private void ChangeViewToAddFeats()
+        {
+            IsTabControlEnabled = false;
+            CurrentFeatView = new AddFeatsViewModel(Character, EventAggregator);
+        }
+
+        
+
+
     }
 }

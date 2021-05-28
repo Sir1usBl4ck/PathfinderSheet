@@ -11,11 +11,10 @@ using PathWalkerViewModels.EventModels;
 
 namespace PathWalkerViewModels
 {
-    public class CharacterCreatorViewModel : BaseViewModel, IHandle<CharacterClassChangedEvent>, IHandle<RaceChangedEvent>
+    public class CharacterCreatorViewModel : BaseViewModel, IHandle<CharacterClassChangedEvent>, IHandle<RaceChangedEvent>, IHandle<AbilityChangedEvent>
     {
 
         private EventAggregator _eventAggregator;
-        private int _abilityPointsLeft = 20;
 
         public CharacterCreatorViewModel(EventAggregator eventAggregator)
         {
@@ -30,8 +29,18 @@ namespace PathWalkerViewModels
             Feats = dataLoader.Feats;
             Spells = dataLoader.Spells;
 
+            PointBuy = 20;
+            CalculatePointsLeft();
             CreateNewCharacterCommand = new RelayCommand(CreateNewCharacter);
-            ChangeAbilityPointsLeftCommand = new RelayCommand<string>(ChangeAbilityPointsLeft);
+            SetPointsBuyCommand = new RelayCommand<int>(SetPointBuy);
+
+        }
+
+        private void SetPointBuy(int obj)
+        {
+            PointBuy = obj;
+            PointsLeft = CalculatePointsLeft();
+           
         }
 
         public ObservableCollection<Race> Races { get; set; }
@@ -42,25 +51,57 @@ namespace PathWalkerViewModels
         public List<int> AvailableLevels { get; set; } = new List<int>
             {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
-        public int AbilityPointsLeft
+        
+
+        public int CalculatePointsLeft()
         {
-            get => _abilityPointsLeft;
+            var pointsLeft = PointBuy;
+            foreach (var ability in NewCharacter.Abilities)
+            {
+                var scoreCost = new Dictionary<int, int>()
+                {
+                    {7, -4}, {8, -2}, {9, -1}, {10, 0}, {11, 1}, {12, 2}, {13, 3}, {14, 5}, {15, 7}, {16, 10}, {17, 13},
+                    {18, 17}
+                };
+                var pointCost = scoreCost[ability.BaseScore];
+                pointsLeft -= pointCost;
+                
+            }
+            return pointsLeft;
+        }
+
+        private int _pointsLeft;
+
+        public int PointsLeft
+        {
+            get { return _pointsLeft; }
             set
             {
-                _abilityPointsLeft = value;
+                _pointsLeft = value; 
                 OnPropertyChanged();
             }
         }
 
-        public ICommand ChangeAbilityPointsLeftCommand { get; set; }
-        public ICommand CreateNewCharacterCommand { get; set; }
-        
 
-        private void ChangeAbilityPointsLeft(string points)
+        private int _pointBuy;
+
+        public int PointBuy
         {
-            AbilityPointsLeft = Int32.Parse(points);
+            get { return _pointBuy; }
+            set
+            {
+                _pointBuy = value;
+                OnPropertyChanged();
+            }
         }
 
+
+        public ICommand CreateNewCharacterCommand { get; set; }
+        public ICommand SetPointsBuyCommand { get; set; }
+       
+        
+
+        
         private void CreateNewCharacter()
         {
             _eventAggregator.Publish(new ViewChangedEvent(new CharacterViewModel(NewCharacter, _eventAggregator)));
@@ -77,16 +118,21 @@ namespace PathWalkerViewModels
         {
             foreach (var ability in NewCharacter.Abilities)
             {
-                ability.BonusList.Remove(ability.BonusList.SingleOrDefault(a => a.BonusSource == "Race"));
+                ability.ActiveBonusList.Remove(ability.ActiveBonusList.SingleOrDefault(a => a.BonusSource == "Race"));
 
                 foreach (var bonus in message.Race.ModifiedAbilities.Where(a => a.Target == ability.AttributeType)
                     .ToList())
                 {
-                    ability.BonusList.Add(bonus);
+                    ability.ActiveBonusList.Add(bonus);
 
                 }
             }
 
+        }
+
+        public void Handle(AbilityChangedEvent message)
+        {
+            PointsLeft = CalculatePointsLeft();
         }
     }
 }

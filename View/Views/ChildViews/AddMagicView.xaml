@@ -6,112 +6,165 @@
              xmlns:local="clr-namespace:View.Views.ChildViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="666" d:DesignWidth="853
              " d:Foreground="AliceBlue">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <TextBox Text="{Binding StringSpellFilter}"
-                         Margin="5"
+                <TextBox Text="{Binding StringSpellFilter, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="20"
                          mah:TextBoxHelper.Watermark="Search.."
                          Style="{DynamicResource MahApps.Styles.TextBox.Search}" />
-                <RadioButton Margin="10"
-                             Content="Name"
-                             Command="{Binding FilterNameCommand}"/>
-                <RadioButton Margin="10"
-                             Content="Description"
-                             Command="{Binding FilterDescriptionCommand}"/>
             </StackPanel>
-            <GroupBox Grid.Column="0" Grid.Row="1" Header="Spells Known">
-            </GroupBox>
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <GroupBox  Header="Spells Known">
+                    <ListView ItemsSource="{Binding Character.KnownSpells, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedSpell}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Bottom" />
+                                    <Button Grid.Column="1"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RemoveSpellFromCharacterCommand}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalAlignment="Right">
+                                        <materialDesign:PackIcon Kind="Delete" />
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    
+                </GroupBox>
+                <Button Grid.Row="1"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Width="120"
+                        Content="BACK"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Margin="10"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2},Path=DataContext.BackCommand}" />
+            </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
-                <TextBlock Text="{Binding ElementName=SpellsList, Path=SelectedItem.Name}" Style="{DynamicResource MaterialDesignHeadline6TextBlock}" Margin="5"/>
-                <ScrollViewer Height="380">
-                    <StackPanel
-                        VerticalAlignment="Top"
-                        Margin="5"
-                        DataContext="{Binding ElementName=SpellsList, Path=SelectedItem}">
+            <GroupBox Grid.Row="1" Header="All Spells">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView ItemsSource="{Binding SpellsView}" 
+                              Background="{DynamicResource MaterialDesignDarkSeparatorBackground}"
+                              SelectedItem="{Binding SelectedSpell}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Button
+                                        VerticalAlignment="Center"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.AddSpellToCharacterCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource MaterialDesignFlatButton}" 
+                                        Margin="10,0">
+                                        <materialDesign:PackIcon Kind="ArrowLeft" Height="20"/>
+                                    </Button>
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                                </Grid>
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackPanel Grid.Column="1" Margin="5,0">
                         <StackPanel.Resources>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Margin" Value="5,1"/>
-                                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Margin" Value="0,2"></Setter>
                             </Style>
                         </StackPanel.Resources>
-                        <WrapPanel>
-                            <TextBlock Text="School "/>
-                            <TextBlock Text="{Binding School}" Style="{DynamicResource MaterialDesignOverlineTextBlock}" />
-                            <TextBlock
-                            Text="{Binding SubSchool, StringFormat={}[{0}], Converter={StaticResource StringToVisibilityConverter}}" />
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Text="Level " />
-                            <TextBlock Text="{Binding SpellLevel}"
-                                   Style="{DynamicResource MaterialDesignOverlineTextBlock}" />
-                        </WrapPanel>
-                        <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
-                            <TextBlock Text="CASTING" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </Border>
-                        <WrapPanel>
-                            <TextBlock Text="Casting Time"/>
-                            <TextBlock Text="{Binding CastingTime}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Text="Components"/>
-                            <TextBlock Text="{Binding Components}" 
-                                   Style="{DynamicResource MaterialDesignOverlineTextBlock}"
-                                   TextWrapping="Wrap"/>
-                        </WrapPanel>
-                        <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
-                            <TextBlock Text="EFFECT" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </Border>
-                        <WrapPanel>
-                            <TextBlock Text="Range"/>
-                            <TextBlock Text="{Binding Range}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Text="Area"/>
-                            <TextBlock Text="{Binding Area}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Text="Duration"/>
-                            <TextBlock Text="{Binding Duration}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Text="Saving Throw"/>
-                            <TextBlock Text="{Binding SavingThrow}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <TextBlock Text="Spell Resistance"/>
-                            <TextBlock Text="{Binding SpellResistance}" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </WrapPanel>
-                        <Border BorderThickness="0,1" BorderBrush="{DynamicResource MaterialDesignDarkForeground}">
-                            <TextBlock Text="DESCRIPTION" Style="{DynamicResource MaterialDesignOverlineTextBlock}"/>
-                        </Border>
-                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Style="{DynamicResource MaterialDesignOverlineTextBlock}"
-                                   Margin="10,10"/>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="All" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>-1</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="0" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>0</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="1" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>1</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="2" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>2</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="3" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>3</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="4" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>4</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="5" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>5</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="6" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>6</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="7" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>7</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="8" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>8</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MaterialDesignToolRadioButton}" Content="9" Command="{Binding SetLevelFilterCommand}">
+                            <RadioButton.CommandParameter>
+                                <system:Int32>9</system:Int32>
+                            </RadioButton.CommandParameter>
+                        </RadioButton>
                     </StackPanel>
-                </ScrollViewer>
-            </StackPanel>
-
-            <GroupBox Grid.Row="1" Header="All Spells">
-                <ListView Name="SpellsList"
-                ItemsSource="{Binding SpellsView}" DisplayMemberPath="Name"/>
+                </Grid>
             </GroupBox>
 
         </Grid>

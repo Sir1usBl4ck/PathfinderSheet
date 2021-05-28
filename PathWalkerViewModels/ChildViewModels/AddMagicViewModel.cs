@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using PathfinderSheetDataAccess;
 using PathfinderSheetModels;
+using PathfinderSheetServices;
+using PathWalkerViewModels.EventModels;
 
 namespace PathWalkerViewModels.ChildViewModels
 {
@@ -19,10 +22,30 @@ namespace PathWalkerViewModels.ChildViewModels
             Character = character;
             EventAggregator = eventAggregator;
             Spells = DataLoader.GetDataLoader().Spells;
-            SpellsView = CollectionViewSource.GetDefaultView(Spells);
-            SpellsView.Filter += FilterClassSpellsOnly;
-            FilterDescriptionCommand = new RelayCommand(FilterSpellsByDescription);
-            FilterNameCommand = new RelayCommand(FilterSpellsByName);
+            CharacterService.WriteClassSpellLevelInSpells(Character,Spells);
+            SpellsView = new CollectionViewSource
+            {
+                Source = Spells.Where(a =>
+a.ClassSpellLevelDictionary.ContainsKey(Character.CharacterClass.Name))
+            }.View;
+            SpellsView.Filter += FilterSpells;
+            SpellsLevelFilter = -1;
+            AddSpellToCharacterCommand = new RelayCommand<Spell>(AddSpellToCharacter);
+            SetLevelFilterCommand = new RelayCommand<int>(SetLevelFilter);
+            RemoveSpellFromCharacterCommand = new RelayCommand<Spell>(RemoveSpellFromCharacter);
+        }
+
+        private Spell _selectedSpell;
+
+        public Spell SelectedSpell
+        {
+            get { return _selectedSpell; }
+            set
+            {
+                _selectedSpell = value;
+                OnPropertyChanged();
+                EventAggregator.Publish(new SelectedSpellChangedEvent(_selectedSpell));
+            }
         }
 
         public string StringSpellFilter
@@ -35,6 +58,7 @@ namespace PathWalkerViewModels.ChildViewModels
                 SpellsView.Refresh();
             }
         }
+
         public int SpellsLevelFilter
         {
             get => _spellsLevelFilter;
@@ -45,7 +69,9 @@ namespace PathWalkerViewModels.ChildViewModels
                 SpellsView.Refresh();
             }
         }
+
         public ObservableCollection<Spell> Spells { get; set; }
+
         public ICollectionView SpellsView
         {
             get => _spellsView;
@@ -55,68 +81,64 @@ namespace PathWalkerViewModels.ChildViewModels
                 OnPropertyChanged();
             }
         }
-        public ICommand FilterNameCommand { get; set; }
-        public ICommand FilterDescriptionCommand { get; set; }
 
-        private void FilterSpellsByName()
+        public ICommand AddSpellToCharacterCommand { get; set; }
+
+        public ICommand SetLevelFilterCommand { get; set; }
+
+        public ICommand RemoveSpellFromCharacterCommand { get; set; }
+
+        private bool FilterSpells(object obj)
         {
-            SpellsView.Filter = null;
-            SpellsView.Filter += FilterClassSpellsOnly;
-            SpellsView.Filter += FilterSpellsName;
-        }
-
-        private void FilterSpellsByDescription()
-        {
-            SpellsView.Filter = null;
-            SpellsView.Filter += FilterClassSpellsOnly;
-            SpellsView.Filter += FilterSpellsDescription;
-        }
-
-        private bool FilterSpellsDescription(object obj)
-        {
-            if (string.IsNullOrEmpty(StringSpellFilter))
-            {
-                return true;
-            }
-
             if (obj is Spell spell)
             {
-                return spell.Description.Contains(StringSpellFilter, StringComparison.InvariantCultureIgnoreCase);
-            }
-            return false;
-        }
-
-        private bool FilterSpellsName(object obj)
-        {
-            if (string.IsNullOrEmpty(StringSpellFilter))
-            {
-                return true;
-            }
-            if (obj is Spell spell)
-            {
-                return spell.Name.Contains(StringSpellFilter, StringComparison.InvariantCultureIgnoreCase);
-            }
-            return false;
-        }
-
-        private bool FilterClassSpellsOnly(object obj)
-        {
-
-            if (obj is Spell spell)
-            {
-                if (spell.ClassSpellLevelDictionary.ContainsKey(Character.CharacterClass.Name))
+                if (Character.KnownSpells.Contains(spell))
                 {
                     return false;
-
                 }
-                
+
+                if (SpellsLevelFilter == -1 || spell.ClassSpellLevelDictionary[Character.CharacterClass.Name]
+                    .Equals(SpellsLevelFilter))
+                {
+                    if (string.IsNullOrEmpty(StringSpellFilter))
+                    {
+                        return true;
+                    }
+
+                    return spell.Name.Contains(StringSpellFilter, StringComparison.InvariantCultureIgnoreCase);
+                }
+
+                return false;
+
             }
-            return true;
+
+            return false;
         }
 
+        private void RemoveSpellFromCharacter(Spell obj)
+        {
+            Character.KnownSpells.Remove(obj);
+            SpellsView.Refresh();
+        }
+
+        private void SetLevelFilter(int level)
+        {
+
+            SpellsLevelFilter = level;
+
+        }
+
+        private void AddSpellToCharacter(Spell obj)
+        {
+            if (Character.KnownSpells.Contains(obj))
+            {
+                return;
+            }
+
+            Character.KnownSpells.Add(obj);
+            SpellsView.Refresh();
+        }
 
     }
-
-
 
 }

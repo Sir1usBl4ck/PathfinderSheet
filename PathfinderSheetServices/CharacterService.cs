@@ -11,8 +11,21 @@ namespace PathfinderSheetServices
 
         public static void ApplyClass(Character character)
         {
-            SetClassSkills(character.CharacterClass,character);
+            SetClassSkills(character.CharacterClass, character);
             SetBab(character);
+            SetGoodSave(character.Saves, character.CharacterClass);
+
+        }
+
+        public static void SetGoodSave(ObservableCollection<Save> saves, CharacterClass characterClass)
+        {
+            foreach (var save in saves)
+            {
+                if (save.AttributeType == characterClass.GoodSave)
+                {
+                    save.IsGood = true;
+                }
+            }
         }
 
         public static void SetClassSkills(CharacterClass characterClass, Character character)
@@ -26,17 +39,28 @@ namespace PathfinderSheetServices
             }
 
         }
-        
+
         public static void SetBab(Character character)
         {
-            if (character.CharacterClass != null) 
+            if (character.CharacterClass != null)
             {
                 double dBaseAttackBonus = character.Level * character.CharacterClass.BaBProgression;
                 character.BaseAttackBonus = (int)Math.Floor(dBaseAttackBonus);
             }
         }
+        public static void WriteClassSpellLevelInSpells(Character character, ICollection<Spell> spells)
+        {
+            foreach (var spell in spells)
+            {
+                if (spell.ClassSpellLevelDictionary.ContainsKey(character.CharacterClass.Name))
+                {
+                    spell.ClassLevel = spell.ClassSpellLevelDictionary[character.CharacterClass.Name];
 
-        
+                }
+
+            }
+        }
+
 
     }
 }

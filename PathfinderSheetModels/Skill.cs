@@ -26,7 +26,14 @@ namespace PathfinderSheetModels
         public EventAggregator EventAggregator { get; set; }
         public Ability Ability { get; set; }
         public AttributeType AttributeType { get; set; }
+        public ObservableCollection<Bonus> ActiveBonusList { get; set; } = new ObservableCollection<Bonus>();
+
         public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
+        public void RecalculateScore()
+        {
+            OnPropertyChanged(nameof(Score));
+        }
+
         public bool IsTrainedOnly { get; set; }
         public bool HasArmorCheckPenalty { get; set; }
 
@@ -50,7 +57,7 @@ namespace PathfinderSheetModels
         }
 
         public override int Score =>
-            BaseScore + BonusList.Sum(a => a.Value) + Ability.Modifier + (IsClass && BaseScore >= 1 ? 3 : 0);
+            BaseScore + ActiveBonusList.Sum(a => a.Value) + Ability.Modifier + (IsClass && BaseScore >= 1 ? 3 : 0);
 
         public void Handle(AbilityChangedEvent message)
         {

@@ -26,8 +26,7 @@ namespace PathfinderSheetDataAccess
             Feats = serializer.LoadCollection<GeneralFeat>("Feats");
             Races = serializer.LoadCollection<Race>("Races");
             CharacterClasses = serializer.LoadCollection<CharacterClass>("CharacterClasses");
-            PopulateCharacterClassSpells(CharacterClasses,Spells);
-            
+
             Sizes.Add(new Size(SizeType.Medium));
             Sizes.Add(new Size(SizeType.Small));
             Sizes.Add(new Size(SizeType.Large));
@@ -83,19 +82,9 @@ namespace PathfinderSheetDataAccess
 
         }
 
-        public  void PopulateCharacterClassSpells(Collection<CharacterClass> characterClasses, Collection<Spell> spells)
-        {
-            foreach (var characterClass in characterClasses)
-            {
-                foreach (var spell in spells.Where(a => a.SpellLevel.Contains(characterClass.Name)))
-                {
-                    characterClass.ClassSpells.Add(spell);
-                }
-            }
+      
 
-            
-
-        }
+        
 
     }
 }

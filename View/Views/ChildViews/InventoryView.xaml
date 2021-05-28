@@ -1,0 +1,360 @@
+﻿<UserControl x:Class="View.Views.ChildViews.InventoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:services="clr-namespace:View.Services"
+             xmlns:local="clr-namespace:View.Views.ChildViews"
+             xmlns:dialogs ="clr-namespace:View.Views.ChildViews.InventoryDialogs"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="666" d:DesignWidth="853
+             " d:Foreground="AliceBlue">
+    <UserControl.Resources>
+        <DataTemplate x:Key="GeneralDataTemplate">
+            <Border BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"  />
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock  Text="{Binding Quantity}" Margin="5" />
+                    </Border>
+                    <Border Grid.Column="1" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock  Text="{Binding Name}" HorizontalAlignment="Left" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="2" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                    </Border>
+                    <Border  Grid.Column="3" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="{Binding Weight}" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="4" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="{Binding Value}" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="5" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteItemCommand}" CommandParameter="{Binding}">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="ConsumableDataTemplate">
+            <Border BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"  />
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Foreground" Value="{DynamicResource SecondaryHueMidBrush}"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock  Text="{Binding Quantity}" Margin="5" />
+                    </Border>
+                    <Border Grid.Column="1" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock  Text="{Binding Name}" HorizontalAlignment="Left" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="2" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                    </Border>
+                    <Border  Grid.Column="3" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="{Binding Weight}" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="4" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="{Binding Value}" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="5" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteItemCommand}" CommandParameter="{Binding}">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="WearableDataTemplate">
+            <Border BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"  />
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="40"  />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Foreground" Value="Violet"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock  Text="{Binding Quantity}" Margin="5" />
+                    </Border>
+                    <Border Grid.Column="1" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock  Text="{Binding Name}" HorizontalAlignment="Left" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="2" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="E" Margin="5" >
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center "/>
+                                    <Setter Property="VerticalAlignment" Value="Center "/>
+                                    <Setter Property="Foreground" Value="{StaticResource SecondaryHueMidBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsWorn}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                    <Border  Grid.Column="3" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="{Binding Weight}" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="4" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <TextBlock Text="{Binding Value}" Margin="5" />
+                    </Border>
+                    <Border  Grid.Column="5" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                        <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteItemCommand}" CommandParameter="{Binding}"
+                                IsEnabled="{Binding IsWorn, Converter={StaticResource InverseBooleanConverter}}">
+                            <materialDesign:PackIcon Kind="Delete" />
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <services:InventoryItemDataTemplateSelector x:Key="InventoryItemDataTemplateSelector"
+                                                    GeneralDataTemplate ="{StaticResource GeneralDataTemplate}"
+                                                    WearableDataTemplate="{StaticResource WearableDataTemplate}"
+                                                    ConsumableDataTemplate ="{StaticResource ConsumableDataTemplate}"
+                                                    />
+    </UserControl.Resources>
+    <materialDesign:DialogHost CloseOnClickAway="True" IsOpen="{Binding IsInventoryDialogOpen}" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Inventory" Margin="0,0,2,2" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"  />
+                            <ColumnDefinition Width="280" />
+                            <ColumnDefinition Width="40"  />
+                            <ColumnDefinition Width="40"  />
+                            <ColumnDefinition Width="40"  />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="3" Kind="WeightLb" HorizontalAlignment="Center"/>
+                        <materialDesign:PackIcon Grid.Column="4" Kind="Gold" Foreground="Gold" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Character.Inventory.ItemsList}"
+                                  ItemTemplateSelector="{StaticResource InventoryItemDataTemplateSelector}">
+
+
+                    </ItemsControl>
+
+                    <Button Grid.Row="2" Content="Add New Item" 
+                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
+                        <Button.CommandParameter>
+                            <StackPanel Margin="20">
+                                <Button Content="General"
+                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                        Margin="20">
+                                    <Button.CommandParameter>
+                                        <dialogs:GeneralItemDialog/>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button Content="Wearable" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                        Margin="20">
+                                    <Button.CommandParameter>
+                                        <dialogs:WearableItemDialog/>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button Content="Armor" Margin="20" 
+                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                    <Button.CommandParameter>
+                                        <dialogs:ArmorItemDialog/>
+                                    </Button.CommandParameter>
+
+                                </Button>
+                                <Button Content="Potion" Margin="20"/>
+                                <Button Content="Wand" Margin="20"/>
+                                <Button Content="Scroll" Margin="20"/>
+                            </StackPanel>
+                        </Button.CommandParameter>
+                    </Button>
+                </Grid>
+            </GroupBox>
+            <StackPanel Grid.Column="1">
+                <GroupBox Header="Armor" >
+                    <Grid DataContext="{Binding EquippedArmor}" Visibility="{Binding IsWorn, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="12"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding Type,StringFormat={}Type : {0}}"/>
+                            <TextBlock Text="{Binding ArmorClass,StringFormat={}AC : {0}}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="12"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="{Binding CheckPenalty,StringFormat={}Check Penalty : {0}}"/>
+                            <TextBlock Text="{Binding MaxSpeed,StringFormat={}Max Speed : {0} ft.}"/>
+                            <TextBlock Text="{Binding SpellFailurePercentage,StringFormat={}Spell Failure :{0}%}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Shield">
+                    <UniformGrid Columns="2">
+                        <StackPanel DataContext="{Binding Character.Inventory.Shield}">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="12"></Setter>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text="{Binding ArmorClass,StringFormat={}AC : {0}}" />
+                        </StackPanel>
+                        <StackPanel DataContext="{Binding Character.Inventory.Shield}">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontSize" Value="12"></Setter>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="{Binding CheckPenalty,StringFormat={}Check Penalty : {0}}" />
+                            <TextBlock Text="{Binding SpellFailurePercentage,StringFormat={}Spell Failure :{0}%}" />
+                        </StackPanel>
+
+                    </UniformGrid>
+                </GroupBox>
+                <TabControl TabStripPlacement="Top" 
+                        Style="{DynamicResource MaterialDesignNavigatilRailTabControl}">
+                    <TabItem Style="{DynamicResource MaterialDesignNavigationRailTabItem}" Height="40" Padding="0">
+                        <TabItem.Header>
+                            <materialDesign:PackIcon Kind="Magic"/>
+                        </TabItem.Header>
+                        <ItemsControl ItemsSource="{Binding WandsView}" Margin="0,10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="1" Margin="5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                                                <mah:NumericUpDown Value="{Binding Charges}" Minimum="0" Maximum="50" />
+                                            </Border>
+                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="12" Margin="5"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </TabItem >
+                    <TabItem Style="{DynamicResource MaterialDesignNavigationRailTabItem}"  Height="40" Padding="0">
+                        <TabItem.Header>
+                            <materialDesign:PackIcon Kind="Scroll"/>
+                        </TabItem.Header>
+                        <ItemsControl ItemsSource="{Binding ScrollsView}" Margin="0,10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="1" Margin="5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                                                <TextBlock Grid.Column="1" Text="{Binding Quantity}" VerticalAlignment="Center" FontSize="12"  Margin="5"/>
+                                            </Border>
+                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="12"  Margin="5"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </TabItem>
+                    <TabItem Style="{DynamicResource MaterialDesignNavigationRailTabItem}"  Height="40" Padding="0">
+                        <TabItem.Header>
+                            <materialDesign:PackIcon Kind="HealthPotion"/>
+                        </TabItem.Header>
+                        <ItemsControl ItemsSource="{Binding PotionsView}" Margin="0,10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="1" Margin="5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="0,0,1,0">
+                                                <TextBlock Grid.Column="1" Text="{Binding Quantity}" VerticalAlignment="Center" FontSize="12"  Margin="5"/>
+                                            </Border>
+                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="12"  Margin="5"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </TabItem>
+                </TabControl>
+
+
+            </StackPanel>
+        </Grid>
+    </materialDesign:DialogHost>
+
+
+
+
+
+</UserControl>

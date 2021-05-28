@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace PathfinderSheetModels
 { 
-    public class Save : BaseAttribute, IBonusable, IHandle<AbilityChangedEvent>
+    public class Save : BaseAttribute, IBonusable, IHandle<AbilityChangedEvent>, IHandle<LevelChangedEvent>
     {
         private int _level;
+        private bool _isGood;
 
         public Save(AttributeType type, Ability ability)
         {
@@ -15,9 +16,16 @@ namespace PathfinderSheetModels
         }
         public EventAggregator EventAggregator { get; set; }
         public override int BaseScore { get; set; }
-        public override int Score => CalculateScore();
+        public override int Score => BaseScore + Ability.Modifier + ActiveBonusList.Sum(item => item.Value);
         public AttributeType AttributeType { get; set; }
+        public ObservableCollection<Bonus> ActiveBonusList { get; set; } = new ObservableCollection<Bonus>();
         public ObservableCollection<Bonus> BonusList { get; set; } = new ObservableCollection<Bonus>();
+        public void RecalculateScore()
+        {
+            OnPropertyChanged(nameof(Score));
+
+        }
+
         public Ability Ability { get; set; }
 
         public int Level
@@ -30,17 +38,24 @@ namespace PathfinderSheetModels
             }
         }
 
-        public bool IsGood { get; set; }
+        public bool IsGood
+        {
+            get => _isGood;
+            set
+            {
+                _isGood = value; 
+                CalculateBaseScore();
+            }
+        }
 
 
-        public int  CalculateScore()
+        public void  CalculateBaseScore()
         {
             if (IsGood)
             {
                 var dLevel = (double)Level;
                 var dBaseValue = 2 + (dLevel * 0.5);
                 BaseScore = (int)Math.Floor(dBaseValue);
-                return BaseScore + Ability.Modifier + BonusList.Sum(item => item.Value);
                 
             }
             else
@@ -48,8 +63,7 @@ namespace PathfinderSheetModels
                 var dLevel = (double)Level;
                 var dBaseValue = (dLevel * 0.33);
                 BaseScore = (int)Math.Floor(dBaseValue);
-                return BaseScore + Ability.Modifier + BonusList.Sum(item => item.Value);
-               
+
             }
 
         }
@@ -63,6 +77,12 @@ namespace PathfinderSheetModels
                 OnPropertyChanged(nameof(Score));
                 OnPropertyChanged(nameof(BaseScore));
             }
+        }
+
+        public void Handle(LevelChangedEvent message)
+        {
+            Level = message.Level;
+            CalculateBaseScore();
         }
     }
 

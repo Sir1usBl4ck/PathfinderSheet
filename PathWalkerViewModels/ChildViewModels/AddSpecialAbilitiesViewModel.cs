@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using PathfinderSheetModels;
 using PathfinderSheetServices;
@@ -14,14 +15,19 @@ namespace PathWalkerViewModels.ChildViewModels
             EventAggregator = eventAggregator;
             AddSpecialAbilityToListCommand = new RelayCommand(AddSpecialAbilityToList);
             AddBonusToSpecialAbilityCommand = new RelayCommand(AddBonusToSpecialAbility);
-            SpecialAbilities = Character.SpecialAbilities;
+            NewSpecialAbility = new SpecialAbility();
 
         }
 
         private void AddBonusToSpecialAbility()
         {
             NewBonus.BonusSource = NewSpecialAbility.Name;
-            BonusService.AddBonusToList(NewBonus,NewSpecialAbility.BonusList);
+            if (NewSpecialAbility.IsActive == false)
+            {
+                BonusService.AddBonusToList(NewBonus, NewSpecialAbility.BonusList);
+
+            }
+            NewSpecialAbility.BonusList.Add(NewBonus);
             NewBonus = new Bonus();
         }
 
@@ -29,12 +35,14 @@ namespace PathWalkerViewModels.ChildViewModels
         {
             Character.SpecialAbilities.Add(NewSpecialAbility);
             NewSpecialAbility = new SpecialAbility();
+
+
+
         }
 
-        public ObservableCollection<SpecialAbility> SpecialAbilities { get; set; } =
-            new ObservableCollection<SpecialAbility>();
 
-        public SpecialAbility NewSpecialAbility { get; set; } = new SpecialAbility();
+
+        public SpecialAbility NewSpecialAbility { get; set; }
         public Bonus NewBonus { get; set; } = new Bonus();
         public ICommand AddSpecialAbilityToListCommand { get; set; }
         public ICommand AddBonusToSpecialAbilityCommand { get; set; }

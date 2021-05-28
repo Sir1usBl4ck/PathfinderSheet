@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.Distributions;
@@ -92,6 +93,14 @@ namespace PathfinderSheetServices
             
             character.ArmorClass.EventAggregator.Subscribe(character.ArmorClass);
 
+            character.Level = 1;
+
+            character.Inventory = new Inventory(eventAggregator);
+            character.Inventory.EventAggregator.Subscribe(character.Inventory);
+
+            
+            BonusService.Character = character;
+            BonusService.InitializeBonusReceivers();
         }
         
 
